@@ -17,7 +17,7 @@
 			<td>EMAIL</td><td><input type="email" name = "email"></td>
 		</tr>
 		<tr>
-			<td>PASSWORD</td><td><input type="text" name = "password"></td>
+			<td>PASSWORD</td><td><input type="password" name = "password"></td>
 		</tr>
 		<tr>
 			<td>ROLE</td>
@@ -32,7 +32,7 @@
 		</tr>
 		<tr>
 			<td><input type="submit" value = "Submit"></td>
-			<td><input type="reset" value ="Clear"></td>
+			<td><input type="reset" value = "Clear"></td>
 		</tr>	
 		</table>
 	</form>
