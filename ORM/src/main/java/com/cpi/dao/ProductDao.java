@@ -7,7 +7,6 @@ import java.sql.Statement;
 
 import com.cpi.model.DBConnect;
 import com.cpi.model.Product;
-import com.cpi.model.Users;
 
 public class ProductDao {
 	private static final String dbUsername = "CALANDRIA";
