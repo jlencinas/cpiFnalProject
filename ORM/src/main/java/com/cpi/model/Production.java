@@ -1,12 +1,12 @@
 package com.cpi.model;
 
-import oracle.sql.DATE;
+import java.util.Date;
 
 public class Production {
 	private int productionID;
 	private String productionUser;
 	private String productID;
-	private DATE productionDate;
+	private Date productionDate;
 	private int productionQuantity;
 	
 	public int getProductionID() {
@@ -27,10 +27,10 @@ public class Production {
 	public void setProductID(String productID) {
 		this.productID = productID;
 	}
-	public DATE getProductionDate() {
+	public Date getProductionDate() {
 		return productionDate;
 	}
-	public void setProductionDate(DATE productionDate) {
+	public void setProductionDate(Date productionDate) {
 		this.productionDate = productionDate;
 	}
 	public int getProductionQuantity() {
