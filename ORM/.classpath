@@ -30,7 +30,7 @@
 			<attribute name="owner.project.facets" value="jst.web"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/Programs/Apache/Java JAR/ojdbc6-11.2.0.3.jar"/>
-	<classpathentry kind="lib" path="D:/Programs/Apache/Java JAR/ojdbc14.jar"/>
+	<classpathentry kind="lib" path="C:/Users/buanc/Desktop/ojdbc6-11.2.0.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/buanc/Desktop/ojdbc14.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
