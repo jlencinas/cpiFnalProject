@@ -1,5 +1,3 @@
-<%@ page import="java.sql.*" %>
-<%-- <% Class.forName("com.mysql.jdbc.Driver"); %> --%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" isELIgnored="false"%>
 <html>
@@ -12,7 +10,8 @@
 	WELCOME ${user.getUsername()} 
 	
 	<br/>
-	<button onClick = "window.location.href='/ORM/pages/update.jsp'">Update</button>
+	<button onClick = "window.location.href='/ORM/pages/register.jsp'">Register</button><br/>
+	<button onClick = "window.location.href='/ORM/pages/update.jsp'" value = "${user}">Update</button>
 	<!-- <form>
 	<input type="submit" value ="Update">
 	</form> -->

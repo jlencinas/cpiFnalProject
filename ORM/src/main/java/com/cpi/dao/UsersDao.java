@@ -65,5 +65,69 @@ public class UsersDao {
 		return u;
 	}
 	
+	public String updateUser(String email, String pass) {
+		String u = "";
+		Connection conn = null;
+		Statement st = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			 DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
+			 conn = db.getConnection();
+			 System.out.println("Updating to server");
+			 
+			 st = conn.createStatement();
+			 
+			 if(email != "" && pass != "" ) {
+				 rs = st.executeQuery("SELECT * FROM users WHERE EMAIL = '" + email + "' AND PASSWORD = '" + pass + "'");
+			 }
+			 else if (email != "") {
+				 rs = st.executeQuery("SELECT * FROM users WHERE EMAIL = '" + email + "' AND PASSWORD = '" + pass + "'");
+			 }
+			 if (rs.next()){
+			 	
+				 try {
+					 
+					 
+				 }
+				 catch(Exception sq ) {
+					 System.out.println(sq);
+				 }
+				 
+			 }
+		}  
+		
+		catch (SQLException se) {
+			System.out.println(se);
+		} 
+		
+		finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (st != null) {
+					st.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} 
+			
+			catch (SQLException se) { System.out.println(se); }
+		}
+		
+		
+		return u;
+		
+	}
 	
+	
+	public String createUser(Users u) {
+		String msg = "";
+		
+		
+		return msg;
+	}
 }
