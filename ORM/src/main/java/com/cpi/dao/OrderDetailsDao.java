@@ -8,6 +8,10 @@ import java.sql.Statement;
 import com.cpi.model.DBConnect;
 import com.cpi.model.OrderDetails;
 
+/**
+ * @author Jan Christian Buan
+ *
+ */
 public class OrderDetailsDao {
 
 	private static final String dbUsername = "CALANDRIA";

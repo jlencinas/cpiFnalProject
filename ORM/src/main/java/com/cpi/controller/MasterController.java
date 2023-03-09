@@ -5,7 +5,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.cpi.dao.ProductDao;
 import com.cpi.dao.UsersDao;
+import com.cpi.model.Product;
 import com.cpi.model.Users;
 
 @Controller
@@ -57,5 +59,26 @@ class Controllers {
 		mv.setViewName("pages/dashboard.jsp");
 		return mv;
 		
+	}
+	
+	@RequestMapping("newProduct")
+	public ModelAndView newProduct (@RequestParam("productName") String productName, @RequestParam("description") String productDescription, 
+									@RequestParam("url") String productPicture, @RequestParam("status") int productStatus, @RequestParam("price") float price ) {
+		
+		ModelAndView mv = new ModelAndView ();
+		Product product = new Product();
+		int prodId = 0;
+		
+		product.setProductID(prodId);
+		product.setProductName(productName);
+		product.setProdcutDescription(productDescription);
+		product.setProductPicture(productPicture);
+		product.setProductStatus(productStatus);
+		product.setProductPrice(price);
+		
+		ProductDao dao = new ProductDao();
+		dao.newProduct(prodId, productName, productDescription, productPicture, productStatus, price);
+		
+		return mv;
 	}
 }
