@@ -3,7 +3,7 @@ package com.cpi.model;
 import java.util.Date;
 
 public class AuditOrder {
-	private int itemChange;
+	private int itemChangeID;
 	private String username;
 	private int itemID;
 	private String fieldChanged;
@@ -11,11 +11,11 @@ public class AuditOrder {
 	private int newValue;
 	private Date changeDate;
 	
-	public int getItemChange() {
-		return itemChange;
+	public int getItemChangeID() {
+		return itemChangeID;
 	}
-	public void setItemChange(int itemChange) {
-		this.itemChange = itemChange;
+	public void setItemChangeID(int itemChange) {
+		this.itemChangeID = itemChange;
 	}
 	public String getUsername() {
 		return username;
@@ -55,7 +55,7 @@ public class AuditOrder {
 	}
 	@Override
 	public String toString() {
-		return "AuditOrder [itemChange=" + itemChange + ", username=" + username + ", itemID=" + itemID
+		return "AuditOrder [itemChange=" + itemChangeID + ", username=" + username + ", itemID=" + itemID
 				+ ", fieldChanged=" + fieldChanged + ", oldValue=" + oldValue + ", newValue=" + newValue
 				+ ", changeDate=" + changeDate + "]";
 	}
