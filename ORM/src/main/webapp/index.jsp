@@ -1,5 +1,5 @@
 <html>
 <body>
-<h2>Ohaiyo!! Hello Worlssd!</h2>
+<h2>GOODBYE CRUEL WORLD</h2>
 </body>
 </html>
