@@ -1,6 +1,6 @@
 package com.cpi.model;
 
-import oracle.sql.DATE;
+import java.util.Date;
 
 public class AuditOrder {
 	private int itemChange;
@@ -9,7 +9,7 @@ public class AuditOrder {
 	private String fieldChanged;
 	private int oldValue;
 	private int newValue;
-	private DATE changeDate;
+	private Date changeDate;
 	
 	public int getItemChange() {
 		return itemChange;
@@ -47,10 +47,10 @@ public class AuditOrder {
 	public void setNewValue(int newValue) {
 		this.newValue = newValue;
 	}
-	public DATE getChangeDate() {
+	public Date getChangeDate() {
 		return changeDate;
 	}
-	public void setChangeDate(DATE changeDate) {
+	public void setChangeDate(Date changeDate) {
 		this.changeDate = changeDate;
 	}
 	@Override
