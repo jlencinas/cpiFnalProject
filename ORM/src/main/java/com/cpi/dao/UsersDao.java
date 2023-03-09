@@ -126,7 +126,50 @@ public class UsersDao {
 	
 	public String createUser(Users u) {
 		String msg = "";
+		Connection conn = null;
+		Statement st = null;
+		ResultSet rs = null;
 		
+		int uid;
+		
+		try {
+			
+			 DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
+			 conn = db.getConnection();
+			 st = conn.createStatement();
+			 rs = st.executeQuery("SELECT MAX(USER_ID) AS MUS FROM USERS");
+			 
+			 
+			 if (rs.next()){
+					uid = rs.getInt("MUS") + 1;
+				}
+			 else {
+				uid = 1;
+			 }
+			 
+			 String addQuery = "INSERT INTO USERS VALUES (" + uid + ", " + u.getRoleId() + ", '"+u.getUsername()+"', '"+u.getPassword()+"', '" + u.getEmail() + "')";
+			 try {
+					st.executeUpdate(addQuery);
+					
+					msg = "New Account Added";
+					
+				}
+				
+			catch (Exception ex) {
+				/*
+				 * dispatcher = request.getRequestDispatcher("pages/error.jsp");
+				 * request.setAttribute("message", "Something went wrong bro");
+				 * request.setAttribute("page", "'/RegLog/pages/registration.jsp'");
+				 * dispatcher.forward(request, response);
+				 */
+				msg = "Account Failed to be added";
+			}
+			 
+		}
+		catch (Exception e) {
+			System.out.println("MAY EXCEPTION");
+			msg = "Di ata maka konek";
+		}
 		
 		return msg;
 	}

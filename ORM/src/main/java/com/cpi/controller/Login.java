@@ -44,12 +44,15 @@ class Controllers {
 		u.setPassword(password);
 		u.setRoleId(roleid);
 		
+		UsersDao dao = new UsersDao();
+		String msg = dao.createUser(u);
 		/*
 		 * mv.addObject("message", "Logged Out Successfully");
 		 * mv.setViewName("index.jsp");
 		 */
 		
 		mv.addObject("user", u);
+		mv.addObject("msg", msg);
 //		mv.setViewName("dashboard.jsp");
 		mv.setViewName("pages/dashboard.jsp");
 		return mv;
