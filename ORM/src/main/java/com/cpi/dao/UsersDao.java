@@ -57,9 +57,7 @@ public class UsersDao {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (SQLException se) {
-				System.out.println(se);
-			}
+			} catch (SQLException se) { System.out.println(se); }
 		}
 		return u;
 	}
