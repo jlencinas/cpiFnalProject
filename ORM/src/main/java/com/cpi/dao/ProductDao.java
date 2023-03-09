@@ -15,7 +15,7 @@ public class ProductDao {
 	
 	public Product getProduct()
 	{
-		Product u = new Product();
+		Product p = new Product();
 		Connection conn = null;
 		Statement st = null;
 		ResultSet rs = null;
@@ -31,12 +31,12 @@ public class ProductDao {
 			 
 			 if (rs.next())
 			 {
-				u.setProductID(rs.getInt("PRODUCT_ID"));
-			 	u.setProductName(rs.getString("PRODUCT_NAME"));
-			 	u.setProdcutDescription(rs.getString("PRODUCT_DESCRIPTION"));
-			 	u.setProductPicture(rs.getString("PRODUCT_PICTURE"));
-				u.setProductStatus(rs.getInt("PRODUCT_STATUS"));
-				u.setProductPrice(rs.getFloat("PRICE"));
+				p.setProductID(rs.getInt("PRODUCT_ID"));
+			 	p.setProductName(rs.getString("PRODUCT_NAME"));
+			 	p.setProdcutDescription(rs.getString("PRODUCT_DESCRIPTION"));
+			 	p.setProductPicture(rs.getString("PRODUCT_PICTURE"));
+				p.setProductStatus(rs.getInt("PRODUCT_STATUS"));
+				p.setProductPrice(rs.getFloat("PRICE"));
 			 }
 			 
 		}  catch (SQLException se) {
@@ -57,6 +57,6 @@ public class ProductDao {
 				System.out.println(se);
 			}
 		}
-		return u;
+		return p;
 	}
 }

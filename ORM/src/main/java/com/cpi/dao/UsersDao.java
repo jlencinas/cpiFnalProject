@@ -18,7 +18,7 @@ public class UsersDao {
 	private static final String dbPassword = "calandria";
 	private static final String server = "training-db.cosujmachgm3.ap-southeast-1.rds.amazonaws.com";
 	
-	public Users getUser(String username, String password)
+	public Users getUser (String username, String password)
 	{
 		Users u = new Users();
 		Connection conn = null;
