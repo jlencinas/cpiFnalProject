@@ -18,8 +18,7 @@ public class UsersDao {
 	private static final String dbPassword = "calandria";
 	private static final String server = "training-db.cosujmachgm3.ap-southeast-1.rds.amazonaws.com";
 	
-	public Users getUser (String username, String password)
-	{
+	public Users getUser (String username, String password){
 		Users u = new Users();
 		Connection conn = null;
 		Statement st = null;
@@ -34,8 +33,7 @@ public class UsersDao {
 			 st = conn.createStatement();
 			 rs = st.executeQuery("SELECT * FROM users WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "'");
 			 
-			 if (rs.next())
-			 {
+			 if (rs.next()){
 			 	u.setUserId(rs.getInt("USER_ID"));
 			 	u.setRoleId(rs.getInt("ROLE_ID"));
 				u.setUsername(rs.getString("USERNAME"));
@@ -43,10 +41,13 @@ public class UsersDao {
 				u.setEmail(rs.getString("EMAIL"));
 			 }
 			 
-		}  catch (SQLException se) {
+		}  
+		
+		catch (SQLException se) {
 			System.out.println(se);
-		} finally {
-			
+		} 
+		
+		finally {
 			try {
 				if (rs != null) {
 					rs.close();
@@ -57,8 +58,12 @@ public class UsersDao {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (SQLException se) { System.out.println(se); }
+			} 
+			
+			catch (SQLException se) { System.out.println(se); }
 		}
 		return u;
 	}
+	
+	
 }

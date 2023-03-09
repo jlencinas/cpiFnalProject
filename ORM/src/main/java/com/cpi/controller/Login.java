@@ -9,20 +9,30 @@ import com.cpi.dao.UsersDao;
 import com.cpi.model.Users;
 
 @Controller
-public class Login {
+class Controllers {
 
 	@RequestMapping("Login")
-	public ModelAndView login (@RequestParam("username") String username, @RequestParam("password") String password)
-	{
+	public ModelAndView login (@RequestParam("username") String username, @RequestParam("password") String password){
 		ModelAndView mv = new ModelAndView();
 		
 		UsersDao dao = new UsersDao();
 		Users user = dao.getUser(username, password);
 		
 		mv.addObject("user", user);
-		mv.setViewName("dashboard.jsp");
+		mv.setViewName("pages/dashboard.jsp");
 		
 		return mv;
 		
 	}
+	
+	@RequestMapping("Logout")
+	public ModelAndView logout (){
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("message", "Logged Out Successfully");
+		mv.setViewName("index.jsp");
+		return mv;
+		
+	}
+	
+	
 }
