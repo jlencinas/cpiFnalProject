@@ -10,6 +10,7 @@
 <title>Disable/Edit Employees</title> 
 </head>
 <body>
+
 	<h1>Employee Information</h1>
 	
 	<table>
