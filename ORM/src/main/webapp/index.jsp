@@ -58,7 +58,8 @@
 		<label>Update</label><br/>
 		<label>Username: </label><input type="text" name = "username"><br/>
 		<label>Password: </label><input type="password" name = "password"><br/>
-		<label>New Pass</label><input type="password" name = "new pass">
+		<label>New Pass</label><input type="password" name = "new pass"><br/>
+		<label>Confirm New Pass</label><input type="password" name = "confirm pass">
 		<input type="submit" value = "Submit"><input type="reset" value ="Clear">
 	</form>
 	
