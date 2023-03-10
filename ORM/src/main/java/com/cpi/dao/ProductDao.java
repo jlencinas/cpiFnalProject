@@ -1,6 +1,7 @@
 package com.cpi.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -59,4 +60,48 @@ public class ProductDao {
 		}
 		return p;
 	}
+	
+	public Product newProduct(int productId, String productName, String productDescription, String productPicture, int productStatus, float price) {
+		
+		Product p = new Product ();
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		String query = "INSERT INTO product (product_id, product_name, product_description, " +
+                "product_picture, product_status, price) VALUES (?, ?, ?, ?, ?, ?)";
+		
+		try {
+			
+			 DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
+			 conn = db.getConnection();
+			 System.out.println("Connected to server");
+			 
+			 ps = conn.prepareStatement(query);
+			 ps.setInt(1, productId);
+			 ps.setString(2, productName);
+			 ps.setString(3, productDescription);
+			 ps.setString(4, productPicture);
+			 ps.setInt(5, productStatus);
+			 ps.setFloat(6, price);
+			 
+			 ps.executeUpdate();
+			 	
+		 	} catch (SQLException se) { System.out.println("No data found."); }
+		
+		finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) { System.out.println(se); }
+        }
+		
+		return p;
+	}
+	
+	
 }

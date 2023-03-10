@@ -3,9 +3,10 @@ package com.cpi.model;
 import java.util.Date;
 
 public class Production {
+	
 	private int productionID;
 	private String productionUser;
-	private String productID;
+	private int productID;
 	private Date productionDate;
 	private int productionQuantity;
 	
@@ -21,10 +22,10 @@ public class Production {
 	public void setProductionUser(String productionUser) {
 		this.productionUser = productionUser;
 	}
-	public String getProductID() {
+	public int getProductID() {
 		return productID;
 	}
-	public void setProductID(String productID) {
+	public void setProductID(int productID) {
 		this.productID = productID;
 	}
 	public Date getProductionDate() {
