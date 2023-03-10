@@ -113,4 +113,17 @@ class Controllers {
 		
 		return mv;
 	}
+	
+	@RequestMapping("pages/UpdateProduct")
+	public ModelAndView updateProduct (@RequestParam ("productID") int productId,@RequestParam("productName") String productName, @RequestParam("description") String productDescription, 
+			@RequestParam("url") String productPicture, @RequestParam("status") int productStatus, @RequestParam("price") float price ) {
+		
+		ModelAndView mv = new ModelAndView();
+		ProductDao dao = new ProductDao();
+		dao.updateProduct(productId, productName, productDescription, productPicture, productStatus, price);
+		mv.addObject("updatedProduct", dao);
+		mv.setViewName("dashboard.jsp");
+		
+		return mv;
+	}
 }
