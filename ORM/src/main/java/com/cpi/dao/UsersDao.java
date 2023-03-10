@@ -62,6 +62,62 @@ public class UsersDao {
 		}
 		return u;
 	}
+	static String randPwd(int x) {
+		String pwd = "";
+		String alpnum = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvxyz";
+		
+		for(int y = 0; y < x; y++) {
+			int index = (int)(alpnum.length()* Math.random());
+			pwd += alpnum.charAt(index);
+		}
+		return pwd;
+	} 
+	
+	public String forgotUser(String username, String email) {
+		String msg = "";
+		String pwd = randPwd(12);
+		Connection conn = null;
+		Statement st = null;
+		ResultSet rs = null;
+		
+		
+		try {
+			DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
+			conn = db.getConnection();
+			st = conn.createStatement();
+			System.out.println("Checking server for user and email");
+			
+			try {
+				rs = st.executeQuery("SELECT * FROM users WHERE USERNAME = '" + username + "' AND EMAIL = '" + email + "'");
+				
+				if(rs.next()) {
+					String forgotQuery = "UPDATE USERS SET PASSWORD = '" + pwd + "' WHERE USERNAME = '" + username + "'" ;
+					try {
+						 st.executeUpdate(forgotQuery);
+						 msg = "Password Changed Successfully!";
+					}
+					catch (Exception exc) {
+						System.out.println("Di na update yung pass men");
+						msg = "Di gumana men pag change sa pass";
+					}
+				}
+				else {
+					msg = "Walang account na ganun men";
+				}
+			}
+			catch(Exception ex) {
+				System.out.println("Di ka totoong tao");
+				msg = "Di ka totoong tao";
+			}
+		}
+		catch(Exception e) {
+			System.out.println("Di Makakonek");
+			msg = "Walang connection";
+		}
+		
+		return msg + "<br/> New Password : " + pwd;
+	}
+	
 	
 	public String updateUser(Users u, String newpass, String newemail) {
 		String msg = "";
@@ -169,50 +225,5 @@ public class UsersDao {
 	}
 	
 	
-	public String forgotUser(String username, String email) {
-		String msg = "";
-		Connection conn = null;
-		Statement st = null;
-		ResultSet rs = null;
-		String np = "";
-		try {
-			
-			DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
-			conn = db.getConnection();
-			st = conn.createStatement();
-			rs = st.executeQuery("SELECT * FROM USERS WHERE USERNAME = '" + username + "' AND EMAIL = '" + email + "'");
-			 
-			if (rs.next()){
-							
-			}
-			 else {
-				
-			 }
-			 
-			 String forgotQuery = "";
-			 try {
-					st.executeUpdate(forgotQuery);
-					
-					msg = "New Account Added";
-					
-				}
-				
-			catch (Exception ex) {
-				/*
-				 * dispatcher = request.getRequestDispatcher("pages/error.jsp");
-				 * request.setAttribute("message", "Something went wrong bro");
-				 * request.setAttribute("page", "'/RegLog/pages/registration.jsp'");
-				 * dispatcher.forward(request, response);
-				 */
-				msg = "Password failed to update";
-			}
-			 
-		}
-		catch (Exception e) {
-			System.out.println("MAY EXCEPTION");
-			msg = "Di ata maka konek";
-		}
-		
-		return msg;
-	}
+	
 }

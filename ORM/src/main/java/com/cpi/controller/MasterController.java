@@ -35,6 +35,18 @@ class Controllers {
 		
 	}
 	
+	@RequestMapping("Forgot")
+	public ModelAndView forgot (@RequestParam("username") String username, @RequestParam("email") String email){
+		ModelAndView mv = new ModelAndView();
+		UsersDao dao = new UsersDao();
+		String msg = dao.forgotUser(username, email);
+		
+		mv.addObject("message", msg);
+		mv.setViewName("index.jsp");
+		return mv;
+		
+	}
+	
 	@RequestMapping("pages/Register")
 	public ModelAndView register (@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password, @RequestParam("roleid") int roleid){
 		ModelAndView mv = new ModelAndView();
@@ -48,21 +60,15 @@ class Controllers {
 		
 		UsersDao dao = new UsersDao();
 		String msg = dao.createUser(u);
-		/*
-		 * mv.addObject("message", "Logged Out Successfully");
-		 * mv.setViewName("index.jsp");
-		 */
 		
 		mv.addObject("user", u);
 		mv.addObject("msg", msg);
-//		mv.setViewName("dashboard.jsp");
 		mv.setViewName("dashboard.jsp");
 		return mv;
 		
 	}
 	
 
-	
 	@RequestMapping("pages/Update")
 	public ModelAndView update (@RequestParam("username") String username, @RequestParam("password") String password,  @RequestParam("new email") String newmail, @RequestParam("new pass") String newpass, @RequestParam("con pass") String conpass){
 		ModelAndView mv = new ModelAndView();
