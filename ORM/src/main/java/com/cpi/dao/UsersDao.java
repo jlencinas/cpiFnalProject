@@ -63,7 +63,7 @@ public class UsersDao {
 		return u;
 	}
 	
-	public String updateUser(Users u, String newpass) {
+	public String updateUser(Users u, String newpass, String newemail) {
 		String msg = "";
 		Connection conn = null;
 		Statement st = null;
@@ -73,18 +73,40 @@ public class UsersDao {
 			 DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
 			 conn = db.getConnection();
 			 System.out.println("Updating to server");
-			 
 			 st = conn.createStatement();
-			 
-			String updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "' WHERE USER_ID = "+u.getUserId();
-			try {
-				st.executeUpdate(updateQuery);
-				msg = "Updated Successfully";
-			}
-			catch (Exception e) {
-				System.out.println("DI MAUPDATE MEN");
-				msg = "Update Failed";
-			}
+			 if(newemail != "" && newpass != "") {
+				 String updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "', EMAIL = '" +newemail + "' WHERE USER_ID = "+u.getUserId();
+				 try {
+					 st.executeUpdate(updateQuery);
+					 msg = "Updated Email and Pass Successfully";
+				 }
+				 catch (Exception e) {
+					 System.out.println("DI MAUPDATE YUNG EMAIL AT PASS");
+					 msg = "Update PWD and Email Failed";
+				 }
+			 }
+			 else if(newemail == "" && newpass != ""){
+				 String updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "' WHERE USER_ID = "+u.getUserId();
+				 try {
+					 st.executeUpdate(updateQuery);
+					 msg = "Updated Password Successfully";
+				 }
+				 catch (Exception e) {
+					 System.out.println("DI MAUPDATE YUNG PASS");
+					 msg = "Update Password Failed";
+				 }
+			 }
+			 else if(newemail != "" && newpass == ""){
+				 String updateQuery = "UPDATE USERS SET EMAIL = '" + newemail + "' WHERE USER_ID = "+u.getUserId();
+				 try {
+					 st.executeUpdate(updateQuery);
+					 msg = "Updated Email Successfully";
+				 }
+				 catch (Exception e) {
+					 System.out.println("DI MAUPDATE YUNG PASS");
+					 msg = "Update Email Failed";
+				 }
+			 }
 		}  
 		
 		catch (SQLException se) {
