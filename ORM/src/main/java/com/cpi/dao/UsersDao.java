@@ -196,7 +196,7 @@ public class UsersDao {
 				uid = 1;
 			}
 			 
-			String addQuery = "INSERT INTO USERS VALUES (" + uid + ", " + u.getRoleId() + ", '"+u.getUsername()+"', '"+u.getPassword()+"', '" + u.getEmail() + "')";
+			String addQuery = "INSERT INTO USERS VALUES (" + uid + ", " + u.getRoleId() + ", '"+u.getUsername()+"', '"+u.getPassword()+"', '" + u.getEmail() + "', 'ENABLED')";
 			 
 			try {
 				st.executeUpdate(addQuery);

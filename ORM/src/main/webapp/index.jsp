@@ -46,12 +46,13 @@
 	</form> -->
 	<br/>
 	
-	<form action="Forgot" method="post">
+<!-- 	<form action="Forgot" method="post">
 		<label>Forgot Password</label>
 		<label>Username: </label><input type="text" name = "username"><br/>
 		<label>Email: </label><input type="email" name = "email"><br/>
 		<input type="submit" value = "Submit"><input type="reset" value ="Clear">
-	</form>
+	</form> -->
+	<button onClick = "window.location.href='/ORM/pages/forgot.jsp'">Forgot Password?</button>
 	<br/>
 	
 <!-- 	<form action="Update" method="post">
