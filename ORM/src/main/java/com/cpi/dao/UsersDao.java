@@ -33,7 +33,7 @@ public class UsersDao {
 				u.setUsername(rs.getString("USERNAME"));
 				u.setPassword(rs.getString("PASSWORD"));
 				u.setEmail(rs.getString("EMAIL"));
-				u.setStatus("STATUS");
+				u.setStatus(rs.getString("STATUS"));
 			 }
 			 else {
 				 u.setStatus("DISABLED");

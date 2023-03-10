@@ -18,15 +18,13 @@ public class ProductDao {
 	private static final String dbPassword = "calandria";
 	private static final String server = "training-db.cosujmachgm3.ap-southeast-1.rds.amazonaws.com";
 	
-	public Product getProduct()
-	{
+	public Product getProduct(){
 		Product p = new Product();
 		Connection conn = null;
 		Statement st = null;
 		ResultSet rs = null;
 		
 		try {
-			
 			 DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
 			 conn = db.getConnection();
 			 System.out.println("Connected to server");
@@ -34,8 +32,7 @@ public class ProductDao {
 			 st = conn.createStatement();
 			 rs = st.executeQuery("SELECT * FROM Product");
 			 
-			 if (rs.next())
-			 {
+			 if (rs.next()){
 				p.setProductID(rs.getInt("PRODUCT_ID"));
 			 	p.setProductName(rs.getString("PRODUCT_NAME"));
 			 	p.setProdcutDescription(rs.getString("PRODUCT_DESCRIPTION"));
@@ -44,9 +41,11 @@ public class ProductDao {
 				p.setProductPrice(rs.getFloat("PRICE"));
 			 }
 			 
-		}  catch (SQLException se) {
+		}  
+		catch (SQLException se) {
 			System.out.println(se);
-		} finally {
+		} 
+		finally {
 			
 			try {
 				if (rs != null) {
