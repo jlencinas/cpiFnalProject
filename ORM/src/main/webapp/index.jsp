@@ -54,14 +54,14 @@
 	</form>
 	<br/>
 	
-	<form action="Update" method="post">
+<!-- 	<form action="Update" method="post">
 		<label>Update</label><br/>
 		<label>Username: </label><input type="text" name = "username"><br/>
 		<label>Password: </label><input type="password" name = "password"><br/>
 		<label>New Pass</label><input type="password" name = "new pass"><br/>
-		<label>Confirm New Pass</label><input type="password" name = "confirm pass">
+		<label>Confirm New Pass</label><input type="password" name = "con pass">
 		<input type="submit" value = "Submit"><input type="reset" value ="Clear">
-	</form>
+	</form> -->
 	
 </body>
 
