@@ -22,7 +22,7 @@
 			</div>
 			<div class="product-info">
 				<h2><%=product.getProductName()%></h2>
-				<p><%=product.getProdcutDescription()%></p>
+				<p><%=product.getProductDescription()%></p>
 				<h3>$<%=product.getProductPrice()%></h3>
 				<form action="addToCart" method="post">
 					<button class="buy-button" name="itemnum" value="<%=product.getProductID()%>">Add To Cart!</button>

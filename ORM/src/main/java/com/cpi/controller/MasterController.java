@@ -109,7 +109,7 @@ class Controllers {
 									@RequestParam("url") String productPicture, @RequestParam("status") int productStatus, @RequestParam("price") float price ) {
 		
 		ModelAndView mv = new ModelAndView ();
-		Product product = new Product();
+		Product product = null;
 		int prodId = 0;
 		
 		ProductDao dao = new ProductDao();
@@ -122,7 +122,7 @@ class Controllers {
 	
 	@RequestMapping("pages/UpdateProduct")
 	public ModelAndView updateProduct (@RequestParam ("productID") int productId,@RequestParam("productName") String productName, @RequestParam("description") String productDescription, 
-			@RequestParam("url") String productPicture, @RequestParam("status") int productStatus, @RequestParam("price") float price ) {
+			@RequestParam("url") String productPicture, @RequestParam("status") int productStatus, @RequestParam("price") Float price ) {
 		
 		ModelAndView mv = new ModelAndView();
 		ProductDao dao = new ProductDao();

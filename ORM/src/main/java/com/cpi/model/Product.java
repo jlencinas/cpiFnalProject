@@ -3,11 +3,20 @@ package com.cpi.model;
 public class Product {
 	private int productID;
 	private String productName;
-	private String prodcutDescription;
+	private String productDescription;
 	private String productPicture;
 	private int productStatus;
 	private float productPrice;
 	
+	public Product(int id, String name, String description, String picture, int status, float price) 
+	{
+		this.setProductID(id);
+		this.setProductName(name);
+		this.setProductDescription(description);
+		this.setProductPicture(picture);
+		this.setProductStatus(status);
+		this.setProductPrice(price);
+	}
 	public int getProductID() {
 		return productID;
 	}
@@ -20,11 +29,11 @@ public class Product {
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
-	public String getProdcutDescription() {
-		return prodcutDescription;
+	public String getProductDescription() {
+		return productDescription;
 	}
-	public void setProdcutDescription(String prodcutDescription) {
-		this.prodcutDescription = prodcutDescription;
+	public void setProductDescription(String prodcutDescription) {
+		this.productDescription = prodcutDescription;
 	}
 	public String getProductPicture() {
 		return productPicture;
@@ -46,7 +55,7 @@ public class Product {
 	}
 	@Override
 	public String toString() {
-		return "Product [productName=" + productName + ", prodcutDescription=" + prodcutDescription
+		return "Product [productName=" + productName + ", prodcutDescription=" + productDescription
 				+ ", productPicture=" + productPicture + ", productStatus=" + productStatus + ", productPrice="
 				+ productPrice + "]";
 	}
