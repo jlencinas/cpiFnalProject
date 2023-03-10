@@ -35,7 +35,7 @@ public class ProductDao {
 			 if (rs.next()){
 				p.setProductID(rs.getInt("PRODUCT_ID"));
 			 	p.setProductName(rs.getString("PRODUCT_NAME"));
-			 	p.setProdcutDescription(rs.getString("PRODUCT_DESCRIPTION"));
+			 	p.setProductDescription(rs.getString("PRODUCT_DESCRIPTION"));
 			 	p.setProductPicture(rs.getString("PRODUCT_PICTURE"));
 				p.setProductStatus(rs.getInt("PRODUCT_STATUS"));
 				p.setProductPrice(rs.getFloat("PRICE"));

@@ -105,8 +105,41 @@ class Controllers {
 			mv.setViewName("dashboard.jsp");
 		}
 		return mv;
-		
 	}
+	
+	
+	@RequestMapping("pages/Edit")
+	public ModelAndView edit (@RequestParam("username") String username, @RequestParam("password") String password,  @RequestParam("new email") String newmail, @RequestParam("new pass") String newpass, @RequestParam("con pass") String conpass){
+		ModelAndView mv = new ModelAndView();
+		UsersDao dao = new UsersDao();
+		System.out.println(newmail);
+		System.out.println(newpass);
+		System.out.println(conpass);
+		String msg = "";
+		Users user = dao.getUser(username, password);
+		
+		if(user != null) {
+			if(newpass.equals(conpass)) {
+				msg = dao.updateUser(user, newpass, newmail);
+				mv.addObject("msg", msg);
+				mv.addObject("user", user);
+				mv.setViewName("dashboard.jsp");
+			}
+			else {
+				msg = "New Password and Confirm Password must be the Same!";
+				mv.addObject("msg", msg);
+				mv.addObject("user", user);
+				mv.setViewName("dashboard.jsp");
+			}
+		}
+		else {
+			msg = "Enter Actual User Men -_-";
+			mv.addObject("msg", msg);
+			mv.setViewName("dashboard.jsp");
+		}
+		return mv;
+	}
+	
 	
 	/* @RequestMapping("newProduct") */
 

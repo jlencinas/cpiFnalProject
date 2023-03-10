@@ -32,7 +32,7 @@ public class AddProduct {
 				Product p = new Product();
 				p.setProductID(rs1.getInt("product_id"));
 				p.setProductName(rs1.getString("product_name"));
-				p.setProdcutDescription(rs1.getString("product_description"));
+				p.setProductDescription(rs1.getString("product_description"));
 				p.setProductPicture(rs1.getString("product_picture"));
 				p.setProductStatus(rs1.getInt("product_status"));
 				p.setProductPrice(rs1.getFloat("price"));
@@ -41,7 +41,8 @@ public class AddProduct {
 			rs1.close();
 			stmt.close();
 			conn.close();
-		}catch(SQLException e) {
+		}
+		catch(SQLException e) {
 			e.printStackTrace();
 		}
 		return products;

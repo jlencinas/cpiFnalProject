@@ -58,10 +58,14 @@ public class UsersDao {
 				}
 			} 
 			
-			catch (SQLException se) { System.out.println(se); }
+			catch (SQLException se) { 
+				System.out.println(se); 
+			}
 		}
 		return u;
 	}
+
+	//password randomizer
 	static String randPwd(int x) {
 		String pwd = "";
 		String alpnum = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvxyz";
@@ -72,6 +76,7 @@ public class UsersDao {
 		}
 		return pwd;
 	} 
+	
 	
 	public String forgotUser(String username, String email) {
 		String msg = "";

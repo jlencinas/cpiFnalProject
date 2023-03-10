@@ -1,9 +1,5 @@
 package com.cpi.model;
 
-/**
- * @author Jan Christian Buan
- *
- */
 public class Users {
 	
 	private int userId;
