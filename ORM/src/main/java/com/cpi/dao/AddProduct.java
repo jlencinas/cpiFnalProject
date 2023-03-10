@@ -17,8 +17,7 @@ public class AddProduct {
 	public static List<Product> getProducts() throws ClassNotFoundException {
 		
 		List<Product> products = new ArrayList<>();
-		try {
-			Product p = new Product();
+		try {	
 			Connection conn = null;
 			Statement st = null;
 			
@@ -30,6 +29,7 @@ public class AddProduct {
 			Statement stmt = conn.createStatement();
 			ResultSet rs1 = stmt.executeQuery(sql);
 			while (rs1.next()) {
+				Product p = new Product();
 				p.setProductID(rs1.getInt("product_id"));
 				p.setProductName(rs1.getString("product_name"));
 				p.setProdcutDescription(rs1.getString("product_description"));
