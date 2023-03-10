@@ -61,6 +61,7 @@ class Controllers {
 		
 	}
 	
+
 	
 	@RequestMapping("Update")
 	public ModelAndView update (@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("new pass") String newpass){
@@ -76,7 +77,9 @@ class Controllers {
 		
 	}
 	
-	@RequestMapping("newProduct")
+	/* @RequestMapping("newProduct") */
+
+	@RequestMapping("pages/NewProduct")
 	public ModelAndView newProduct (@RequestParam("productName") String productName, @RequestParam("description") String productDescription, 
 									@RequestParam("url") String productPicture, @RequestParam("status") int productStatus, @RequestParam("price") float price ) {
 		
@@ -84,15 +87,10 @@ class Controllers {
 		Product product = new Product();
 		int prodId = 0;
 		
-		product.setProductID(prodId);
-		product.setProductName(productName);
-		product.setProdcutDescription(productDescription);
-		product.setProductPicture(productPicture);
-		product.setProductStatus(productStatus);
-		product.setProductPrice(price);
-		
 		ProductDao dao = new ProductDao();
-		dao.newProduct(prodId, productName, productDescription, productPicture, productStatus, price);
+		product = dao.newProduct(prodId, productName, productDescription, productPicture, productStatus, price);
+		mv.addObject("product", product);
+		mv.setViewName("dashboard.jsp");
 		
 		return mv;
 	}
