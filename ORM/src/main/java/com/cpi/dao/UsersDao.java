@@ -82,13 +82,16 @@ public class UsersDao {
 			 if(email != "" && pass != "" ) {
 				 rs = st.executeQuery("SELECT * FROM users WHERE EMAIL = '" + email + "' AND PASSWORD = '" + pass + "'");
 			 }
+			 
 			 else if (email != "" && pass == "") {
 				 rs = st.executeQuery("SELECT * FROM users WHERE EMAIL = '" + email + "'");
 			 }
 			 
+			 
 			 else if(email == "" && pass != "") {
 				 rs = st.executeQuery("SELECT * FROM users WHERE EMAIL = '" + email + "'");
 			 }
+			 
 			 if (rs.next()){
 			 	
 				 try {
