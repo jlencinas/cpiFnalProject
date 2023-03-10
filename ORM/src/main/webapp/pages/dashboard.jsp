@@ -12,7 +12,8 @@
 	<br/>
 	<button onClick = "window.location.href='/ORM/pages/register.jsp'">Register</button><br/>
 	<button onClick = "window.location.href='/ORM/pages/display.jsp'">Display</button><br/>
-	<button onClick = "window.location.href='/ORM/pages/update.jsp'">Update</button>
+	<button onClick = "window.location.href='/ORM/pages/disable.jsp'">Disable Users</button><br/>
+	<button onClick = "window.location.href='/ORM/pages/update.jsp'">Update Email / Pass</button>
 	<button onClick = "window.location.href='/ORM/pages/newProduct.jsp'">Add Product</button>
 	<button onClick = "window.location.href='/ORM/pages/updateProduct.jsp'">Update Product</button>
 	<!-- <form>

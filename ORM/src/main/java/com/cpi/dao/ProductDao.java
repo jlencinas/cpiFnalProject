@@ -21,6 +21,7 @@ public class ProductDao {
 
 	public Product getProduct() {
 		Product p = null;
+
 		Connection conn = null;
 		Statement st = null;
 		ResultSet rs = null;
@@ -35,18 +36,24 @@ public class ProductDao {
 			rs = st.executeQuery("SELECT * FROM Product");
 
 			if (rs.next()) {
+
 				p.setProductID(rs.getInt("PRODUCT_ID"));
+
 				p.setProductName(rs.getString("PRODUCT_NAME"));
 				p.setProductDescription(rs.getString("PRODUCT_DESCRIPTION"));
 				p.setProductPicture(rs.getString("PRODUCT_PICTURE"));
+
+				p.setProductName(rs.getString("PRODUCT_NAME"));
+				p.setProductDescription(rs.getString("PRODUCT_DESCRIPTION"));
+				p.setProductPicture(rs.getString("PRODUCT_PICTURE"));
+
 				p.setProductStatus(rs.getInt("PRODUCT_STATUS"));
 				p.setProductPrice(rs.getFloat("PRICE"));
-			}
 
+			}
 		} catch (SQLException se) {
 			System.out.println(se);
 		} finally {
-
 			try {
 				if (rs != null) {
 					rs.close();

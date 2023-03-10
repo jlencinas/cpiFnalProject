@@ -1,9 +1,5 @@
 package com.cpi.model;
 
-/**
- * @author Jan Christian Buan
- *
- */
 public class Users {
 	
 	private int userId;
@@ -11,6 +7,7 @@ public class Users {
 	private String username;
 	private String password;
 	private String email;
+	private String status;
 	
 	
 	public int getUserId() {
@@ -42,5 +39,11 @@ public class Users {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

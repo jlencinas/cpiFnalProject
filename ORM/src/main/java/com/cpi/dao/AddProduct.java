@@ -41,7 +41,8 @@ public class AddProduct {
 			rs1.close();
 			stmt.close();
 			conn.close();
-		}catch(SQLException e) {
+		}
+		catch(SQLException e) {
 			e.printStackTrace();
 		}
 		return products;

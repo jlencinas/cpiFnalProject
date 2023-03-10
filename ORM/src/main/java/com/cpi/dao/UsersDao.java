@@ -8,10 +8,6 @@ import java.sql.Statement;
 import com.cpi.model.DBConnect;
 import com.cpi.model.Users;
 
-/**
- * @author Jan Christian Buan
- *
- */
 public class UsersDao {
 	
 	private static final String dbUsername = "CALANDRIA";
@@ -29,7 +25,7 @@ public class UsersDao {
 			 DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
 			 conn = db.getConnection();
 			 st = conn.createStatement();
-			 rs = st.executeQuery("SELECT * FROM users WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "'");
+			 rs = st.executeQuery("SELECT * FROM users WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "' AND STATUS != 'DISABLED'");
 			 
 			 if (rs.next()){
 			 	u.setUserId(rs.getInt("USER_ID"));
@@ -37,6 +33,10 @@ public class UsersDao {
 				u.setUsername(rs.getString("USERNAME"));
 				u.setPassword(rs.getString("PASSWORD"));
 				u.setEmail(rs.getString("EMAIL"));
+				u.setStatus(rs.getString("STATUS"));
+			 }
+			 else {
+				 u.setStatus("DISABLED");
 			 }
 			 
 		}  
@@ -58,10 +58,14 @@ public class UsersDao {
 				}
 			} 
 			
-			catch (SQLException se) { System.out.println(se); }
+			catch (SQLException se) { 
+				System.out.println(se); 
+			}
 		}
 		return u;
 	}
+
+	//password randomizer
 	static String randPwd(int x) {
 		String pwd = "";
 		String alpnum = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvxyz";
@@ -73,13 +77,13 @@ public class UsersDao {
 		return pwd;
 	} 
 	
+	
 	public String forgotUser(String username, String email) {
 		String msg = "";
 		String pwd = randPwd(12);
 		Connection conn = null;
 		Statement st = null;
 		ResultSet rs = null;
-		
 		
 		try {
 			DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
@@ -179,7 +183,6 @@ public class UsersDao {
 		Connection conn = null;
 		Statement st = null;
 		ResultSet rs = null;
-		
 		int uid;
 		
 		try {
@@ -196,7 +199,7 @@ public class UsersDao {
 				uid = 1;
 			}
 			 
-			String addQuery = "INSERT INTO USERS VALUES (" + uid + ", " + u.getRoleId() + ", '"+u.getUsername()+"', '"+u.getPassword()+"', '" + u.getEmail() + "')";
+			String addQuery = "INSERT INTO USERS VALUES (" + uid + ", " + u.getRoleId() + ", '"+u.getUsername()+"', '"+u.getPassword()+"', '" + u.getEmail() + "', 'ENABLED')";
 			 
 			try {
 				st.executeUpdate(addQuery);
@@ -206,12 +209,6 @@ public class UsersDao {
 			}
 				
 			catch (Exception ex) {
-				/*
-				 * dispatcher = request.getRequestDispatcher("pages/error.jsp");
-				 * request.setAttribute("message", "Something went wrong bro");
-				 * request.setAttribute("page", "'/RegLog/pages/registration.jsp'");
-				 * dispatcher.forward(request, response);
-				 */
 				msg = "Account Failed to be added";
 			}
 			 
@@ -223,7 +220,6 @@ public class UsersDao {
 		
 		return msg;
 	}
-	
 	
 	
 }
