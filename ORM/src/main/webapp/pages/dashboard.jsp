@@ -11,7 +11,7 @@
 	
 	<br/>
 	<button onClick = "window.location.href='/ORM/pages/register.jsp'">Register</button><br/>
-	<button onClick = "window.location.href='/ORM/pages/update.jsp'" value = "${user}">Update</button>
+	<button onClick = "window.location.href='/ORM/pages/update.jsp'">Update</button>
 	<!-- <form>
 	<input type="submit" value ="Update">
 	</form> -->

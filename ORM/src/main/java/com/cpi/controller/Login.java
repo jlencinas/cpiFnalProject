@@ -53,6 +53,5 @@ class Controllers {
 		mv.addObject("msg", msg);
 		mv.setViewName("dashboard.jsp");
 		return mv;
-		
 	}
 }
