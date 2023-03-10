@@ -28,8 +28,6 @@ public class UsersDao {
 			
 			 DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
 			 conn = db.getConnection();
-			 System.out.println("Connected to server");
-			 
 			 st = conn.createStatement();
 			 rs = st.executeQuery("SELECT * FROM users WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "'");
 			 
@@ -65,11 +63,10 @@ public class UsersDao {
 		return u;
 	}
 	
-	public String updateUser(String email, String pass) {
-		String u = "";
+	public String updateUser(Users u, String newpass) {
+		String msg = "";
 		Connection conn = null;
 		Statement st = null;
-		ResultSet rs = null;
 		
 		try {
 			
@@ -79,54 +76,22 @@ public class UsersDao {
 			 
 			 st = conn.createStatement();
 			 
-			 if(email != "" && pass != "" ) {
-				 rs = st.executeQuery("SELECT * FROM users WHERE EMAIL = '" + email + "' AND PASSWORD = '" + pass + "'");
-			 }
-			 
-			 else if (email != "" && pass == "") {
-				 rs = st.executeQuery("SELECT * FROM users WHERE EMAIL = '" + email + "'");
-			 }
-			 
-			 
-			 else if(email == "" && pass != "") {
-				 rs = st.executeQuery("SELECT * FROM users WHERE EMAIL = '" + email + "'");
-			 }
-			 
-			 if (rs.next()){
-			 	
-				 try {
-					 
-					 
-				 }
-				 catch(Exception sq ) {
-					 System.out.println(sq);
-				 }
-				 
-			 }
+			String updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "' WHERE USER_ID = "+u.getUserId();
+			try {
+				st.executeUpdate(updateQuery);
+				msg = "Updated Successfully";
+			}
+			catch (Exception e) {
+				System.out.println("DI MAUPDATE MEN");
+				msg = "Update Failed";
+			}
 		}  
 		
 		catch (SQLException se) {
 			System.out.println(se);
 		} 
 		
-		finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (st != null) {
-					st.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} 
-			
-			catch (SQLException se) { System.out.println(se); }
-		}
-		
-		
-		return u;
+		return msg;
 		
 	}
 	
@@ -141,26 +106,26 @@ public class UsersDao {
 		
 		try {
 			
-			 DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
-			 conn = db.getConnection();
-			 st = conn.createStatement();
-			 rs = st.executeQuery("SELECT MAX(USER_ID) AS MUS FROM USERS");
+			DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
+			conn = db.getConnection();
+			st = conn.createStatement();
+			rs = st.executeQuery("SELECT MAX(USER_ID) AS MUS FROM USERS");
 			 
-			 if (rs.next()){
-					uid = rs.getInt("MUS") + 1;
-				}
-			 else {
+			if (rs.next()){
+				uid = rs.getInt("MUS") + 1;
+			}
+			else {
 				uid = 1;
-			 }
+			}
 			 
-			 String addQuery = "INSERT INTO USERS VALUES (" + uid + ", " + u.getRoleId() + ", '"+u.getUsername()+"', '"+u.getPassword()+"', '" + u.getEmail() + "')";
+			String addQuery = "INSERT INTO USERS VALUES (" + uid + ", " + u.getRoleId() + ", '"+u.getUsername()+"', '"+u.getPassword()+"', '" + u.getEmail() + "')";
 			 
-			 try {
-					st.executeUpdate(addQuery);
+			try {
+				st.executeUpdate(addQuery);
 					
-					msg = "New Account Added";
+				msg = "New Account Added";
 					
-				}
+			}
 				
 			catch (Exception ex) {
 				/*

@@ -7,7 +7,7 @@
 	<h2>GOODBYE CRUEL WORLD</h2>
 	${message} 
 	<form action="Login" method="post">
-		<legend>Login Account</legend>
+		<label>Login Account</label>
 		<label>Username: </label><input type="text" name = "username"><br/>
 		<label>Password: </label><input type="password" name = "password"><br/>
 		<input type="submit" value = "Submit"><input type="reset" value ="Clear">
@@ -47,9 +47,18 @@
 	<br/>
 	
 	<form action="" method="post">
-		<legend>Forgot Password</legend>
+		<label>Forgot Password</label>
 		<label>Username: </label><input type="text" name = "username"><br/>
 		<label>Email: </label><input type="email" name = "email"><br/>
+		<input type="submit" value = "Submit"><input type="reset" value ="Clear">
+	</form>
+	<br/>
+	
+	<form action="Update" method="post">
+		<label>Update</label><br/>
+		<label>Username: </label><input type="text" name = "username"><br/>
+		<label>Password: </label><input type="password" name = "password"><br/>
+		<label>New Pass</label><input type="password" name = "new pass">
 		<input type="submit" value = "Submit"><input type="reset" value ="Clear">
 	</form>
 	

@@ -61,6 +61,21 @@ class Controllers {
 		
 	}
 	
+	
+	@RequestMapping("Update")
+	public ModelAndView update (@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("new pass") String newpass){
+		ModelAndView mv = new ModelAndView();
+		
+		UsersDao dao = new UsersDao();
+		Users user = dao.getUser(username, password);
+		String msg = dao.updateUser(user, newpass);
+		mv.addObject("user", user);
+		mv.addObject("msg", msg);
+		mv.setViewName("pages/dashboard.jsp");
+		return mv;
+		
+	}
+	
 	@RequestMapping("newProduct")
 	public ModelAndView newProduct (@RequestParam("productName") String productName, @RequestParam("description") String productDescription, 
 									@RequestParam("url") String productPicture, @RequestParam("status") int productStatus, @RequestParam("price") float price ) {
