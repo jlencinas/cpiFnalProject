@@ -1,9 +1,12 @@
 package com.cpi.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.cpi.model.DBConnect;
 import com.cpi.model.Order;
@@ -85,5 +88,146 @@ public class OrderDao {
 				catch (SQLException se) { System.out.println(se); }
 			}
 		return o;
+	}
+	
+	public Order getOrderDetails (int mobileNumber) {
+		
+		Order order = new Order ();
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		String query = "SELECT * FROM orders WHERE mobile_number = ?";
+		
+		try {
+			
+			 DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
+			 conn = db.getConnection();
+			 System.out.println("Connected to server");
+			 
+			 ps = conn.prepareStatement(query);
+			 ps.setInt(1, mobileNumber);
+			 rs = ps.executeQuery();
+			 
+			 if (rs.next()) 
+			 {
+				 order.setOrderId(rs.getInt("ORDER_ID"));
+				 order.setOrderStatus(rs.getInt("ORDER_STATUS"));
+				 order.setDeliveryDate(rs.getDate("DELIVERY_DATE"));
+				 order.setPaymentStatus(rs.getInt("PAYMENT STATUS"));
+			 }
+			 
+		} catch (SQLException se) { System.out.println(se) ; }
+		
+		finally {
+			
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+			
+				if (ps != null) {
+					ps.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} 
+			catch (SQLException se) { System.out.println(se); }
+		}
+		return order;
+	}
+
+	public List <Order> getOrdersByDate() {
+		
+		List <Order> orders = new ArrayList <> ();
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		String query = "SELECT * FROM orders ORDER BY order_date ASC";
+		
+		try {
+			
+			 DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
+			 conn = db.getConnection();
+			 System.out.println("Connected to server");
+			 
+			 ps = conn.prepareStatement(query);
+			 rs = ps.executeQuery();
+			 
+			 while (rs.next()) {
+				 Order order = new Order ();
+				 order.setOrderId(rs.getInt("ORDER_ID"));
+				 order.setOrderDate(rs.getDate("ORDER_DATE"));
+				 order.setOrderStatus(rs.getInt("ORDER_STATUS"));
+				 order.setDeliveryDate(rs.getDate("DELIVERY_DATE"));
+				 order.setPaymentStatus(rs.getInt("PAYMENT_STATUS"));
+				 
+				 orders.add(order);
+			 }
+			 
+		} catch (SQLException se) { System.out.println(se); }
+		
+		return orders;
+	}
+	
+	public void updateOrder(Integer orderStatus, Integer paymentStatus, int orderId) {
+		
+		Connection conn = null;
+	    PreparedStatement ps = null;
+	    
+	    String query = "UPDATE orders SET ";
+	    
+	    if (orderStatus != null) {
+	    	query += "order_status = ?, ";
+	    }
+	    
+	    if (paymentStatus != null) {
+	    	query += "payment_status = ?, ";
+	    }
+	    
+	    query = query.substring(0, query.length() - 2);
+	    query += " WHERE order_id = ?";
+	    
+	    try { 
+	    	
+	    	DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
+	        conn = db.getConnection();
+	        System.out.println("Connected to server");
+
+	        ps = conn.prepareStatement(query);
+	        int i = 1;
+	        
+	        if (orderStatus != null) {
+	        	ps.setInt(i++, orderStatus);
+	        }
+	        
+	        if (paymentStatus != null) {
+	        	 ps.setInt(i++, paymentStatus);
+	        }
+	        
+	        ps.setInt(i++, orderId);
+	        int rowsUpdated = ps.executeUpdate();
+	        
+	        if (rowsUpdated > 0) {
+	        	System.out.println("Order ID: " + orderId + " updated");
+	        } else {
+	        	System.out.println("Failed to update Order ID: " + orderId);
+	        }
+	    	
+	    } catch (SQLException se) { System.out.println(se); }
+	    
+	    finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) { System.out.println(se); }
+        }
 	}
 }
