@@ -206,12 +206,6 @@ public class UsersDao {
 			}
 				
 			catch (Exception ex) {
-				/*
-				 * dispatcher = request.getRequestDispatcher("pages/error.jsp");
-				 * request.setAttribute("message", "Something went wrong bro");
-				 * request.setAttribute("page", "'/RegLog/pages/registration.jsp'");
-				 * dispatcher.forward(request, response);
-				 */
 				msg = "Account Failed to be added";
 			}
 			 
