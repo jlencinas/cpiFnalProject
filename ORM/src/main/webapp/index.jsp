@@ -46,7 +46,7 @@
 	</form> -->
 	<br/>
 	
-	<form action="" method="post">
+	<form action="Forgot" method="post">
 		<label>Forgot Password</label>
 		<label>Username: </label><input type="text" name = "username"><br/>
 		<label>Email: </label><input type="email" name = "email"><br/>
