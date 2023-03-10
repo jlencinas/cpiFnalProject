@@ -82,8 +82,12 @@ public class UsersDao {
 			 if(email != "" && pass != "" ) {
 				 rs = st.executeQuery("SELECT * FROM users WHERE EMAIL = '" + email + "' AND PASSWORD = '" + pass + "'");
 			 }
-			 else if (email != "") {
-				 rs = st.executeQuery("SELECT * FROM users WHERE EMAIL = '" + email + "' AND PASSWORD = '" + pass + "'");
+			 else if (email != "" && pass == "") {
+				 rs = st.executeQuery("SELECT * FROM users WHERE EMAIL = '" + email + "'");
+			 }
+			 
+			 else if(email == "" && pass != "") {
+				 rs = st.executeQuery("SELECT * FROM users WHERE EMAIL = '" + email + "'");
 			 }
 			 if (rs.next()){
 			 	
@@ -139,7 +143,6 @@ public class UsersDao {
 			 st = conn.createStatement();
 			 rs = st.executeQuery("SELECT MAX(USER_ID) AS MUS FROM USERS");
 			 
-			 
 			 if (rs.next()){
 					uid = rs.getInt("MUS") + 1;
 				}
@@ -148,6 +151,7 @@ public class UsersDao {
 			 }
 			 
 			 String addQuery = "INSERT INTO USERS VALUES (" + uid + ", " + u.getRoleId() + ", '"+u.getUsername()+"', '"+u.getPassword()+"', '" + u.getEmail() + "')";
+			 
 			 try {
 					st.executeUpdate(addQuery);
 					
@@ -163,6 +167,54 @@ public class UsersDao {
 				 * dispatcher.forward(request, response);
 				 */
 				msg = "Account Failed to be added";
+			}
+			 
+		}
+		catch (Exception e) {
+			System.out.println("MAY EXCEPTION");
+			msg = "Di ata maka konek";
+		}
+		
+		return msg;
+	}
+	
+	
+	public String forgotUser(String username, String email) {
+		String msg = "";
+		Connection conn = null;
+		Statement st = null;
+		ResultSet rs = null;
+		String np = "";
+		try {
+			
+			DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
+			conn = db.getConnection();
+			st = conn.createStatement();
+			rs = st.executeQuery("SELECT * FROM USERS WHERE USERNAME = '" + username + "' AND EMAIL = '" + email + "'");
+			 
+			if (rs.next()){
+							
+			}
+			 else {
+				
+			 }
+			 
+			 String forgotQuery = "";
+			 try {
+					st.executeUpdate(forgotQuery);
+					
+					msg = "New Account Added";
+					
+				}
+				
+			catch (Exception ex) {
+				/*
+				 * dispatcher = request.getRequestDispatcher("pages/error.jsp");
+				 * request.setAttribute("message", "Something went wrong bro");
+				 * request.setAttribute("page", "'/RegLog/pages/registration.jsp'");
+				 * dispatcher.forward(request, response);
+				 */
+				msg = "Password failed to update";
 			}
 			 
 		}

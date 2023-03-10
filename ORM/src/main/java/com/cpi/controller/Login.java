@@ -33,7 +33,7 @@ class Controllers {
 		
 	}
 	
-	@RequestMapping("Register")
+	@RequestMapping("pages/Register")
 	public ModelAndView register (@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password, @RequestParam("roleid") int roleid){
 		ModelAndView mv = new ModelAndView();
 		int uid = 0;
@@ -50,11 +50,8 @@ class Controllers {
 		 * mv.addObject("message", "Logged Out Successfully");
 		 * mv.setViewName("index.jsp");
 		 */
-		
-		mv.addObject("user", u);
 		mv.addObject("msg", msg);
-//		mv.setViewName("dashboard.jsp");
-		mv.setViewName("pages/dashboard.jsp");
+		mv.setViewName("dashboard.jsp");
 		return mv;
 		
 	}

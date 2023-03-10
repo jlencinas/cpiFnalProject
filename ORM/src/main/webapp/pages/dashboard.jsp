@@ -8,7 +8,7 @@
 <body>
 	
 	WELCOME ${user.getUsername()} 
-	WELCOME ${msg} 
+	
 	<br/>
 	<button onClick = "window.location.href='/ORM/pages/register.jsp'">Register</button><br/>
 	<button onClick = "window.location.href='/ORM/pages/update.jsp'" value = "${user}">Update</button>
@@ -18,5 +18,7 @@
 	<form action = "Logout" method = "post">
 		<input type="submit" value = "Logout">
 	</form>
+	
+	<h2>${msg}</h2>
 </body>
 </html>

@@ -9,7 +9,6 @@
 <body>
 	<form action="Register" method="post">
 		<table>
-		
 		<tr>
 			<td>USERNAME</td><td><input type="text" name = "username"></td>
 		</tr>
