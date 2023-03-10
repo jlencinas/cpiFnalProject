@@ -8,10 +8,6 @@ import java.sql.Statement;
 import com.cpi.model.DBConnect;
 import com.cpi.model.Users;
 
-/**
- * @author Jan Christian Buan
- *
- */
 public class UsersDao {
 	
 	private static final String dbUsername = "CALANDRIA";
@@ -29,7 +25,7 @@ public class UsersDao {
 			 DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
 			 conn = db.getConnection();
 			 st = conn.createStatement();
-			 rs = st.executeQuery("SELECT * FROM users WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "'");
+			 rs = st.executeQuery("SELECT * FROM users WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "' AND STATUS != 'DISABLED'");
 			 
 			 if (rs.next()){
 			 	u.setUserId(rs.getInt("USER_ID"));
@@ -37,6 +33,10 @@ public class UsersDao {
 				u.setUsername(rs.getString("USERNAME"));
 				u.setPassword(rs.getString("PASSWORD"));
 				u.setEmail(rs.getString("EMAIL"));
+				u.setStatus("STATUS");
+			 }
+			 else {
+				 u.setStatus("DISABLED");
 			 }
 			 
 		}  
@@ -79,7 +79,6 @@ public class UsersDao {
 		Connection conn = null;
 		Statement st = null;
 		ResultSet rs = null;
-		
 		
 		try {
 			DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
@@ -179,7 +178,6 @@ public class UsersDao {
 		Connection conn = null;
 		Statement st = null;
 		ResultSet rs = null;
-		
 		int uid;
 		
 		try {
@@ -217,7 +215,6 @@ public class UsersDao {
 		
 		return msg;
 	}
-	
 	
 	
 }

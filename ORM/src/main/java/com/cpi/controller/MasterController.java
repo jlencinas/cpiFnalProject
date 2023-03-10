@@ -20,8 +20,14 @@ class Controllers {
 		UsersDao dao = new UsersDao();
 		Users user = dao.getUser(username, password);
 		
-		mv.addObject("user", user);
-		mv.setViewName("pages/dashboard.jsp");
+		if (user.getStatus().equals("ENABLED")) {
+			mv.addObject("user", user);
+			mv.setViewName("pages/dashboard.jsp");
+		}
+		else {
+			mv.addObject("message", "DISABLED KA MEN");
+			mv.setViewName("index.jsp");
+		}
 		return mv;
 		
 	}
@@ -35,14 +41,14 @@ class Controllers {
 		
 	}
 	
-	@RequestMapping("Forgot")
+	@RequestMapping("pages/Forgot")
 	public ModelAndView forgot (@RequestParam("username") String username, @RequestParam("email") String email){
 		ModelAndView mv = new ModelAndView();
 		UsersDao dao = new UsersDao();
 		String msg = dao.forgotUser(username, email);
 		
 		mv.addObject("message", msg);
-		mv.setViewName("index.jsp");
+		mv.setViewName("../index.jsp");
 		return mv;
 		
 	}
