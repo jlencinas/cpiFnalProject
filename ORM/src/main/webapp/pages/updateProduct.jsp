@@ -11,23 +11,23 @@
 		<table>
 			<tr>
 				<td>PRODUCT ID</td>
-				<td><input type="number" name="productID"></td>
+				<td><input type="number" name="productID" required></td>
 			</tr>
 			<tr>
 				<td>PRODUCT NAME</td>
-				<td><input type="text" name="productName"></td>
+				<td><input type="text" name="productName" required></td>
 			</tr>
 			<tr>
 				<td>DESCRIPTION</td>
-				<td><input type="text" name="description"></td>
+				<td><input type="text" name="description" required></td>
 			</tr>
 			<tr>
 				<td>PICTURE URL</td>
-				<td><input type="text" name="url"></td>
+				<td><input type="text" name="url" required></td>
 			</tr>
 			<tr>
 				<td>STATUS</td>
-				<td><select name="status">
+				<td><select name="status" required>
 						<option value="0">DISABLED</option>
 						<option value="1">AVAILABLE</option>
 						<option value="2">REMOVED</option>
@@ -35,7 +35,7 @@
 			</tr>
 			<tr>
 				<td>PRICE</td>
-				<td><input type="number" name="price"></td>
+				<td><input type="number" name="price" required></td>
 			</tr>
 			<tr>
 				<td><input type="submit" value="Submit"></td>

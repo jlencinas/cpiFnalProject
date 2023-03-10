@@ -8,6 +8,15 @@ public class Product {
 	private int productStatus;
 	private float productPrice;
 	
+	public Product(int id, String name, String description, String picture, int status, float price) 
+	{
+		this.setProductID(id);
+		this.setProductName(name);
+		this.setProductDescription(description);
+		this.setProductPicture(picture);
+		this.setProductStatus(status);
+		this.setProductPrice(price);
+	}
 	public int getProductID() {
 		return productID;
 	}
