@@ -8,11 +8,8 @@ import java.sql.Statement;
 
 import com.cpi.model.DBConnect;
 import com.cpi.model.Product;
+import com.cpi.model.Users;
 
-/**
- * @author Jan Christian Buan
- *
- */
 public class ProductDao {
 	private static final String dbUsername = "CALANDRIA";
 	private static final String dbPassword = "calandria";
@@ -116,89 +113,70 @@ public class ProductDao {
 		return p;
 	}
 	
-	public void updateProduct(int productId, String productName, String productDescription, String productPicture, Integer productStatus, Float price) {
-		 
+	public Product findProduct(int pid) {
+		Product p = new Product();
 		Connection conn = null;
-	    PreparedStatement ps = null;
-		    
-		    String query = "UPDATE product SET ";
-		    
-		    if (productName != null) {
-		        query += "product_name = ?, ";
-		    }
-		    
-		    if (productDescription != null) {
-		        query += "product_description = ?, ";
-		    }
-		    
-		    if (productPicture != null) {
-		        query += "product_picture = ?, ";
-		    }
-		    
-		    if (productStatus != null) {
-		        query += "product_status = ?, ";
-		    }
-		    if (price != null) {
-		        query += "price = ?, ";
-		    
-		    }
-		    
-		    query = query.substring(0, query.length() - 2);
-		    query += " WHERE product_id = ?";
-		    
-		    System.out.println(query);
+		Statement st = null;
+		ResultSet rs = null;
+		try {
+			
+			 DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
+			 conn = db.getConnection();
+			 st = conn.createStatement();
+			 rs = st.executeQuery("SELECT * FROM PRODUCT WHERE PRODUCT_ID = " + pid);
+			 
+			 if (rs.next()){
+			 	p.setProductID(rs.getInt("PRODUCT_ID"));
+				p.setProductName(rs.getString("PRODUCT_NAME"));
+				p.setProductDescription(rs.getString("PRODUCT_DESCRIPTION"));
+				p.setProductPicture(rs.getString("PRODUCT_PICTURE"));
+				p.setProductStatus(rs.getInt("PRODUCT_STATUS"));
+				p.setProductPrice(rs.getFloat("PRICE"));
+			 }
+			 else {
+				 
+			 }
+			 
+		}  
+		
+		catch (SQLException se) {
+			System.out.println(se);
+			System.out.println("Walang nahanap men");
+		} 
+		
+		return p;
+	}
+	
+	
+	public String updateProduct(Product y) {
+		 String msg = "";
+		Connection conn = null;
+	    Statement st = null;
 
-		    try {
-		        DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
-		        conn = db.getConnection();
-		        System.out.println("Connected to server");
+	    try {
+			DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
+			conn = db.getConnection();
+			System.out.println("Connected to server");
+			
+			st = conn.createStatement();
+	        
+			 String updateQuery = "UPDATE PRODUCT SET PRODUCT_NAME = '" + y.getProductName() + "', PRODUCT_DESCRIPTION = '" +
+			 y.getProductDescription() + "', PRODUCT_PICTURE = '" + y.getProductPicture() +"', PRODUCT_STATUS = " + y.getProductStatus()+ 
+			 ", PRICE = "+ y.getProductPrice() +" WHERE PRODUCT_ID = "+y.getProductID();
+	        
+			 try {
+				 st.executeUpdate(updateQuery);
+				 msg = "Updated Product Successfully";
+			 }
+			 catch (Exception e) {
+				 System.out.println("Di men na update");
+				 msg = "Di men na update";
+			 }
+	        
 
-		        ps = conn.prepareStatement(query);
-		       
-		        int i = 1;
-		        
-		        if (productName != null) 
-		        {
-		        	ps.setString(i++, productName);
-		        }
-		        
-		        if (productDescription != null) 
-		        {
-		        	ps.setString(i++, productDescription);
-		        }
-		        
-		        if (productPicture != null) {
-		            ps.setString(i++, productPicture);
-		        }
-		        
-		        if (productStatus != null) {
-			       ps.setInt(i++, productStatus);
-		        }
-		        if (price != null) {
-		            ps.setFloat(i++, price);
-		        }
-		        
-		        ps.setInt(i++, productId);
-
-		        int rowsUpdated = ps.executeUpdate();
-
-		        if (rowsUpdated > 0) {
-		            System.out.println("Product with ID " + productId + " updated successfully.");
-		        } else {
-		            System.out.println("Product with ID " + productId + " not found or not updated.");
-		        }
-
-		    } catch (SQLException se) { System.out.println(se); } 
-		    
-		    finally {
-	            try {
-	                if (ps != null) {
-	                    ps.close();
-	                }
-	                if (conn != null) {
-	                    conn.close();
-	                }
-	            } catch (SQLException se) { System.out.println(se); }
-	        }
+	    } catch (SQLException se) { 
+	    	System.out.println(se); 
+	    } 
+	    return msg;
 	}
 }

@@ -165,10 +165,49 @@ class Controllers {
 		
 		ModelAndView mv = new ModelAndView();
 		ProductDao dao = new ProductDao();
-		dao.updateProduct(productId, productName, productDescription, productPicture, productStatus, price);
-		mv.addObject("updatedProduct", dao);
-		mv.setViewName("dashboard.jsp");
 		
+		Product x = new Product();
+		x = dao.findProduct(productId);
+		System.out.println(x);
+		Product y = new Product();
+		y.setProductID(x.getProductID());
+		if(productName == null || productName == "") {
+			y.setProductName(x.getProductName());
+		}
+		else {
+			y.setProductName(productName);
+		}
+		
+		if(productDescription == null || productDescription == "") {
+			y.setProductDescription(x.getProductDescription());
+		}
+		else {
+			y.setProductDescription(productDescription);
+		}
+		
+		if(productPicture == null || productPicture == "") {
+			y.setProductPicture(x.getProductPicture());
+		}
+		else {
+			y.setProductPicture(productPicture);
+		}
+		
+		if(String.valueOf(productStatus) != null || String.valueOf(productStatus) != "") {
+			y.setProductStatus(productStatus);
+		}
+		else {
+			y.setProductStatus(x.getProductStatus());
+		}
+		if(String.valueOf(price) != null || String.valueOf(price) != "") {
+			y.setProductStatus(productStatus);
+		}
+		else {
+			y.setProductPrice(x.getProductPrice());
+		}
+		
+		String msg = dao.updateProduct(y);
+		mv.addObject("message", msg);
+		mv.setViewName("dashboard.jsp");
 		return mv;
 	}
 }
