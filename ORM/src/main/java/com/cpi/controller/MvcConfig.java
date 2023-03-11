@@ -66,7 +66,9 @@ public class MvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		// TODO Auto-generated method stub
+		registry
+        .addResourceHandler("/resources/**")
+		.addResourceLocations("/resources/"); /* Note niyo men para to sa resources folder */
 		
 	}
 

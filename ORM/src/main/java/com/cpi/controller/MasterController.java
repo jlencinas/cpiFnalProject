@@ -1,5 +1,12 @@
 package com.cpi.controller;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,32 +19,53 @@ import com.cpi.model.Users;
 
 @Controller
 class Controllers {
-
-	@RequestMapping("Login")
-	public ModelAndView login(@RequestParam("username") String username, @RequestParam("password") String password) {
+	/*
+	 * @RequestMapping("CheckSession") public ModelAndView
+	 * checkSession(HttpServletRequest request) throws ServletException,
+	 * IOException{
+	 * 
+	 * HttpSession session = request.getSession(); ModelAndView mv = new
+	 * ModelAndView(); Users user = (Users) session.getAttribute("username");
+	 * 
+	 * if(user != null){ mv.addObject("user", user);
+	 * System.out.println("REDIRECTED DAPAT SA DASHBOARD");
+	 * mv.setViewName("pages/dashboard.jsp"); } else{ mv.addObject("message",
+	 * "MAG SIGN IN KA MEN"); System.out.println("INDEX DAPAT MEN");
+	 * mv.setViewName("index.jsp"); } return mv; }
+	 */
+	
+	
+	@RequestMapping("pages/Login")
+	public ModelAndView login(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("password") String password) {
 		ModelAndView mv = new ModelAndView();
-
 		UsersDao dao = new UsersDao();
+		HttpSession sesh = request.getSession(); 
+		
 		Users user = dao.getUser(username, password);
 
 		if (user.getStatus().equals("ENABLED")) {
 			mv.addObject("user", user);
-			mv.setViewName("pages/dashboard.jsp");
-		} else {
+			/* sesh.setAttribute("user", user); */
+			sesh.setAttribute("username", user.getUsername());
+			mv.setViewName("dashboard.jsp");
+		} 
+		else {
 			mv.addObject("message", "DISABLED KA MEN");
-			mv.setViewName("index.jsp");
+			mv.setViewName("../index.jsp");
 		}
 		return mv;
 
 	}
 
-	@RequestMapping("Logout")
-	public ModelAndView logout() {
+	@RequestMapping("pages/Logout")
+	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.logout();
+		HttpSession session = request.getSession();
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("message", "Logged Out Successfully");
-		mv.setViewName("index.jsp");
+		mv.setViewName("../index.jsp");
+		session.invalidate();
 		return mv;
-
 	}
 
 	@RequestMapping("pages/Forgot")
