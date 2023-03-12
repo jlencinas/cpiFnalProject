@@ -19,49 +19,36 @@ public class UsersDao {
 		Connection conn = null;
 		Statement st = null;
 		ResultSet rs = null;
-		
+			
 		try {
 			
-			 DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
-			 conn = db.getConnection();
-			 st = conn.createStatement();
-			 rs = st.executeQuery("SELECT * FROM users WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "' AND STATUS != 'DISABLED'");
+			DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
+			conn = db.getConnection();
+			st = conn.createStatement();
+			rs = st.executeQuery("SELECT * FROM users WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "' AND STATUS != 'DISABLED'");
 			 
-			 if (rs.next()){
-			 	u.setUserId(rs.getInt("USER_ID"));
-			 	u.setRoleId(rs.getInt("ROLE_ID"));
+			if (rs.next()){
+				u.setUserId(rs.getInt("USER_ID"));
+				u.setRoleId(rs.getInt("ROLE_ID"));
 				u.setUsername(rs.getString("USERNAME"));
 				u.setPassword(rs.getString("PASSWORD"));
 				u.setEmail(rs.getString("EMAIL"));
 				u.setStatus(rs.getString("STATUS"));
-			 }
-			 else {
-				 u.setStatus("DISABLED");
-			 }
-			 
+			}
+			
+			else {
+				u.setStatus("DISABLED");
+			}
+			
+			st.close();
+			conn.close();
+					 
 		}  
-		
+				
 		catch (SQLException se) {
 			System.out.println(se);
 		} 
-		
-		finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (st != null) {
-					st.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} 
-			
-			catch (SQLException se) { 
-				System.out.println(se); 
-			}
-		}
+				
 		return u;
 	}
 
@@ -69,11 +56,12 @@ public class UsersDao {
 	static String randPwd(int x) {
 		String pwd = "";
 		String alpnum = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvxyz";
-		
+			
 		for(int y = 0; y < x; y++) {
 			int index = (int)(alpnum.length()* Math.random());
 			pwd += alpnum.charAt(index);
 		}
+		
 		return pwd;
 	} 
 	
@@ -96,15 +84,21 @@ public class UsersDao {
 				
 				if(rs.next()) {
 					String forgotQuery = "UPDATE USERS SET PASSWORD = '" + pwd + "' WHERE USERNAME = '" + username + "'" ;
+					
 					try {
-						 st.executeUpdate(forgotQuery);
-						 msg = "Password Changed Successfully!";
+						st.executeUpdate(forgotQuery);
+						msg = "Password Changed Successfully!";
+						st.close();
+						conn.close();
 					}
+					
 					catch (Exception exc) {
 						System.out.println("Di na update yung pass men");
 						msg = "Di gumana men pag change sa pass";
 					}
+					
 				}
+				
 				else {
 					msg = "Walang account na ganun men";
 				}
@@ -130,54 +124,100 @@ public class UsersDao {
 		
 		try {
 			
-			 DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
-			 conn = db.getConnection();
-			 System.out.println("Updating to server");
-			 st = conn.createStatement();
-			 if(newemail != "" && newpass != "") {
-				 String updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "', EMAIL = '" +newemail + "' WHERE USER_ID = "+u.getUserId();
-				 try {
-					 st.executeUpdate(updateQuery);
-					 msg = "Updated Email and Pass Successfully";
-				 }
-				 catch (Exception e) {
-					 System.out.println("DI MAUPDATE YUNG EMAIL AT PASS");
-					 msg = "Update PWD and Email Failed";
-				 }
-			 }
-			 else if(newemail == "" && newpass != ""){
-				 String updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "' WHERE USER_ID = "+u.getUserId();
-				 try {
-					 st.executeUpdate(updateQuery);
-					 msg = "Updated Password Successfully";
-				 }
-				 catch (Exception e) {
-					 System.out.println("DI MAUPDATE YUNG PASS");
-					 msg = "Update Password Failed";
-				 }
-			 }
-			 else if(newemail != "" && newpass == ""){
-				 String updateQuery = "UPDATE USERS SET EMAIL = '" + newemail + "' WHERE USER_ID = "+u.getUserId();
-				 try {
-					 st.executeUpdate(updateQuery);
-					 msg = "Updated Email Successfully";
-				 }
-				 catch (Exception e) {
-					 System.out.println("DI MAUPDATE YUNG PASS");
-					 msg = "Update Email Failed";
-				 }
-			 }
+			DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
+			conn = db.getConnection();
+			st = conn.createStatement();
+			
+			System.out.println("Updating to server");
+			
+			if(newemail != "" && newpass != "") {
+				String updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "', EMAIL = '" +newemail + "' WHERE USER_ID = "+u.getUserId();
+				try {
+					st.executeUpdate(updateQuery);
+					msg = "Updated Email and Pass Successfully";
+					st.close();
+					conn.close();
+				}
+				catch (Exception e) {
+					System.out.println("DI MAUPDATE YUNG EMAIL AT PASS");
+					msg = "Update PWD and Email Failed";
+				}
+			}
+			
+			else if(newemail == "" && newpass != ""){
+				String updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "' WHERE USER_ID = "+u.getUserId();
+				
+				try {
+					st.executeUpdate(updateQuery);
+					msg = "Updated Password Successfully";
+					st.close();
+					conn.close();
+				}
+				
+				catch (Exception e) {
+					System.out.println("DI MAUPDATE YUNG PASS");
+					msg = "Update Password Failed";
+				}
+			}
+			
+			else if(newemail != "" && newpass == ""){
+				String updateQuery = "UPDATE USERS SET EMAIL = '" + newemail + "' WHERE USER_ID = "+u.getUserId();
+				try {
+					st.executeUpdate(updateQuery);
+					msg = "Updated Email Successfully";
+					st.close();
+					conn.close();
+				}
+				catch (Exception e) {
+					System.out.println("DI MAUPDATE YUNG PASS");
+					msg = "Update Email Failed";
+				}
+			}
 		}  
-		
+			
 		catch (SQLException se) {
 			System.out.println(se);
 		} 
-		
+			
 		return msg;
-		
 	}
 	
-	
+	public void editUser(int uid, String status) {
+		Connection conn = null;
+		Statement st = null;
+			
+		try {
+				
+			DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
+			conn = db.getConnection();
+			st = conn.createStatement();
+			
+			System.out.println("Updating to server");
+			
+			String editQuery = "UPDATE USERS SET STATUS = '" + status + "' WHERE USER_ID = " + uid;
+			 
+			try {
+				System.out.println("Nirarun yung query");
+				st.executeUpdate(editQuery);
+				st.close();
+				conn.close();
+			}
+			catch(Exception ex) {
+				System.out.println("Di men ma update");
+				System.out.println(ex);
+				
+			}
+			 
+		}  
+		
+		catch (Exception e) {
+			System.out.println("Di makakonek sa db men");
+			System.out.println(e);
+		} 
+			
+			
+	}
+			
 	public String createUser(Users u) {
 		String msg = "";
 		Connection conn = null;
@@ -203,23 +243,24 @@ public class UsersDao {
 			 
 			try {
 				st.executeUpdate(addQuery);
-					
 				msg = "New Account Added";
-					
+				st.close();
+				conn.close();		
 			}
 				
 			catch (Exception ex) {
 				msg = "Account Failed to be added";
+				st.close();
+				conn.close();
 			}
 			 
 		}
+		
 		catch (Exception e) {
 			System.out.println("MAY EXCEPTION");
-			msg = "Di ata maka konek";
+			msg = "Di maka konek";
 		}
-		
+				
 		return msg;
 	}
-	
-	
 }

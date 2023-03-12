@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" isELIgnored="false"%>
 <%@ page import="javax.servlet.http.HttpSession"%>
+<%@ page import="com.cpi.model.Users"%>
 
 <head>
 <meta charset="ISO-8859-1">
@@ -8,11 +9,16 @@
 </head>
 <body>
 	<% 
-	HttpSession sesh2 = request.getSession(); 
-	String seshmsg = sesh2.getAttribute("username").toString(); 
-	out.println("<h1>" + seshmsg + "</h1>");
+		HttpSession sesh2 = request.getSession(); 
+		Users seshmsg = (Users)sesh2.getAttribute("userAccount"); 
+		out.println("<h1>" + seshmsg.getUserId() + "</h1></br>");
+		out.println("<h1>" + seshmsg.getRoleId() + "</h1></br>");
+		out.println("<h1>" + seshmsg.getUsername() + "</h1></br>");
+		out.println("<h1>" + seshmsg.getPassword() + "</h1></br>");
+		out.println("<h1>" + seshmsg.getEmail() + "</h1></br>");
+		out.println("<h1>" + seshmsg.getStatus() + "</h1></br>");
 	%>
-	WELCOME ${user.getUsername()} 
+	<%-- WELCOME ${user.getUsername()}  --%>
 	
 	<br/>
 	<button onClick = "window.location.href='/ORM/pages/register.jsp'">Register User</button><br/>

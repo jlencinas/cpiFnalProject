@@ -3,6 +3,7 @@
 <%@ page import="java.util.List"%>
 <%@ page import="com.cpi.model.Product"%>
 <%@ page import="com.cpi.dao.AddProduct"%>
+
 <!DOCTYPE html>
 <html>
 <head>

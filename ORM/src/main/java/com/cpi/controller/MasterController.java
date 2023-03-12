@@ -39,16 +39,17 @@ class Controllers {
 	public ModelAndView login(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("password") String password) {
 		ModelAndView mv = new ModelAndView();
 		UsersDao dao = new UsersDao();
-		HttpSession sesh = request.getSession(); 
+		
 		
 		Users user = dao.getUser(username, password);
 
 		if (user.getStatus().equals("ENABLED")) {
-			mv.addObject("user", user);
-			/* sesh.setAttribute("user", user); */
-			sesh.setAttribute("username", user.getUsername());
+			HttpSession sesh = request.getSession(); 
+			/* mv.addObject("user", user); */
+			sesh.setAttribute("userAccount", user);
 			mv.setViewName("dashboard.jsp");
 		} 
+		
 		else {
 			mv.addObject("message", "DISABLED KA MEN");
 			mv.setViewName("../index.jsp");
@@ -84,9 +85,9 @@ class Controllers {
 	public ModelAndView register(@RequestParam("username") String username, @RequestParam("email") String email,
 			@RequestParam("password") String password, @RequestParam("roleid") int roleid) {
 		ModelAndView mv = new ModelAndView();
-		int uid = 0;
+
 		Users u = new Users();
-		u.setUserId(uid);
+		
 		u.setUsername(username);
 		u.setEmail(email);
 		u.setPassword(password);
@@ -95,7 +96,6 @@ class Controllers {
 		UsersDao dao = new UsersDao();
 		String msg = dao.createUser(u);
 
-		mv.addObject("user", u);
 		mv.addObject("msg", msg);
 		mv.setViewName("dashboard.jsp");
 		return mv;
@@ -118,12 +118,10 @@ class Controllers {
 			if (newpass.equals(conpass)) {
 				msg = dao.updateUser(user, newpass, newmail);
 				mv.addObject("msg", msg);
-				mv.addObject("user", user);
 				mv.setViewName("dashboard.jsp");
 			} else {
 				msg = "New Password and Confirm Password must be the Same!";
 				mv.addObject("msg", msg);
-				mv.addObject("user", user);
 				mv.setViewName("dashboard.jsp");
 			}
 		} else {
@@ -134,35 +132,19 @@ class Controllers {
 		return mv;
 	}
 
-	@RequestMapping("pages/Edit")
-	public ModelAndView edit(@RequestParam("username") String username, @RequestParam("password") String password,
-			@RequestParam("new email") String newmail, @RequestParam("new pass") String newpass,
-			@RequestParam("con pass") String conpass) {
+	@RequestMapping("pages/Edit") //disable or enable account
+	public ModelAndView edit(@RequestParam("uid") int uid, @RequestParam("stat") String stat) {
 		ModelAndView mv = new ModelAndView();
 		UsersDao dao = new UsersDao();
-		System.out.println(newmail);
-		System.out.println(newpass);
-		System.out.println(conpass);
-		String msg = "";
-		Users user = dao.getUser(username, password);
-
-		if (user != null) {
-			if (newpass.equals(conpass)) {
-				msg = dao.updateUser(user, newpass, newmail);
-				mv.addObject("msg", msg);
-				mv.addObject("user", user);
-				mv.setViewName("dashboard.jsp");
-			} else {
-				msg = "New Password and Confirm Password must be the Same!";
-				mv.addObject("msg", msg);
-				mv.addObject("user", user);
-				mv.setViewName("dashboard.jsp");
-			}
-		} else {
-			msg = "Enter Actual User Men -_-";
-			mv.addObject("msg", msg);
-			mv.setViewName("dashboard.jsp");
+		
+		if(stat.equals("ENABLED")) {
+			dao.editUser(uid,"DISABLED");
 		}
+		else if (stat.equals("DISABLED")) {
+			dao.editUser(uid, "ENABLED");
+		}
+		
+		mv.setViewName("disable.jsp");
 		return mv;
 	}
 
