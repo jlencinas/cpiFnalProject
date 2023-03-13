@@ -5,21 +5,27 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import org.springframework.stereotype.Component;
 
 import com.cpi.model.DBConnect;
 import com.cpi.model.Order;
 
-/**
- * @author Jan Christian Buan
- *
- */
+@Component
 public class OrderDao {
 	
 	private static final String dbUsername = "CALANDRIA";
 	private static final String dbPassword = "calandria";
 	private static final String server = "training-db.cosujmachgm3.ap-southeast-1.rds.amazonaws.com";
+	private final DBConnect db;
+	
+	public OrderDao() {
+        db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
+    }
 	
 	public Order getOrder (int orderId) {
 		
@@ -29,11 +35,8 @@ public class OrderDao {
 		ResultSet rs = null;
 		
 		try {
-			
-			 DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
+		
 			 conn = db.getConnection();
-			 System.out.println("Connected to server");
-			 
 			 st = conn.createStatement();
 			 rs = st.executeQuery("SELECT * FROM orders WHERE ORDER_ID = '" + orderId + "'");
 			 
@@ -45,7 +48,7 @@ public class OrderDao {
 				 	o.setCustomerLn(rs.getString("CUSTOMER_LN"));
 				 	o.setMobileNumber(rs.getInt("MOBILE_NUMBER"));
 				 	o.setOrderDate(rs.getDate("ORDER_DATE"));
-				 	o.setDeliveryDate(rs.getDate("DELIVERY_DATE"));
+				 	o.setDeliveryDate(formatDate(rs.getDate("DELIVERY_DATE")));
 				 	o.setOrderStatus(rs.getInt("ORDER_STATUS"));
 				 	o.setPaymentStatus(rs.getInt("PAYMENT_STATUS"));
 				 	o.setDiscount(rs.getFloat("DISCOUNT"));
@@ -90,7 +93,7 @@ public class OrderDao {
 		return o;
 	}
 	
-	public Order getOrderDetails (int mobileNumber) {
+	public Order getOrderDetails (String mobileNumber) {
 		
 		Order order = new Order ();
 		Connection conn = null;
@@ -101,20 +104,17 @@ public class OrderDao {
 		
 		try {
 			
-			 DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
 			 conn = db.getConnection();
-			 System.out.println("Connected to server");
-			 
 			 ps = conn.prepareStatement(query);
-			 ps.setInt(1, mobileNumber);
+			 ps.setString(1, mobileNumber);
 			 rs = ps.executeQuery();
 			 
 			 if (rs.next()) 
 			 {
 				 order.setOrderId(rs.getInt("ORDER_ID"));
 				 order.setOrderStatus(rs.getInt("ORDER_STATUS"));
-				 order.setDeliveryDate(rs.getDate("DELIVERY_DATE"));
-				 order.setPaymentStatus(rs.getInt("PAYMENT STATUS"));
+				 order.setDeliveryDate(formatDate(rs.getDate("DELIVERY_DATE")));
+				 order.setPaymentStatus(rs.getInt("PAYMENT_STATUS"));
 			 }
 			 
 		} catch (SQLException se) { System.out.println(se) ; }
@@ -150,10 +150,7 @@ public class OrderDao {
 		
 		try {
 			
-			 DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
 			 conn = db.getConnection();
-			 System.out.println("Connected to server");
-			 
 			 ps = conn.prepareStatement(query);
 			 rs = ps.executeQuery();
 			 
@@ -162,7 +159,7 @@ public class OrderDao {
 				 order.setOrderId(rs.getInt("ORDER_ID"));
 				 order.setOrderDate(rs.getDate("ORDER_DATE"));
 				 order.setOrderStatus(rs.getInt("ORDER_STATUS"));
-				 order.setDeliveryDate(rs.getDate("DELIVERY_DATE"));
+				 order.setDeliveryDate(formatDate(rs.getDate("DELIVERY_DATE")));
 				 order.setPaymentStatus(rs.getInt("PAYMENT_STATUS"));
 				 
 				 orders.add(order);
@@ -193,10 +190,7 @@ public class OrderDao {
 	    
 	    try { 
 	    	
-	    	DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
 	        conn = db.getConnection();
-	        System.out.println("Connected to server");
-
 	        ps = conn.prepareStatement(query);
 	        int i = 1;
 	        
@@ -229,5 +223,10 @@ public class OrderDao {
                 }
             } catch (SQLException se) { System.out.println(se); }
         }
+	}
+	
+	private String formatDate (Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, yyyy");
+		return sdf.format(date);
 	}
 }

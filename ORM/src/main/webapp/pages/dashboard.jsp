@@ -38,6 +38,9 @@
 	<!-- <form>
 	<input type="submit" value ="Update">
 	</form> -->
+	
+	<h4>Order Controls</h4>
+	<button onClick = "window.location.href='/ORM/pages/orderDetails.jsp'">Order Details</button><br/>
 	<form action = "Logout" method = "post">
 		<input type="submit" value = "Logout">
 	</form>

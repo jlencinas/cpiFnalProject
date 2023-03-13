@@ -15,7 +15,7 @@ public class Order {
 	private String customerLn;
 	private int mobileNumber;
 	private Date orderDate;
-	private Date deliveryDate;
+	private String deliveryDate;
 	private int orderStatus;
 	private int paymentStatus;
 	private float discount;
@@ -65,10 +65,10 @@ public class Order {
 	public void setOrderDate(Date orderDate) {
 		this.orderDate = orderDate;
 	}
-	public Date getDeliveryDate() {
+	public String getDeliveryDate() {
 		return deliveryDate;
 	}
-	public void setDeliveryDate(Date deliveryDate) {
+	public void setDeliveryDate(String deliveryDate) {
 		this.deliveryDate = deliveryDate;
 	}
 	public int getOrderStatus() {

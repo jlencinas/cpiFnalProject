@@ -25,9 +25,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("com.cpi")
+@ComponentScan({"com.cpi", "com.cpi.controller", "com.cpi.dao"})
 public class MvcConfig implements WebMvcConfigurer {
-
+	
 	@Override
 	public void configurePathMatch(PathMatchConfigurer configurer) {
 		// TODO Auto-generated method stub
