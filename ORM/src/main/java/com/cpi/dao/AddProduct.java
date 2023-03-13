@@ -19,17 +19,21 @@ public class AddProduct {
 		List<Product> products = new ArrayList<>();
 		try {	
 			Connection conn = null;
-			Statement st = null;
 			
 			DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
 			conn = db.getConnection();
 			System.out.println("Connected to server");
-			
+			int id = 0;
+			String name ="";
+			String description = "";
+			String picture = "";
+			int status = 1;
+			float price = 1;
 			String sql = "SELECT * FROM product";
 			Statement stmt = conn.createStatement();
 			ResultSet rs1 = stmt.executeQuery(sql);
 			while (rs1.next()) {
-				Product p = null;
+				Product p = new Product(id, name, description, picture, status, price);
 				p.setProductID(rs1.getInt("product_id"));
 				p.setProductName(rs1.getString("product_name"));
 				p.setProductDescription(rs1.getString("product_description"));
