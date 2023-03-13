@@ -131,22 +131,34 @@ class Controllers {
 		return mv;
 	}
 
-	@RequestMapping("pages/Edit") // disable or enable account
-	public ModelAndView edit(@RequestParam("uid") int uid, @RequestParam("stat") String stat) {
-		ModelAndView mv = new ModelAndView();
-		UsersDao dao = new UsersDao();
+	@RequestMapping("pages/Disable") //disable or enable account
+    public ModelAndView disable(@RequestParam("uid") int uid, @RequestParam("stat") String stat) {
+        ModelAndView mv = new ModelAndView();
+        UsersDao dao = new UsersDao();
 
-		if (stat.equals("ENABLED")) {
-			dao.editUser(uid, "DISABLED");
-		} else if (stat.equals("DISABLED")) {
-			dao.editUser(uid, "ENABLED");
-		}
+        if(stat.equals("ENABLED")) {
+            dao.disableUser(uid,"DISABLED");
+        }
+        else if (stat.equals("DISABLED")) {
+            dao.disableUser(uid, "ENABLED");
+        }
 
-		mv.setViewName("disable.jsp");
-		return mv;
-	}
+        mv.setViewName("edituser.jsp");
+        return mv;
+    }
 
-	/* @RequestMapping("newProduct") */
+    @RequestMapping("pages/Edit") //disable or enable account
+    public ModelAndView edit(@RequestParam("uid") int uid, @RequestParam("roleid") int roleid) {
+        ModelAndView mv = new ModelAndView();
+        UsersDao dao = new UsersDao();
+
+        if(roleid != 0) {
+            dao.editUser(uid, roleid);
+        }
+
+        mv.setViewName("edituser.jsp");
+        return mv;
+    }
 
 	@RequestMapping("pages/NewProduct")
 	public ModelAndView newProduct(@RequestParam("productName") String productName,
@@ -199,15 +211,5 @@ class Controllers {
 		mv.setViewName("orderTaker.jsp");
 
 		return mv;
-	}
-
-	@RequestMapping("pages/orderTaker")
-	public ModelAndView updateOrder(@RequestParam("orderStatus") Integer orderStatus,
-			@RequestParam("paymentStatus") Integer paymentStatus, @RequestParam("orderID") int orderId) {
-
-		ModelAndView mv = new ModelAndView();
-
-		return mv;
-
 	}
 }
