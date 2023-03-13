@@ -183,14 +183,13 @@ class Controllers {
 		return mv;
 	}
 	
-	@RequestMapping(value = "/orderDetails/{mobileNumber}")
-	public ModelAndView orderDetails (@PathVariable ("mobileNumber") int mobileNumber) 
+	@RequestMapping("pages/orderDetails")
+	public ModelAndView orderDetails (@RequestParam("mobileNumber") int mobileNumber) 
 	{
-		//OrderDao dao = new OrderDao();
-		Order order = orderDao.getOrderDetails(mobileNumber);
-		
-		ModelAndView mv = new ModelAndView("pages/orderDetails");
+		Order order = orderDao.getOrderDetails(mobileNumber);	
+		ModelAndView mv = new ModelAndView();
 		mv.addObject("order", order);
+		mv.setViewName("pages/orderDetails");
 		
 		return mv;
 	}

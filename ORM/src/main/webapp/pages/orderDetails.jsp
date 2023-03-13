@@ -8,6 +8,12 @@
 <title>Order Details</title>
 </head>
 <body>
+
+	<form action = "orderDetails" method = "post">
+	<input type="number" name = "mobileNumber"required>
+	<input type="submit" value="Submit">
+	</form>
+	
 	<table>
 		<tr>
 			<th>Order ID</th>
