@@ -27,6 +27,7 @@
 	
 	<h4>Product Controls</h4>
 	<button onClick = "window.location.href='/ORM/pages/display.jsp'">Display Product</button><br/>
+	<button onClick = "window.location.href='/ORM/pages/ordering.jsp'">Ordering</button><br/>
 	<button onClick = "window.location.href='/ORM/pages/newProduct.jsp'">Add Product</button>
 	<button onClick = "window.location.href='/ORM/pages/updateProduct.jsp'">Update Product</button>
 	<!-- <form>
