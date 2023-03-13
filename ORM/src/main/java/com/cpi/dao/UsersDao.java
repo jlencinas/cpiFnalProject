@@ -8,6 +8,12 @@ import java.sql.Statement;
 import com.cpi.model.DBConnect;
 import com.cpi.model.Users;
 
+
+import java.util.*;
+import jakarta.mail.*;
+import jakarta.mail.internet.*;
+import jakarta.activation.*;
+
 public class UsersDao {
 	
 	private static final String dbUsername = "CALANDRIA";
@@ -69,6 +75,15 @@ public class UsersDao {
 	public String forgotUser(String username, String email) {
 		String msg = "";
 		String pwd = randPwd(12);
+		
+		//setup email
+		String to = email;
+		String from = "ibcalandria@gmail.com";
+		String host = "localhost";
+		Properties properties = System.getProperties();
+		properties.setProperty("mail.smtp.host", host);
+		Session session = Session.getDefaultInstance(properties);
+		
 		Connection conn = null;
 		Statement st = null;
 		ResultSet rs = null;
@@ -77,7 +92,7 @@ public class UsersDao {
 			DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
 			conn = db.getConnection();
 			st = conn.createStatement();
-			System.out.println("Checking server for user and email");
+			System.out.println("Checking Database For Existing User");
 			
 			try {
 				rs = st.executeQuery("SELECT * FROM users WHERE USERNAME = '" + username + "' AND EMAIL = '" + email + "'");
@@ -90,6 +105,20 @@ public class UsersDao {
 						msg = "Password Changed Successfully!";
 						st.close();
 						conn.close();
+						
+						try {
+							MimeMessage message = new MimeMessage(session);
+							message.setFrom(new InternetAddress(from));
+							message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+							message.setSubject("This is the Subject Line!");
+							message.setText("This is actual message");
+							Transport.send(message);
+							System.out.println("Sent message successfully....");
+						}
+						catch(Exception exce) {
+							System.out.println("Email not sent");
+							msg += "<br/>Email not sent";
+						}
 					}
 					
 					catch (Exception exc) {
@@ -100,17 +129,17 @@ public class UsersDao {
 				}
 				
 				else {
-					msg = "Walang account na ganun men";
+					msg = "Account Does Not Exist";
 				}
 			}
 			catch(Exception ex) {
 				System.out.println("Di ka totoong tao");
-				msg = "Di ka totoong tao";
+				msg = "User Doesn't Exist";
 			}
 		}
 		catch(Exception e) {
 			System.out.println("Di Makakonek");
-			msg = "Walang connection";
+			msg = "No Connection to Database";
 		}
 		
 		return msg + "<br/> New Password : " + pwd;

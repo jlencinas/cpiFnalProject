@@ -14,6 +14,6 @@
 		<label>Password: </label><input type="password" name = "password"><br/>
 		<input type="submit" value = "Login"><input type="reset" value ="Clear">
 	</form>
-	<button onClick = "window.location.href='/ORM/pages/forgot.jsp'">Forgot Password?</button>
+	<button onClick = "window.location.href='/ORM/pages/forgotpassword.jsp'">Forgot Password?</button>
 </body>
 </html>

@@ -23,15 +23,14 @@
 	<h4>Account Controls</h4>
 	<% 
 		int uid = seshinfo.getRoleId();
-		if(uid == 1){
-			
-		}
+		if(uid == 1){ %>
+		<button onClick = "window.location.href='/ORM/pages/register.jsp'">Register User</button>
+		<button onClick = "window.location.href='/ORM/pages/disable.jsp'">Disable Users</button>
+	<%	}
 	%>
 	
-	<button onClick = "window.location.href='/ORM/pages/register.jsp'">Register User</button>
-	<button onClick = "window.location.href='/ORM/pages/update.jsp'">Update Email / Pass</button>
 	
-	<button onClick = "window.location.href='/ORM/pages/disable.jsp'">Disable Users</button>
+	<button onClick = "window.location.href='/ORM/pages/updateuserinfo.jsp'">Update Email / Pass</button>
 	
 	<h4>Product Controls</h4>
 	<button onClick = "window.location.href='/ORM/pages/display.jsp'">Display Product</button><br/>
