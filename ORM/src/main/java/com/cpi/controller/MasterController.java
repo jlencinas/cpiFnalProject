@@ -74,7 +74,7 @@ class Controllers {
 		ModelAndView mv = new ModelAndView();
 		UsersDao dao = new UsersDao();
 		String msg = dao.forgotUser(username, email);
-
+		
 		mv.addObject("message", msg);
 		mv.setViewName("forgotpassword.jsp");
 		return mv;
