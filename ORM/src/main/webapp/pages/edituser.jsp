@@ -2,26 +2,19 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.*"%>
 <%@ page import="javax.servlet.http.HttpSession"%>
-
 <%@ page import="com.cpi.model.Users"%>
 <%@ page import="com.cpi.dao.DisplayUsers"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Disable Employees</title> 
+<title>Edit Employees</title> 
 </head>
 <body>
-		<% 
+	<% 
 		HttpSession sesh2 = request.getSession(); 
 		Users seshcont = (Users)sesh2.getAttribute("userAccount"); 
 		int uid = seshcont.getUserId();
-		out.println("<h1>UID: " + uid + "</h1></br>");
-		out.println("<h1>RID: " + seshcont.getRoleId() + "</h1></br>");
-		out.println("<h1>UN: " + seshcont.getUsername() + "</h1></br>");
-		out.println("<h1>PWD: " + seshcont.getPassword() + "</h1></br>");
-		out.println("<h1>EA: " + seshcont.getEmail() + "</h1></br>");
-		out.println("<h1>STAT: " + seshcont.getStatus() + "</h1></br>");
 	%>
 	<h1>Employee Information</h1>
 	
@@ -31,7 +24,7 @@
 			<th>Username</th>
 			<th>Email</th>
 			<th>Status</th>
-			<th>ACTION</th>
+			<th colspan = "2">Actions</th>
 		</tr>
 		<%
 		List<Users> userList = DisplayUsers.getUsers(uid);
@@ -59,7 +52,7 @@
 			<td><%= acct.getEmail() %></td>
 			<td><%= acct.getStatus() %></td>
 			<td>
-				<form action = "Edit" method = "post">
+				<form action = "Disable" method = "post">
 					<input type="hidden" name = "uid" value = "<%= acct.getUserId()%>">
 					<input type="hidden" name = "stat" value = "<%= acct.getStatus()%>">
 					<%
@@ -73,8 +66,46 @@
 					%>
 				</form>
 			</td>
+			<td>
+				<form action = "Edit"  method = "post">
+					<input type="hidden" name = "uid" value = "<%= acct.getUserId()%>">
+					<select name="roleid">
+						<% 
+						if(rid == 1){
+							out.println("<option value='0'>------------</option>");
+							out.println("<option value='2'>PRODUCER</option>");
+							out.println("<option value='3'>ORDER TAKER</option>");
+							out.println("<option value='4'>AUDITOR</option>");
+						} 
+						else if(rid == 2){
+							out.println("<option value='0'>------------</option>");
+							out.println("<option value='1'>ADMINISTRATOR</option>");
+							out.println("<option value='3'>ORDER TAKER</option>");
+							out.println("<option value='4'>AUDITOR</option>");
+						} 
+						else if(rid == 3){
+							out.println("<option value='0'>------------</option>");
+							out.println("<option value='1'>ADMINISTRATOR</option>");
+							out.println("<option value='2'>PRODUCER</option>");
+							out.println("<option value='4'>AUDITOR</option>");
+						}
+						else if(rid == 2){
+							out.println("<option value='0'>------------</option>");
+							out.println("<option value='1'>ADMINISTRATOR</option>");
+							out.println("<option value='2'>PRODUCER</option>");
+							out.println("<option value='3'>ORDER TAKER</option>");
+						}	
+						%>
+					
+					</select>
+					
+					<input type="submit" value = "Change Role">
+				
+				</form>
+			</td>
 		</tr>
 		<% } %>
 	</table>
+	<button onClick = "window.location.href='/ORM/pages/dashboard.jsp'">Back</button>
 </body>
 </html>
