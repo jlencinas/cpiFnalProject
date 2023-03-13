@@ -9,7 +9,7 @@
 </head>
 <body>
 	<c:forEach items="${allOrders}" var="order">
-		<form action="updateOrders" method="post">
+		<form action="updateOrders?orderID=${order.orderId}" method="post">
 			<table>
 				<tr>
 					<th>Order ID</th>
@@ -39,7 +39,6 @@
 					<td><button type="submit">Apply Changes</button></td>
 				</tr>
 			</table>
-			<input type="hidden" name="orderID" value="${order.orderId}" />
 		</form>
 		<br>
 	</c:forEach>

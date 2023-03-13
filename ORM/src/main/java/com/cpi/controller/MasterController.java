@@ -205,7 +205,6 @@ class Controllers {
 	@RequestMapping("pages/orderTaker")
 	public ModelAndView displayOrders() {
 
-		System.out.println("Test");
 		ModelAndView mv = new ModelAndView();
 		List<Order> orders = orderDao.getOrdersByDate();
 		mv.addObject("allOrders", orders);
@@ -215,13 +214,20 @@ class Controllers {
 	}
 	
 	@RequestMapping("pages/updateOrders")
-	public ModelAndView updateOrder(@RequestParam("orderStatus") Integer orderStatus,
+	public ModelAndView updateOrderStatusAndPayment(@RequestParam("orderStatus") Integer orderStatus,
 			@RequestParam("paymentStatus") Integer paymentStatus, @RequestParam("orderID") int orderId) {
 
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("updateOrder", updateOrder(orderStatus, paymentStatus, orderId));
-		System.out.println("Updated");
+		Order order = orderDao.getOrder(orderId);
+		
+		order.setOrderStatus(orderStatus);
+		order.setPaymentStatus(paymentStatus);
+		orderDao.updateOrder(order);
+	
+		ModelAndView mv = new ModelAndView ();
+		List<Order> allOrders = orderDao.getOrdersByDate();
+		mv.addObject("allOrders", allOrders);
 		mv.setViewName("orderTaker.jsp");
 		return mv;
+		
 	}
 }
