@@ -2,10 +2,6 @@ package com.cpi.model;
 
 import java.util.Date;
 
-/**
- * @author Jan Christian Buan
- *
- */
 public class Order {
 	
 	private int orderId;

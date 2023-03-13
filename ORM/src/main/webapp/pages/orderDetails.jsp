@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"  isELIgnored = "false" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="ISO-8859-1" isELIgnored="false"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,12 +8,11 @@
 <title>Order Details</title>
 </head>
 <body>
-
-	<form action = "orderDetails" method = "post">
-	<input type="number" name = "mobileNumber" pattern="[0-9]+" required>
-	<input type="submit" value="Submit">
+	<form action="orderDetails" method="post">
+		<input type="number" name="mobileNumber" pattern="[0-9]+" required>
+		<input type="submit" value="Submit">
 	</form>
-	
+
 	<table>
 		<tr>
 			<th>Order ID</th>
