@@ -1,111 +1,97 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.*"%>
-<%@ page import="javax.servlet.http.HttpSession"%>
-<%@ page import="com.cpi.model.Users"%>
-<%@ page import="com.cpi.dao.DisplayUsers"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" isELIgnored="false"%>
+<%@ page import="java.util.List"%>
+<%@ page import="com.cpi.model.Product"%>
+<%@ page import="com.cpi.dao.AddProduct"%>
+
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Edit Employees</title> 
+<meta charset="UTF-8">
+<title>Display</title>
 </head>
 <body>
-	<% 
-		HttpSession sesh2 = request.getSession(); 
-		Users seshcont = (Users)sesh2.getAttribute("userAccount"); 
-		int uid = seshcont.getUserId();
-	%>
-	<h1>Employee Information</h1>
-	
-	<table>
-		<tr>
-			<th>ROLE</th>
-			<th>Username</th>
-			<th>Email</th>
-			<th>Status</th>
-			<th colspan = "2">Actions</th>
-		</tr>
+	<main>
 		<%
-		List<Users> userList = DisplayUsers.getUsers(uid);
-		for (Users acct : userList) {
+		List<Product> productList = AddProduct.getProducts();
+		for (Product product : productList) {
 		%>
-		<tr>
-			<td>
-				<% 
-					int rid = acct.getRoleId();
-					if(rid == 1){
-						out.println("ADMINISTRATOR");
-					} 
-					else if(rid == 2){
-						out.println("PRODUCER");
-					}
-					else if(rid == 3){
-						out.println("ORDER TAKER");
-					}
-					else if(rid == 4){
-						out.println("AUDITOR");
-					}
-				%>
-			</td>
-			<td><%= acct.getUsername() %></td>
-			<td><%= acct.getEmail() %></td>
-			<td><%= acct.getStatus() %></td>
-			<td>
-				<form action = "Disable" method = "post">
-					<input type="hidden" name = "uid" value = "<%= acct.getUserId()%>">
-					<input type="hidden" name = "stat" value = "<%= acct.getStatus()%>">
-					<%
-						String status = acct.getStatus();
-						if(status.equals("ENABLED")){
-							out.println("<input type ='submit' value = 'DISABLE'>");
-						}
-						else if(status.equals("DISABLED")){
-							out.println("<input type ='submit' value = 'ENABLE'>");
-						}
-					%>
+		<div class="product-card">
+			<div class="product-image">
+				<%-- <img src="data:image/png;base64,<%=product.convertImage()%>"
+					alt="<%=product.getProdname()%>"> --%>
+			</div>
+			<div class="product-info">
+				<h2><%=product.getProductName()%></h2>
+				<p><%=product.getProductDescription()%></p>
+				<h3>$<%=product.getProductPrice()%></h3>
+				<form action="addToCart" method="post">
+					<button class="buy-button" name="itemnum" value="<%=product.getProductID()%>">Add To Cart!</button>
 				</form>
-			</td>
-			<td>
-				<form action = "Edit"  method = "post">
-					<input type="hidden" name = "uid" value = "<%= acct.getUserId()%>">
-					<select name="roleid">
-						<% 
-						if(rid == 1){
-							out.println("<option value='0'>------------</option>");
-							out.println("<option value='2'>PRODUCER</option>");
-							out.println("<option value='3'>ORDER TAKER</option>");
-							out.println("<option value='4'>AUDITOR</option>");
-						} 
-						else if(rid == 2){
-							out.println("<option value='0'>------------</option>");
-							out.println("<option value='1'>ADMINISTRATOR</option>");
-							out.println("<option value='3'>ORDER TAKER</option>");
-							out.println("<option value='4'>AUDITOR</option>");
-						} 
-						else if(rid == 3){
-							out.println("<option value='0'>------------</option>");
-							out.println("<option value='1'>ADMINISTRATOR</option>");
-							out.println("<option value='2'>PRODUCER</option>");
-							out.println("<option value='4'>AUDITOR</option>");
-						}
-						else if(rid == 2){
-							out.println("<option value='0'>------------</option>");
-							out.println("<option value='1'>ADMINISTRATOR</option>");
-							out.println("<option value='2'>PRODUCER</option>");
-							out.println("<option value='3'>ORDER TAKER</option>");
-						}	
-						%>
-					
-					</select>
-					
-					<input type="submit" value = "Change Role">
-				
-				</form>
-			</td>
-		</tr>
-		<% } %>
-	</table>
-	<button onClick = "window.location.href='/ORM/pages/dashboard.jsp'">Back</button>
+			</div>
+		</div>
+		<%
+		}
+		%>
+	</main>
 </body>
 </html>
+<style>
+main {
+	position: absolute;
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	top: 60px;
+	left: 0px;
+	margin-top: 15px;
+	width: 100%;
+	height: auto;
+	background-position: center;
+	background-size: cover;
+	background-color: aquamarine;
+}
+
+.product-card {
+	display: inline-block;
+	margin: 20px;
+	background-color: #fff;
+	border-radius: 5px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	width: 300px;
+}
+
+.product-image img {
+	width: 100%;
+	height: 200px;
+	object-fit: cover;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.product-info {
+	padding: 20px;
+}
+
+.product-info h2 {
+	margin-top: 0;
+}
+
+.product-info h3 {
+	margin-bottom: 0;
+}
+
+.buy-button {
+	background-color: #4CAF50;
+	color: #fff;
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	width: 100%;
+}
+
+.buy-button:hover {
+	background-color: #45a049;
+}
+</style>
