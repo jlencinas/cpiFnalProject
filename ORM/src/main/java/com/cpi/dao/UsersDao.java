@@ -8,7 +8,6 @@ import java.sql.Statement;
 import com.cpi.model.DBConnect;
 import com.cpi.model.Users;
 
-<<<<<<< HEAD
 /*import java.util.*;
 =======
 
@@ -36,7 +35,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.util.Properties;*/
 
-import java.util.Properties;
+/*import java.util.Properties;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -44,9 +43,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
-=======
-import jakarta.activation.*;
->>>>>>> refs/remotes/origin/master
+import jakarta.activation.*;*/
 
 public class UsersDao {
 
@@ -109,7 +106,6 @@ public class UsersDao {
 	public String forgotUser(String username, String email) {
 		String msg = "";
 		String pwd = randPwd(12);
-<<<<<<< HEAD
 
 		// setup email
 		/*
@@ -129,17 +125,15 @@ public class UsersDao {
 		 * "SimpleEmail Testing Body";
 		 */
 
-=======
 		
 		//setup email
-		String to = email;
+		/*String to = email;
 		String from = "ibcalandria@gmail.com";
 		String host = "localhost";
 		Properties properties = System.getProperties();
 		properties.setProperty("mail.smtp.host", host);
-		Session session = Session.getDefaultInstance(properties);
+		Session session = Session.getDefaultInstance(properties);*/
 		
->>>>>>> refs/remotes/origin/master
 		Connection conn = null;
 		Statement st = null;
 		ResultSet rs = null;
@@ -163,7 +157,6 @@ public class UsersDao {
 						msg = "Password Changed Successfully!";
 						st.close();
 						conn.close();
-<<<<<<< HEAD
 
 						// email sending
 						/*
@@ -206,22 +199,21 @@ public class UsersDao {
 						  }
 						 
 
-=======
 						
 						try {
-							MimeMessage message = new MimeMessage(session);
+							/*MimeMessage message = new MimeMessage(session);
 							message.setFrom(new InternetAddress(from));
 							message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 							message.setSubject("This is the Subject Line!");
 							message.setText("This is actual message");
 							Transport.send(message);
-							System.out.println("Sent message successfully....");
+							System.out.println("Sent message successfully....");*/
 						}
 						catch(Exception exce) {
 							System.out.println("Email not sent");
 							msg += "<br/>Email not sent";
 						}
->>>>>>> refs/remotes/origin/master
+
 					}
 
 					catch (Exception exc) {
@@ -247,42 +239,36 @@ public class UsersDao {
 	}
 
 	public static void sendMail(String recipient) throws Exception {
-		System.out.println("Creating Properties");
-		Properties properties = new Properties();
-		properties.put("mail.smtp.auth", "true");
-		properties.put("mail.smtp.starttls.enable", "true");
-		properties.put("mail.smtp.host", "smtp.gmail.com");
-		properties.put("mail.smtp.port", "587");
-
-		final String myAccountEmail = "ivannbenedict.calandria.cics@ust.edu.ph";
-		final String myPassword = "SystemCrash";
-		System.out.println("Creating Session");
-		Session session = Session.getInstance(properties, new Authenticator() {
-			@Override
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(myAccountEmail, myPassword);
-			}
-		});
-		System.out.println("Sending Message");
-		Message message = prepareMessage(session, myAccountEmail, recipient);
-		Transport.send(message);
-		System.out.println("EMAIL SENT SUCCESS");
+		/*
+		 * System.out.println("Creating Properties"); Properties properties = new
+		 * Properties(); properties.put("mail.smtp.auth", "true");
+		 * properties.put("mail.smtp.starttls.enable", "true");
+		 * properties.put("mail.smtp.host", "smtp.gmail.com");
+		 * properties.put("mail.smtp.port", "587");
+		 * 
+		 * final String myAccountEmail = "ivannbenedict.calandria.cics@ust.edu.ph";
+		 * final String myPassword = "SystemCrash";
+		 * System.out.println("Creating Session"); Session session =
+		 * Session.getInstance(properties, new Authenticator() {
+		 * 
+		 * @Override protected PasswordAuthentication getPasswordAuthentication() {
+		 * return new PasswordAuthentication(myAccountEmail, myPassword); } });
+		 * System.out.println("Sending Message"); Message message =
+		 * prepareMessage(session, myAccountEmail, recipient); Transport.send(message);
+		 * System.out.println("EMAIL SENT SUCCESS");
+		 */
 	}
 
-	private static Message prepareMessage(Session session, String myAccountEmail, String recipient) {
-		Message message = new MimeMessage(session);
-		try {
-			message.setFrom(new InternetAddress(myAccountEmail));
-			message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
-			message.setSubject("Email Trial Using Java");
-			message.setText("HOPE IT WORKS");
-			return message;
-		} catch (Exception e) {
-			System.out.println("Email is not working");
-			e.printStackTrace();
-		}
-		return null;
-	}
+	/*
+	 * private static Message prepareMessage(Session session, String myAccountEmail,
+	 * String recipient) { Message message = new MimeMessage(session); try {
+	 * message.setFrom(new InternetAddress(myAccountEmail));
+	 * message.setRecipient(Message.RecipientType.TO, new
+	 * InternetAddress(recipient)); message.setSubject("Email Trial Using Java");
+	 * message.setText("HOPE IT WORKS"); return message; } catch (Exception e) {
+	 * System.out.println("Email is not working"); e.printStackTrace(); } return
+	 * null; }
+	 */
 
 	public String updateUser(Users u, String newpass, String newemail) {
 		String msg = "";
@@ -347,50 +333,34 @@ public class UsersDao {
 
 		return msg;
 	}
-<<<<<<< HEAD
+
 
 	public void disableUser(int uid, String status) {
-=======
-	
-	public void editUser(int uid, String status) {
->>>>>>> refs/remotes/origin/master
 		Connection conn = null;
-		Statement st = null;
-
-		try {
-
-			DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
-			conn = db.getConnection();
-			st = conn.createStatement();
-
-			System.out.println("Updating to server");
-<<<<<<< HEAD
-
-			String disableQuery = "UPDATE USERS SET STATUS = '" + status + "' WHERE USER_ID = " + uid;
-
-=======
-			
-			String editQuery = "UPDATE USERS SET STATUS = '" + status + "' WHERE USER_ID = " + uid;
-			 
->>>>>>> refs/remotes/origin/master
-			try {
-<<<<<<< HEAD
-				System.out.println("Run Able Query");
-				st.executeUpdate(disableQuery);
-				st.close();
-				conn.close();
-			} catch (Exception ex) {
-				System.out.println("Cant Update Status");
-				System.out.println(ex);
-
-			}
-
-		} catch (Exception e) {
-			System.out.println("Di makakonek sa db men");
-			System.out.println(e);
-		}
-
+        Statement st = null;
+        try {
+            DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
+            conn = db.getConnection();
+            st = conn.createStatement();
+            System.out.println("Updating to server");
+            String disableQuery = "UPDATE USERS SET STATUS = '" + status + "' WHERE USER_ID = " + uid;
+            try {
+                System.out.println("Run Able Query");
+                st.executeUpdate(disableQuery);
+                st.close();
+                conn.close();
+            }
+            catch(Exception ex) {
+                System.out.println("Cant Update Status");
+                System.out.println(ex);
+            }
+            
+        }
+        catch(Exception e) {
+        	System.out.println("NO DB CONNECTION");
+        }
 	}
+
 
 	public void editUser(int uid, int roleid) {
 		Connection conn = null;
@@ -408,21 +378,16 @@ public class UsersDao {
 
 			try {
 				System.out.println("Run Edit Query");
-=======
+
 				System.out.println("Nirarun yung query");
->>>>>>> refs/remotes/origin/master
+
 				st.executeUpdate(editQuery);
 				st.close();
 				conn.close();
-<<<<<<< HEAD
-			} catch (Exception ex) {
+
+			} 
+			catch (Exception exc) {
 				System.out.println("Cant Update ROLE_ID ");
-=======
-			}
-			catch(Exception ex) {
-				System.out.println("Di men ma update");
->>>>>>> refs/remotes/origin/master
-				System.out.println(ex);
 
 			}
 
@@ -434,11 +399,11 @@ public class UsersDao {
 		}
 
 	}
-<<<<<<< HEAD
 
-=======
+
+
 			
->>>>>>> refs/remotes/origin/master
+
 	public String createUser(Users u) {
 		String msg = "";
 		Connection conn = null;
