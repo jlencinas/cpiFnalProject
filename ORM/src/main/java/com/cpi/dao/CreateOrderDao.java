@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import com.cpi.model.DBConnect;
 import com.cpi.model.Order;
@@ -14,7 +16,7 @@ public class CreateOrderDao {
 	private static final String dbUsername = "CALANDRIA";
 	private static final String dbPassword = "calandria";
 	private static final String server = "training-db.cosujmachgm3.ap-southeast-1.rds.amazonaws.com";
-	public static void createOrder(Order order) {
+	public static void createOrder(Order order) throws ParseException {
 		Connection conn = null;
 		Statement stmt = null;
 		PreparedStatement st = null;
@@ -35,8 +37,12 @@ public class CreateOrderDao {
 				oid = 1;
 			}
 			 
+			String orderDeliver = order.getDeliveryDate();
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+			java.util.Date parsed = format.parse(orderDeliver);
+			Date sqlDate = new Date(parsed.getTime());
 			
-			String sql = "INSERT INTO ORDERS VALUES(?,?,?,?,?,?, SYSDATE,TO_DATE(?, 'DD/MM/YYYY'), ? , ?, ?, ?, ?)";
+			String sql = "INSERT INTO ORDERS VALUES(?,?,?,?,?,?, SYSDATE,?, ? , ?, ?, ?, ?)";
 			st = conn.prepareStatement(sql);
 			st.setInt(1, oid);
 			st.setString(2, order.getCustomerFn());
@@ -44,7 +50,7 @@ public class CreateOrderDao {
 			st.setString(4, order.getOrderSource());
 			st.setString(5, order.getCustomerLn());
 			st.setInt(6, order.getMobileNumber());
-			st.setDate(7, (Date) order.getOrderDate());
+			st.setDate(7, sqlDate);
 			st.setInt(8, order.getOrderStatus());
 			st.setInt(9, order.getPaymentStatus());
 			st.setFloat(10, order.getDiscount());
