@@ -12,7 +12,8 @@
 		<label>Login Account</label>
 		<label>Username: </label><input type="text" name = "username"><br/>
 		<label>Password: </label><input type="password" name = "password"><br/>
-		<input type="submit" value = "Submit"><input type="reset" value ="Clear">
+		<input type="submit" value = "Login"><input type="reset" value ="Clear">
 	</form>
+	<button onClick = "window.location.href='/ORM/pages/forgot.jsp'">Forgot Password?</button>
 </body>
 </html>

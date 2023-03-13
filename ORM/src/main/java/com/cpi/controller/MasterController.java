@@ -49,7 +49,6 @@ class Controllers {
 			mv.addObject("message", "Account Disabled");
 			mv.setViewName("../index.jsp");
 		}
-		
 		return mv;
 
 	}
@@ -104,9 +103,12 @@ class Controllers {
 			@RequestParam("con pass") String conpass) {
 		ModelAndView mv = new ModelAndView();
 		UsersDao dao = new UsersDao();
+		System.out.println(username);
+		System.out.println(password);
 		System.out.println(newmail);
 		System.out.println(newpass);
 		System.out.println(conpass);
+		
 		String msg = "";
 		Users user = dao.getUser(username, password);
 
@@ -115,13 +117,16 @@ class Controllers {
 				msg = dao.updateUser(user, newpass, newmail);
 				mv.addObject("msg", msg);
 				mv.setViewName("dashboard.jsp");
-			} else {
+			} 
+			else {
 				msg = "New Password and Confirm Password must be the Same!";
 				mv.addObject("msg", msg);
 				mv.setViewName("dashboard.jsp");
 			}
-		} else {
-			msg = "Enter Actual User Men -_-";
+			
+		} 
+		else {
+			msg = "Password is Incorrect";
 			mv.addObject("msg", msg);
 			mv.setViewName("dashboard.jsp");
 		}
