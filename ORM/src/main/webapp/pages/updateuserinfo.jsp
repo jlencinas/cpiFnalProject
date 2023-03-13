@@ -15,12 +15,6 @@
 		int uid = seshinfo.getUserId();
 		String un = seshinfo.getUsername();
 		String pwd = seshinfo.getPassword();
-		/* out.println("<p>" + uid + "</p>");
-		out.println("<p>" + seshinfo.getRoleId() + "</p>");
-		out.println("<p>" + un + "</p>");
-		out.println("<p>" + pwd + "</p>");
-		out.println("<p>" + seshinfo.getEmail() + "</p>");
-		out.println("<p>" + seshinfo.getStatus() + "</p>"); */
 	%>
 	<form action="Update" method="post">
 		<h6>Only Fill Blanks to be Updated</h6>
@@ -31,7 +25,7 @@
 		<label>Confirm New Password</label><input type="password" name = "con pass">
 		<input type="submit" value = "Submit"><input type="reset" value ="Clear">
 	</form>
-	
+	<button onClick = "window.location.href='/ORM/pages/dashboard.jsp'">Back</button>
 <!-- 	<form>   
 		<h3>Password Validation </h3>   
 		<td> Enter Password </td>  
@@ -41,5 +35,5 @@
 		<button type = "submit" hidden= "true">Submit</button>  
 		<button type = "reset" value = "Reset" >Reset</button>  
 	</form>   -->
-	<button onClick = "window.location.href='/ORM/pages/dashboard.jsp'">Back</button>
+	
 </body>
