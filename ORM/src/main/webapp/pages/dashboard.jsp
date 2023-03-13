@@ -11,7 +11,7 @@
 	<% 
 		HttpSession sesh2 = request.getSession(); 
 		Users seshinfo = (Users)sesh2.getAttribute("userAccount"); 
-		out.println("<p>" + seshinfo.getUserId() + "</p>>");
+		out.println("<p>" + seshinfo.getUserId() + "</p>");
 		out.println("<p>" + seshinfo.getRoleId() + "</p>");
 		out.println("<p>" + seshinfo.getUsername() + "</p>");
 		out.println("<p>" + seshinfo.getPassword() + "</p>");

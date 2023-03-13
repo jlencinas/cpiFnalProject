@@ -127,11 +127,11 @@ public class UsersDao {
 			DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
 			conn = db.getConnection();
 			st = conn.createStatement();
-			
+			String updateQuery;
 			System.out.println("Updating to server");
 			
 			if(newemail != "" && newpass != "") {
-				String updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "', EMAIL = '" +newemail + "' WHERE USER_ID = "+u.getUserId();
+				updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "', EMAIL = '" +newemail + "' WHERE USER_ID = "+ u.getUserId();
 				try {
 					st.executeUpdate(updateQuery);
 					msg = "Updated Email and Pass Successfully";
@@ -145,7 +145,7 @@ public class UsersDao {
 			}
 			
 			else if(newemail == "" && newpass != ""){
-				String updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "' WHERE USER_ID = "+u.getUserId();
+				updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "' WHERE USER_ID = "+u.getUserId();
 				
 				try {
 					st.executeUpdate(updateQuery);
@@ -161,7 +161,7 @@ public class UsersDao {
 			}
 			
 			else if(newemail != "" && newpass == ""){
-				String updateQuery = "UPDATE USERS SET EMAIL = '" + newemail + "' WHERE USER_ID = "+u.getUserId();
+				updateQuery = "UPDATE USERS SET EMAIL = '" + newemail + "' WHERE USER_ID = "+u.getUserId();
 				try {
 					st.executeUpdate(updateQuery);
 					msg = "Updated Email Successfully";
@@ -169,7 +169,7 @@ public class UsersDao {
 					conn.close();
 				}
 				catch (Exception e) {
-					System.out.println("DI MAUPDATE YUNG PASS");
+					System.out.println("DI MAUPDATE YUNG EMAIL");
 					msg = "Update Email Failed";
 				}
 			}
