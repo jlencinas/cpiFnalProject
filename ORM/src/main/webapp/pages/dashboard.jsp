@@ -18,8 +18,8 @@
 	<% 
 		int uid = seshinfo.getRoleId();
 		if(uid == 1){ %>
-		<button onClick = "window.location.href='/ORM/pages/register.jsp'">Register User</button>
-		<button onClick = "window.location.href='/ORM/pages/edituser.jsp'">Disable Users</button>
+			<button onClick = "window.location.href='/ORM/pages/register.jsp'">Register User</button>
+			<button onClick = "window.location.href='/ORM/pages/edituser.jsp'">Disable Users</button>
 	<%	}
 	%>
 	
