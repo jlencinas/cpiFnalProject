@@ -47,7 +47,7 @@ class Controllers {
 		if (user.getStatus().equals("ENABLED")) {
 			HttpSession sesh = request.getSession(); 
 			sesh.setAttribute("userAccount", user);
-			mv.setViewName("dashboard.jsp");
+			mv.setViewName("pages/dashboard.jsp");
 		} 
 		
 		else {
