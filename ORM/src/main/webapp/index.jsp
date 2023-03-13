@@ -75,7 +75,6 @@
 		<label>Email: </label><input type="email" name = "email"><br/>
 		<input type="submit" value = "Submit"><input type="reset" value ="Clear">
 	</form> -->
-	<button onClick = "window.location.href='/ORM/pages/forgot.jsp'">Forgot Password?</button><br/>
 	
 <!-- 	<form action="Update" method="post">
 		<label>Update</label><br/>
