@@ -11,12 +11,12 @@
 	<% 
 		HttpSession sesh2 = request.getSession(); 
 		Users seshinfo = (Users)sesh2.getAttribute("userAccount"); 
-		out.println("<p>" + seshinfo.getUserId() + "</p>");
+		/* out.println("<p>" + seshinfo.getUserId() + "</p>");
 		out.println("<p>" + seshinfo.getRoleId() + "</p>");
 		out.println("<p>" + seshinfo.getUsername() + "</p>");
 		out.println("<p>" + seshinfo.getPassword() + "</p>");
 		out.println("<p>" + seshinfo.getEmail() + "</p>");
-		out.println("<p>" + seshinfo.getStatus() + "</p>");
+		out.println("<p>" + seshinfo.getStatus() + "</p>"); */
 	%>
 	
 	<br/>
@@ -24,13 +24,11 @@
 	<% 
 		int uid = seshinfo.getRoleId();
 		if(uid == 1){ %>
-		<button onClick = "window.location.href='/ORM/pages/register.jsp'">Register User</button>
-		<button onClick = "window.location.href='/ORM/pages/disable.jsp'">Disable Users</button>
+		<button onClick = "window.location.href='/ORM/pages/register.jsp'">Register New User</button>
+		<button onClick = "window.location.href='/ORM/pages/edituser.jsp'">Disable/Edit Users</button>
 	<%	}
 	%>
-	
-	
-	<button onClick = "window.location.href='/ORM/pages/updateuserinfo.jsp'">Update Email / Pass</button>
+	<button onClick = "window.location.href='/ORM/pages/updateuserinfo.jsp'">Update Email/Password</button>
 	
 	<h4>Product Controls</h4>
 	<button onClick = "window.location.href='/ORM/pages/display.jsp'">Display Product</button><br/>

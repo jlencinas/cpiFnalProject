@@ -36,5 +36,6 @@
 		</tr>	
 		</table>
 	</form>
+	<button onClick = "window.location.href='/ORM/pages/dashboard.jsp'">Back</button>
 </body>
 </html>
