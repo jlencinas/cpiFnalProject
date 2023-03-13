@@ -183,12 +183,12 @@ class Controllers {
 	}
 	
 	@RequestMapping("pages/orderDetails")
-	public ModelAndView orderDetails (@RequestParam("mobileNumber") int mobileNumber) 
+	public ModelAndView orderDetails (@RequestParam("mobileNumber") String mobileNumber) 
 	{
-		Order order = orderDao.getOrderDetails(mobileNumber);	
+		Order order = orderDao.getOrderDetails(mobileNumber);
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("order", order);
-		mv.setViewName("pages/orderDetails");
+		mv.setViewName("orderDetails.jsp");
 		
 		return mv;
 	}

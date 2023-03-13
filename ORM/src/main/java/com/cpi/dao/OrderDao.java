@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -46,7 +48,7 @@ public class OrderDao {
 				 	o.setCustomerLn(rs.getString("CUSTOMER_LN"));
 				 	o.setMobileNumber(rs.getInt("MOBILE_NUMBER"));
 				 	o.setOrderDate(rs.getDate("ORDER_DATE"));
-				 	o.setDeliveryDate(rs.getDate("DELIVERY_DATE"));
+				 	o.setDeliveryDate(formatDate(rs.getDate("DELIVERY_DATE")));
 				 	o.setOrderStatus(rs.getInt("ORDER_STATUS"));
 				 	o.setPaymentStatus(rs.getInt("PAYMENT_STATUS"));
 				 	o.setDiscount(rs.getFloat("DISCOUNT"));
@@ -91,7 +93,7 @@ public class OrderDao {
 		return o;
 	}
 	
-	public Order getOrderDetails (int mobileNumber) {
+	public Order getOrderDetails (String mobileNumber) {
 		
 		Order order = new Order ();
 		Connection conn = null;
@@ -104,15 +106,15 @@ public class OrderDao {
 			
 			 conn = db.getConnection();
 			 ps = conn.prepareStatement(query);
-			 ps.setInt(1, mobileNumber);
+			 ps.setString(1, mobileNumber);
 			 rs = ps.executeQuery();
 			 
 			 if (rs.next()) 
 			 {
 				 order.setOrderId(rs.getInt("ORDER_ID"));
 				 order.setOrderStatus(rs.getInt("ORDER_STATUS"));
-				 order.setDeliveryDate(rs.getDate("DELIVERY_DATE"));
-				 order.setPaymentStatus(rs.getInt("PAYMENT STATUS"));
+				 order.setDeliveryDate(formatDate(rs.getDate("DELIVERY_DATE")));
+				 order.setPaymentStatus(rs.getInt("PAYMENT_STATUS"));
 			 }
 			 
 		} catch (SQLException se) { System.out.println(se) ; }
@@ -157,7 +159,7 @@ public class OrderDao {
 				 order.setOrderId(rs.getInt("ORDER_ID"));
 				 order.setOrderDate(rs.getDate("ORDER_DATE"));
 				 order.setOrderStatus(rs.getInt("ORDER_STATUS"));
-				 order.setDeliveryDate(rs.getDate("DELIVERY_DATE"));
+				 order.setDeliveryDate(formatDate(rs.getDate("DELIVERY_DATE")));
 				 order.setPaymentStatus(rs.getInt("PAYMENT_STATUS"));
 				 
 				 orders.add(order);
@@ -221,5 +223,10 @@ public class OrderDao {
                 }
             } catch (SQLException se) { System.out.println(se); }
         }
+	}
+	
+	private String formatDate (Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, yyyy");
+		return sdf.format(date);
 	}
 }
