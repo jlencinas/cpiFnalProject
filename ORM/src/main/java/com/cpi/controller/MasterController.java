@@ -51,7 +51,7 @@ class Controllers {
 		} 
 		
 		else {
-			mv.addObject("message", "Account Disabled");
+			mv.addObject("message", "Account Disabled/Incorrect Password");
 			mv.setViewName("../index.jsp");
 		}
 		return mv;
@@ -137,19 +137,32 @@ class Controllers {
 		return mv;
 	}
 
-	@RequestMapping("pages/Edit") //disable or enable account
-	public ModelAndView edit(@RequestParam("uid") int uid, @RequestParam("stat") String stat) {
+	@RequestMapping("pages/Disable") //disable or enable account
+	public ModelAndView disable(@RequestParam("uid") int uid, @RequestParam("stat") String stat) {
 		ModelAndView mv = new ModelAndView();
 		UsersDao dao = new UsersDao();
 		
 		if(stat.equals("ENABLED")) {
-			dao.editUser(uid,"DISABLED");
+			dao.disableUser(uid,"DISABLED");
 		}
 		else if (stat.equals("DISABLED")) {
-			dao.editUser(uid, "ENABLED");
+			dao.disableUser(uid, "ENABLED");
 		}
 		
-		mv.setViewName("disable.jsp");
+		mv.setViewName("edituser.jsp");
+		return mv;
+	}
+	
+	@RequestMapping("pages/Edit") //disable or enable account
+	public ModelAndView edit(@RequestParam("uid") int uid, @RequestParam("roleid") int roleid) {
+		ModelAndView mv = new ModelAndView();
+		UsersDao dao = new UsersDao();
+		
+		if(roleid != 0) {
+			dao.editUser(uid, roleid);
+		}
+		
+		mv.setViewName("edituser.jsp");
 		return mv;
 	}
 

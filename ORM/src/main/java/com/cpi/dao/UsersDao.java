@@ -9,10 +9,10 @@ import com.cpi.model.DBConnect;
 import com.cpi.model.Users;
 
 
-import java.util.*;
+/*import java.util.*;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
-import jakarta.activation.*;
+import jakarta.activation.*;*/
 
 public class UsersDao {
 	
@@ -77,12 +77,15 @@ public class UsersDao {
 		String pwd = randPwd(12);
 		
 		//setup email
-		String to = email;
-		String from = "ibcalandria@gmail.com";
-		String host = "localhost";
-		Properties properties = System.getProperties();
-		properties.setProperty("mail.smtp.host", host);
-		Session session = Session.getDefaultInstance(properties);
+		/*
+		 * String to = email; String from = "ibcalandria@gmail.com"; String host =
+		 * "localhost";
+		 * 
+		 * Properties properties = System.getProperties();
+		 * properties.setProperty("mail.smtp.host", host); Session session =
+		 * Session.getDefaultInstance(properties);
+		 */
+		 
 		
 		Connection conn = null;
 		Statement st = null;
@@ -106,19 +109,16 @@ public class UsersDao {
 						st.close();
 						conn.close();
 						
-						try {
-							MimeMessage message = new MimeMessage(session);
-							message.setFrom(new InternetAddress(from));
-							message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-							message.setSubject("This is the Subject Line!");
-							message.setText("This is actual message");
-							Transport.send(message);
-							System.out.println("Sent message successfully....");
-						}
-						catch(Exception exce) {
-							System.out.println("Email not sent");
-							msg += "<br/>Email not sent";
-						}
+						
+						//email sending
+						/*
+						 * try { MimeMessage message = new MimeMessage(session); message.setFrom(new
+						 * InternetAddress(from)); message.addRecipient(Message.RecipientType.TO, new
+						 * InternetAddress(to)); message.setSubject("This is the Subject Line!");
+						 * message.setText("This is actual message"); Transport.send(message);
+						 * System.out.println("Sent message successfully...."); } catch(Exception exce)
+						 * { System.out.println("Email not sent"); msg += "<br/>Email not sent"; }
+						 */
 					}
 					
 					catch (Exception exc) {
@@ -211,7 +211,7 @@ public class UsersDao {
 		return msg;
 	}
 	
-	public void editUser(int uid, String status) {
+	public void disableUser(int uid, String status) {
 		Connection conn = null;
 		Statement st = null;
 			
@@ -223,16 +223,16 @@ public class UsersDao {
 			
 			System.out.println("Updating to server");
 			
-			String editQuery = "UPDATE USERS SET STATUS = '" + status + "' WHERE USER_ID = " + uid;
+			String disableQuery = "UPDATE USERS SET STATUS = '" + status + "' WHERE USER_ID = " + uid;
 			 
 			try {
-				System.out.println("Nirarun yung query");
-				st.executeUpdate(editQuery);
+				System.out.println("Run Able Query");
+				st.executeUpdate(disableQuery);
 				st.close();
 				conn.close();
 			}
 			catch(Exception ex) {
-				System.out.println("Di men ma update");
+				System.out.println("Cant Update Status");
 				System.out.println(ex);
 				
 			}
@@ -246,7 +246,45 @@ public class UsersDao {
 			
 			
 	}
+	
+	
+	public void editUser(int uid, int roleid) {
+		Connection conn = null;
+		Statement st = null;
 			
+		try {
+				
+			DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
+			conn = db.getConnection();
+			st = conn.createStatement();
+			
+			System.out.println("Updating to server");
+			
+			String editQuery = "UPDATE USERS SET ROLE_ID = " + roleid + " WHERE USER_ID = " + uid;
+			 
+			try {
+				System.out.println("Run Edit Query");
+				st.executeUpdate(editQuery);
+				st.close();
+				conn.close();
+			}
+			catch(Exception ex) {
+				System.out.println("Cant Update ROLE_ID ");
+				System.out.println(ex);
+				
+			}
+			 
+		}  
+		
+		catch (Exception e) {
+			System.out.println("Di makakonek sa db men");
+			System.out.println(e);
+		} 
+			
+			
+	}
+	
+	
 	public String createUser(Users u) {
 		String msg = "";
 		Connection conn = null;
@@ -278,7 +316,7 @@ public class UsersDao {
 			}
 				
 			catch (Exception ex) {
-				msg = "Account Failed to be added";
+				msg = "Account Details Must Be Unique/ Existing Account with Same Details";
 				st.close();
 				conn.close();
 			}
