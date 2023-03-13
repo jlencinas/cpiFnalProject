@@ -5,24 +5,32 @@
 
 <head>
 <meta charset="ISO-8859-1">
-<title>Dashboard Men</title>
+<title>Dashboard</title>
 </head>
 <body>
 	<% 
 		HttpSession sesh2 = request.getSession(); 
-		Users seshmsg = (Users)sesh2.getAttribute("userAccount"); 
-		out.println("<p>" + seshmsg.getUserId() + "</p></br>");
-		out.println("<p>" + seshmsg.getRoleId() + "</p></br>");
-		out.println("<p>" + seshmsg.getUsername() + "</p></br>");
-		out.println("<p>" + seshmsg.getPassword() + "</p></br>");
-		out.println("<p>" + seshmsg.getEmail() + "</p></br>");
-		out.println("<p>" + seshmsg.getStatus() + "</p></br>");
+		Users seshinfo = (Users)sesh2.getAttribute("userAccount"); 
+		out.println("<p>" + seshinfo.getUserId() + "</p>>");
+		out.println("<p>" + seshinfo.getRoleId() + "</p>");
+		out.println("<p>" + seshinfo.getUsername() + "</p>");
+		out.println("<p>" + seshinfo.getPassword() + "</p>");
+		out.println("<p>" + seshinfo.getEmail() + "</p>");
+		out.println("<p>" + seshinfo.getStatus() + "</p>");
 	%>
 	
 	<br/>
 	<h4>Account Controls</h4>
+	<% 
+		int uid = seshinfo.getRoleId();
+		if(uid == 1){
+			
+		}
+	%>
+	
 	<button onClick = "window.location.href='/ORM/pages/register.jsp'">Register User</button>
 	<button onClick = "window.location.href='/ORM/pages/update.jsp'">Update Email / Pass</button>
+	
 	<button onClick = "window.location.href='/ORM/pages/disable.jsp'">Disable Users</button>
 	
 	<h4>Product Controls</h4>

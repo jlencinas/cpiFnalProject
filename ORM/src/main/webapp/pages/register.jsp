@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page import="javax.servlet.http.HttpSession"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,11 +7,7 @@
 <title>Register New User</title>
 </head>
 <body>
-		<% 
-			HttpSession sesh2 = request.getSession(); 
-			String seshmsg = sesh2.getAttribute("username").toString(); 
-			out.println("<h1>" + seshmsg + "</h1>");
-		%>
+
 	<form action="Register" method="post">
 		<table>
 		<tr>
@@ -36,7 +31,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td><input type="submit" value = "Submit"></td>
+			<td><input type="submit" value = "Register"></td>
 			<td><input type="reset" value = "Clear"></td>
 		</tr>	
 		</table>
