@@ -71,7 +71,7 @@ class Controllers {
 		String msg = dao.forgotUser(username, email);
 
 		mv.addObject("message", msg);
-		mv.setViewName("../index.jsp");
+		mv.setViewName("forgotpassword.jsp");
 		return mv;
 
 	}
@@ -123,7 +123,6 @@ class Controllers {
 				mv.addObject("msg", msg);
 				mv.setViewName("dashboard.jsp");
 			}
-			
 		} 
 		else {
 			msg = "Password is Incorrect";
