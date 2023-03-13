@@ -7,34 +7,29 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.cpi.dao.OrderDao;
 import com.cpi.dao.ProductDao;
 import com.cpi.dao.UsersDao;
+import com.cpi.model.Order;
 import com.cpi.model.Product;
 import com.cpi.model.Users;
 
 @Controller
 class Controllers {
 	
-	/*
-	 * @RequestMapping("CheckSession") public ModelAndView
-	 * checkSession(HttpServletRequest request) throws ServletException,
-	 * IOException{
-	 * 
-	 * HttpSession session = request.getSession(); ModelAndView mv = new
-	 * ModelAndView(); Users user = (Users) session.getAttribute("username");
-	 * 
-	 * if(user != null){ mv.addObject("user", user);
-	 * System.out.println("REDIRECTED DAPAT SA DASHBOARD");
-	 * mv.setViewName("pages/dashboard.jsp"); } else{ mv.addObject("message",
-	 * "MAG SIGN IN KA MEN"); System.out.println("INDEX DAPAT MEN");
-	 * mv.setViewName("index.jsp"); } return mv; }
-	 */
+	private OrderDao orderDao;
 	
+	@Autowired(required = false)
+	public Controllers (OrderDao orderDao) {
+		this.orderDao = orderDao;
+	}
 	
 	@RequestMapping("pages/Login")
 	public ModelAndView login(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("password") String password) {
@@ -180,6 +175,18 @@ class Controllers {
 		mv.addObject("updatedProduct", dao);
 		mv.setViewName("dashboard.jsp");
 
+		return mv;
+	}
+	
+	@RequestMapping(value = "/orderDetails/{mobileNumber}")
+	public ModelAndView orderDetails (@PathVariable ("mobileNumber") int mobileNumber) 
+	{
+		//OrderDao dao = new OrderDao();
+		Order order = orderDao.getOrderDetails(mobileNumber);
+		
+		ModelAndView mv = new ModelAndView("pages/orderDetails");
+		mv.addObject("order", order);
+		
 		return mv;
 	}
 }

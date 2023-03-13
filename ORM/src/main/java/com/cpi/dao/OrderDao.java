@@ -8,18 +8,22 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.cpi.model.DBConnect;
 import com.cpi.model.Order;
 
-/**
- * @author Jan Christian Buan
- *
- */
+@Component
 public class OrderDao {
 	
 	private static final String dbUsername = "CALANDRIA";
 	private static final String dbPassword = "calandria";
 	private static final String server = "training-db.cosujmachgm3.ap-southeast-1.rds.amazonaws.com";
+	private final DBConnect db;
+	
+	public OrderDao() {
+        db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
+    }
 	
 	public Order getOrder (int orderId) {
 		
@@ -29,11 +33,8 @@ public class OrderDao {
 		ResultSet rs = null;
 		
 		try {
-			
-			 DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
+		
 			 conn = db.getConnection();
-			 System.out.println("Connected to server");
-			 
 			 st = conn.createStatement();
 			 rs = st.executeQuery("SELECT * FROM orders WHERE ORDER_ID = '" + orderId + "'");
 			 
@@ -101,10 +102,7 @@ public class OrderDao {
 		
 		try {
 			
-			 DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
 			 conn = db.getConnection();
-			 System.out.println("Connected to server");
-			 
 			 ps = conn.prepareStatement(query);
 			 ps.setInt(1, mobileNumber);
 			 rs = ps.executeQuery();
@@ -150,10 +148,7 @@ public class OrderDao {
 		
 		try {
 			
-			 DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
 			 conn = db.getConnection();
-			 System.out.println("Connected to server");
-			 
 			 ps = conn.prepareStatement(query);
 			 rs = ps.executeQuery();
 			 
@@ -193,10 +188,7 @@ public class OrderDao {
 	    
 	    try { 
 	    	
-	    	DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
 	        conn = db.getConnection();
-	        System.out.println("Connected to server");
-
 	        ps = conn.prepareStatement(query);
 	        int i = 1;
 	        
