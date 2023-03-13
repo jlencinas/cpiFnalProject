@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.mail.Session;
+
 import com.cpi.model.DBConnect;
 import com.cpi.model.Users;
 
@@ -13,6 +15,26 @@ import com.cpi.model.Users;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 import jakarta.activation.*;*/
+
+
+
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.util.Properties;
+
 
 public class UsersDao {
 	
@@ -85,7 +107,13 @@ public class UsersDao {
 		 * properties.setProperty("mail.smtp.host", host); Session session =
 		 * Session.getDefaultInstance(properties);
 		 */
-		 
+		String smtpHostServer = "smtp.example.com";
+	    String toEmail = email;
+	    Properties props = System.getProperties();
+	    props.put("mail.smtp.host", smtpHostServer);
+	    Session session = Session.getInstance(props, null);
+	    String subject = "SimpleEmail Testing Subject";
+	    String body = "SimpleEmail Testing Body";
 		
 		Connection conn = null;
 		Statement st = null;
@@ -119,6 +147,32 @@ public class UsersDao {
 						 * System.out.println("Sent message successfully...."); } catch(Exception exce)
 						 * { System.out.println("Email not sent"); msg += "<br/>Email not sent"; }
 						 */
+						
+						try {
+							MimeMessage message = new MimeMessage(session);
+							message.addHeader("Content-type", "text/HTML; charset=UTF-8");
+							message.addHeader("format", "flowed");
+							message.addHeader("Content-Transfer-Encoding", "8bit");
+							
+							message.setFrom(new InternetAddress("no_reply@example.com", "NoReply-JD"));
+							message.setReplyTo(InternetAddress.parse("no_reply@example.com", false));
+							message.setSubject(subject, "UTF-8");
+							message.setText(body, "UTF-8");
+							message.setSentDate(new Date());
+							message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
+							System.out.println("Message is ready");
+							
+							Transport.send(message);
+							
+							msg += "<br/>Email sent";
+							
+						}
+						catch(Exception exce) {
+							System.out.println("Email not sent");
+							msg += "<br/>Email not sent";
+						}
+						
+						
 					}
 					
 					catch (Exception exc) {
@@ -238,7 +292,6 @@ public class UsersDao {
 			}
 			 
 		}  
-		
 		catch (Exception e) {
 			System.out.println("Di makakonek sa db men");
 			System.out.println(e);
