@@ -8,9 +8,15 @@ import java.sql.Statement;
 import com.cpi.model.DBConnect;
 import com.cpi.model.Users;
 
+<<<<<<< HEAD
 /*import java.util.*;
+=======
+
+import java.util.*;
+>>>>>>> refs/remotes/origin/master
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
+<<<<<<< HEAD
 import jakarta.activation.*;*/
 
 /*import java.io.UnsupportedEncodingException;
@@ -38,6 +44,9 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
+=======
+import jakarta.activation.*;
+>>>>>>> refs/remotes/origin/master
 
 public class UsersDao {
 
@@ -100,6 +109,7 @@ public class UsersDao {
 	public String forgotUser(String username, String email) {
 		String msg = "";
 		String pwd = randPwd(12);
+<<<<<<< HEAD
 
 		// setup email
 		/*
@@ -119,6 +129,17 @@ public class UsersDao {
 		 * "SimpleEmail Testing Body";
 		 */
 
+=======
+		
+		//setup email
+		String to = email;
+		String from = "ibcalandria@gmail.com";
+		String host = "localhost";
+		Properties properties = System.getProperties();
+		properties.setProperty("mail.smtp.host", host);
+		Session session = Session.getDefaultInstance(properties);
+		
+>>>>>>> refs/remotes/origin/master
 		Connection conn = null;
 		Statement st = null;
 		ResultSet rs = null;
@@ -142,6 +163,7 @@ public class UsersDao {
 						msg = "Password Changed Successfully!";
 						st.close();
 						conn.close();
+<<<<<<< HEAD
 
 						// email sending
 						/*
@@ -184,6 +206,22 @@ public class UsersDao {
 						  }
 						 
 
+=======
+						
+						try {
+							MimeMessage message = new MimeMessage(session);
+							message.setFrom(new InternetAddress(from));
+							message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+							message.setSubject("This is the Subject Line!");
+							message.setText("This is actual message");
+							Transport.send(message);
+							System.out.println("Sent message successfully....");
+						}
+						catch(Exception exce) {
+							System.out.println("Email not sent");
+							msg += "<br/>Email not sent";
+						}
+>>>>>>> refs/remotes/origin/master
 					}
 
 					catch (Exception exc) {
@@ -309,8 +347,13 @@ public class UsersDao {
 
 		return msg;
 	}
+<<<<<<< HEAD
 
 	public void disableUser(int uid, String status) {
+=======
+	
+	public void editUser(int uid, String status) {
+>>>>>>> refs/remotes/origin/master
 		Connection conn = null;
 		Statement st = null;
 
@@ -321,10 +364,17 @@ public class UsersDao {
 			st = conn.createStatement();
 
 			System.out.println("Updating to server");
+<<<<<<< HEAD
 
 			String disableQuery = "UPDATE USERS SET STATUS = '" + status + "' WHERE USER_ID = " + uid;
 
+=======
+			
+			String editQuery = "UPDATE USERS SET STATUS = '" + status + "' WHERE USER_ID = " + uid;
+			 
+>>>>>>> refs/remotes/origin/master
 			try {
+<<<<<<< HEAD
 				System.out.println("Run Able Query");
 				st.executeUpdate(disableQuery);
 				st.close();
@@ -358,11 +408,20 @@ public class UsersDao {
 
 			try {
 				System.out.println("Run Edit Query");
+=======
+				System.out.println("Nirarun yung query");
+>>>>>>> refs/remotes/origin/master
 				st.executeUpdate(editQuery);
 				st.close();
 				conn.close();
+<<<<<<< HEAD
 			} catch (Exception ex) {
 				System.out.println("Cant Update ROLE_ID ");
+=======
+			}
+			catch(Exception ex) {
+				System.out.println("Di men ma update");
+>>>>>>> refs/remotes/origin/master
 				System.out.println(ex);
 
 			}
@@ -375,7 +434,11 @@ public class UsersDao {
 		}
 
 	}
+<<<<<<< HEAD
 
+=======
+			
+>>>>>>> refs/remotes/origin/master
 	public String createUser(Users u) {
 		String msg = "";
 		Connection conn = null;
@@ -407,7 +470,7 @@ public class UsersDao {
 			}
 
 			catch (Exception ex) {
-				msg = "Account Details Must Be Unique/ Existing Account with Same Details";
+				msg = "Account Failed to be added";
 				st.close();
 				conn.close();
 			}

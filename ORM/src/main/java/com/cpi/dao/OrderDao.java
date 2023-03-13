@@ -155,6 +155,7 @@ public class OrderDao {
 			 rs = ps.executeQuery();
 			 
 			 while (rs.next()) {
+				 
 				 Order order = new Order ();
 				 order.setOrderId(rs.getInt("ORDER_ID"));
 				 order.setOrderDate(rs.getDate("ORDER_DATE"));
@@ -229,4 +230,5 @@ public class OrderDao {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, yyyy");
 		return sdf.format(date);
 	}
+	
 }
