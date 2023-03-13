@@ -22,8 +22,7 @@
 							<option value="1"
 								<c:if test = "${order.orderStatus == 1}">selected</c:if>>Pending</option>
 							<option value="2"
-								<c:if test = "${order.orderStatus == 2}">selected</c:if>>Ready
-								for Pick Up</option>
+								<c:if test = "${order.orderStatus == 2}">selected</c:if>>Ready for Pick Up</option>
 							<option value="3"
 								<c:if test = "${order.orderStatus == 3}">selected</c:if>>Completed</option>
 							<option value="50"
@@ -33,8 +32,7 @@
 					</select></td>
 					<td><select name="paymentStatus">
 							<option value="1"
-								<c:if test="${order.paymentStatus == 1}">selected</c:if>>Not
-								Paid</option>
+								<c:if test="${order.paymentStatus == 1}">selected</c:if>>Not Paid</option>
 							<option value="2"
 								<c:if test="${order.paymentStatus == 2}">selected</c:if>>Paid</option>
 					</select></td>
