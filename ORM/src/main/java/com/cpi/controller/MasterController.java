@@ -70,7 +70,7 @@ class Controllers {
 		ModelAndView mv = new ModelAndView();
 		UsersDao dao = new UsersDao();
 		String msg = dao.forgotUser(username, email);
-
+		
 		mv.addObject("message", msg);
 		mv.setViewName("forgotpassword.jsp");
 		return mv;
@@ -131,33 +131,34 @@ class Controllers {
 		return mv;
 	}
 
-	@RequestMapping("pages/Disable") // disable or enable account
-	public ModelAndView disable(@RequestParam("uid") int uid, @RequestParam("stat") String stat) {
-		ModelAndView mv = new ModelAndView();
-		UsersDao dao = new UsersDao();
+	@RequestMapping("pages/Disable") //disable or enable account
+    public ModelAndView disable(@RequestParam("uid") int uid, @RequestParam("stat") String stat) {
+        ModelAndView mv = new ModelAndView();
+        UsersDao dao = new UsersDao();
 
-		if (stat.equals("ENABLED")) {
-			dao.disableUser(uid, "DISABLED");
-		} else if (stat.equals("DISABLED")) {
-			dao.disableUser(uid, "ENABLED");
-		}
+        if(stat.equals("ENABLED")) {
+            dao.disableUser(uid,"DISABLED");
+        }
+        else if (stat.equals("DISABLED")) {
+            dao.disableUser(uid, "ENABLED");
+        }
 
-		mv.setViewName("edituser.jsp");
-		return mv;
-	}
+        mv.setViewName("edituser.jsp");
+        return mv;
+    }
 
-	@RequestMapping("pages/Edit") // disable or enable account
-	public ModelAndView edit(@RequestParam("uid") int uid, @RequestParam("roleid") int roleid) {
-		ModelAndView mv = new ModelAndView();
-		UsersDao dao = new UsersDao();
+    @RequestMapping("pages/Edit") //disable or enable account
+    public ModelAndView edit(@RequestParam("uid") int uid, @RequestParam("roleid") int roleid) {
+        ModelAndView mv = new ModelAndView();
+        UsersDao dao = new UsersDao();
 
-		if (roleid != 0) {
-			dao.editUser(uid, roleid);
-		}
+        if(roleid != 0) {
+            dao.editUser(uid, roleid);
+        }
 
-		mv.setViewName("edituser.jsp");
-		return mv;
-	}
+        mv.setViewName("edituser.jsp");
+        return mv;
+    }
 
 	@RequestMapping("pages/NewProduct")
 	public ModelAndView newProduct(@RequestParam("productName") String productName,
@@ -209,16 +210,6 @@ class Controllers {
 		mv.addObject("allOrders", orders);
 		mv.setViewName("orderTaker.jsp");
 
-		return mv;
-	}
-
-	@RequestMapping("pages/orderTaker")
-	public ModelAndView updateOrder(@RequestParam("orderStatus") Integer orderStatus,
-			@RequestParam("paymentStatus") Integer paymentStatus, @RequestParam("orderID") int orderId) {
-
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("updateOrder", updateOrder(orderStatus, paymentStatus, orderId));
-		mv.setViewName("orderTaker");
 		return mv;
 	}
 }

@@ -80,8 +80,9 @@ public class MvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		// TODO Auto-generated method stub
-		
+		/*
+		 * registry.addViewController("pages/Login").setViewName("/Login");
+		 */
 	}
 
 	@Override
