@@ -361,45 +361,6 @@ public class UsersDao {
         }
 	}
 
-	
-	public void editUser(int uid, String status) {
-
-		Connection conn = null;
-		Statement st = null;
-
-		try {
-
-			DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
-			conn = db.getConnection();
-			st = conn.createStatement();
-
-			System.out.println("Updating to server");
-
-
-			String disableQuery = "UPDATE USERS SET STATUS = '" + status + "' WHERE USER_ID = " + uid;
-
-
-			
-			String editQuery = "UPDATE USERS SET STATUS = '" + status + "' WHERE USER_ID = " + uid;			 
-
-			try {
-
-				System.out.println("Run Able Query");
-				st.executeUpdate(disableQuery);
-				st.close();
-				conn.close();
-			} catch (Exception ex) {
-				System.out.println("Cant Update Status");
-				System.out.println(ex);
-
-			}
-
-		} catch (Exception e) {
-			System.out.println("Di makakonek sa db men");
-			System.out.println(e);
-		}
-
-	}
 
 	public void editUser(int uid, int roleid) {
 		Connection conn = null;
