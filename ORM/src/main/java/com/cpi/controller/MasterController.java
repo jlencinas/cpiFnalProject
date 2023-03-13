@@ -1,6 +1,7 @@
 package com.cpi.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -9,7 +10,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,28 +23,28 @@ import com.cpi.model.Users;
 
 @Controller
 class Controllers {
-	
+
 	private OrderDao orderDao;
-	
+
 	@Autowired(required = false)
-	public Controllers (OrderDao orderDao) {
+	public Controllers(OrderDao orderDao) {
 		this.orderDao = orderDao;
 	}
-	
+
 	@RequestMapping("pages/Login")
-	public ModelAndView login(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("password") String password) {
+	public ModelAndView login(HttpServletRequest request, @RequestParam("username") String username,
+			@RequestParam("password") String password) {
 		ModelAndView mv = new ModelAndView();
 		UsersDao dao = new UsersDao();
-		
-		
+
 		Users user = dao.getUser(username, password);
 
 		if (user.getStatus().equals("ENABLED")) {
-			HttpSession sesh = request.getSession(); 
+			HttpSession sesh = request.getSession();
 			sesh.setAttribute("userAccount", user);
 			mv.setViewName("dashboard.jsp");
-		} 
-		
+		}
+
 		else {
 			mv.addObject("message", "Account Disabled");
 			mv.setViewName("../index.jsp");
@@ -54,7 +54,8 @@ class Controllers {
 	}
 
 	@RequestMapping("pages/Logout")
-	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		request.logout();
 		HttpSession session = request.getSession();
 		ModelAndView mv = new ModelAndView();
@@ -82,7 +83,7 @@ class Controllers {
 		ModelAndView mv = new ModelAndView();
 
 		Users u = new Users();
-		
+
 		u.setUsername(username);
 		u.setEmail(email);
 		u.setPassword(password);
@@ -108,7 +109,7 @@ class Controllers {
 		System.out.println(newmail);
 		System.out.println(newpass);
 		System.out.println(conpass);
-		
+
 		String msg = "";
 		Users user = dao.getUser(username, password);
 
@@ -117,14 +118,12 @@ class Controllers {
 				msg = dao.updateUser(user, newpass, newmail);
 				mv.addObject("msg", msg);
 				mv.setViewName("dashboard.jsp");
-			} 
-			else {
+			} else {
 				msg = "New Password and Confirm Password must be the Same!";
 				mv.addObject("msg", msg);
 				mv.setViewName("dashboard.jsp");
 			}
-		} 
-		else {
+		} else {
 			msg = "Password is Incorrect";
 			mv.addObject("msg", msg);
 			mv.setViewName("dashboard.jsp");
@@ -132,18 +131,17 @@ class Controllers {
 		return mv;
 	}
 
-	@RequestMapping("pages/Edit") //disable or enable account
+	@RequestMapping("pages/Edit") // disable or enable account
 	public ModelAndView edit(@RequestParam("uid") int uid, @RequestParam("stat") String stat) {
 		ModelAndView mv = new ModelAndView();
 		UsersDao dao = new UsersDao();
-		
-		if(stat.equals("ENABLED")) {
-			dao.editUser(uid,"DISABLED");
-		}
-		else if (stat.equals("DISABLED")) {
+
+		if (stat.equals("ENABLED")) {
+			dao.editUser(uid, "DISABLED");
+		} else if (stat.equals("DISABLED")) {
 			dao.editUser(uid, "ENABLED");
 		}
-		
+
 		mv.setViewName("disable.jsp");
 		return mv;
 	}
@@ -181,15 +179,35 @@ class Controllers {
 
 		return mv;
 	}
-	
+
 	@RequestMapping("pages/orderDetails")
-	public ModelAndView orderDetails (@RequestParam("mobileNumber") String mobileNumber) 
-	{
+	public ModelAndView orderDetails(@RequestParam("mobileNumber") String mobileNumber) {
 		Order order = orderDao.getOrderDetails(mobileNumber);
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("order", order);
 		mv.setViewName("orderDetails.jsp");
-		
+
 		return mv;
+	}
+
+	@RequestMapping("pages/orderTaker")
+	public ModelAndView displayOrders() {
+
+		ModelAndView mv = new ModelAndView();
+		List<Order> orders = orderDao.getOrdersByDate();
+		mv.addObject("allOrders", orders);
+		mv.setViewName("orderTaker.jsp");
+
+		return mv;
+	}
+
+	@RequestMapping("pages/orderTaker")
+	public ModelAndView updateOrder(@RequestParam("orderStatus") Integer orderStatus,
+			@RequestParam("paymentStatus") Integer paymentStatus, @RequestParam("orderID") int orderId) {
+
+		ModelAndView mv = new ModelAndView();
+
+		return mv;
+
 	}
 }

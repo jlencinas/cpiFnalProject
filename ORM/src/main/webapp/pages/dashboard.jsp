@@ -43,6 +43,10 @@
 	
 	<h4>Order Controls</h4>
 	<button onClick = "window.location.href='/ORM/pages/orderDetails.jsp'">Order Details</button><br/>
+	
+	<form action = "displayOrders" method = "post">
+		<input type ="submit" value = "Order Taker">
+	</form>
 	<form action = "Logout" method = "post">
 		<input type="submit" value = "Logout">
 	</form>
