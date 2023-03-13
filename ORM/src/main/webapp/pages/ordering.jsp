@@ -19,16 +19,16 @@
 			</tr>
 			<tr>
 				<td>Mobile Number</td>
-				<td><input type="number" name="t3"></td>
+				<td><input type="number"  name="t3"></td>
 			</tr>
 			<tr>
 				<td>Expected Delivery Date</td>
 				<td><input type="date" name="dates" pattern="MM/DD/YYYY"></td>
 			</tr>
-			<!-- <tr>
+			<tr>
 				<td>Expected Delivery Schedule</td>
 				<td><input type="time" name="times"></td>
-			</tr> -->
+			</tr>
 			<tr>
 				<td><input type="submit" value="Submit"></td>
 				<td><input type="reset" value="Clear"></td>

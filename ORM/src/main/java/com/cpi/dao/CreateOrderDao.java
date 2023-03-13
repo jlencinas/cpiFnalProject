@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import com.cpi.model.DBConnect;
 import com.cpi.model.Order;
@@ -14,29 +16,34 @@ public class CreateOrderDao {
 	private static final String dbUsername = "CALANDRIA";
 	private static final String dbPassword = "calandria";
 	private static final String server = "training-db.cosujmachgm3.ap-southeast-1.rds.amazonaws.com";
+
 	public static void createOrder(Order order) {
 		Connection conn = null;
 		Statement stmt = null;
 		PreparedStatement st = null;
 		ResultSet rs1 = null;
 		int oid = 0;
-		
-			try {
-			
-			DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
+
+		try {
+
+			DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
 			conn = db.getConnection();
 			System.out.println("Connected to server");
 			stmt = conn.createStatement();
 			rs1 = stmt.executeQuery("select MAX(ORDER_ID) as MOID from orders");
-			 
-			if (rs1.next()){
+
+			if (rs1.next()) {
 				oid = rs1.getInt("MOID") + 1;
-			}else {
+			} else {
 				oid = 1;
 			}
-			 
-			
-			String sql = "INSERT INTO ORDERS VALUES(?,?,?,?,?,?, SYSDATE,TO_DATE(?, 'DD/MM/YYYY'), ? , ?, ?, ?, ?)";
+
+			// Convert String to Date
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			java.util.Date dateStr = formatter.parse(order.getDeliveryDate());
+			Date dateDB = new java.sql.Date(dateStr.getTime());
+
+			String sql = "INSERT INTO ORDERS VALUES(?,?,?,?,?,?, SYSDATE,?, ? , ?, ?, ?, ?)";
 			st = conn.prepareStatement(sql);
 			st.setInt(1, oid);
 			st.setString(2, order.getCustomerFn());
@@ -44,18 +51,18 @@ public class CreateOrderDao {
 			st.setString(4, order.getOrderSource());
 			st.setString(5, order.getCustomerLn());
 			st.setInt(6, order.getMobileNumber());
-			st.setDate(7, (Date) order.getOrderDate());
+			st.setDate(7, dateDB);
 			st.setInt(8, order.getOrderStatus());
 			st.setInt(9, order.getPaymentStatus());
 			st.setFloat(10, order.getDiscount());
 			st.setFloat(11, order.getPrice());
 			st.setString(12, order.getRemarks());
-			st.executeUpdate();	
-			 
-		}  catch (SQLException se) {
+			st.executeUpdate();
+
+		} catch (SQLException | ParseException se) {
 			System.out.println(se);
 		} finally {
-			
+
 			try {
 				if (rs1 != null) {
 					rs1.close();
@@ -73,5 +80,5 @@ public class CreateOrderDao {
 				System.out.println(se);
 			}
 		}
-	}	
+	}
 }
