@@ -16,7 +16,7 @@ public class CreateOrderDao {
 	private static final String dbUsername = "CALANDRIA";
 	private static final String dbPassword = "calandria";
 	private static final String server = "training-db.cosujmachgm3.ap-southeast-1.rds.amazonaws.com";
-	public static void createOrder(Order order) throws ParseException {
+	public static void createOrder(Order order) {
 		Connection conn = null;
 		Statement stmt = null;
 		PreparedStatement st = null;
@@ -36,9 +36,9 @@ public class CreateOrderDao {
 			}else {
 				oid = 1;
 			}
-			 
+			System.out.println(order.getDeliveryDate());
 			String orderDeliver = order.getDeliveryDate();
-			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			java.util.Date parsed = format.parse(orderDeliver);
 			Date sqlDate = new Date(parsed.getTime());
 			
@@ -58,7 +58,7 @@ public class CreateOrderDao {
 			st.setString(12, order.getRemarks());
 			st.executeUpdate();	
 			 
-		}  catch (SQLException se) {
+		}  catch (SQLException | ParseException se) {
 			System.out.println(se);
 		} finally {
 			
