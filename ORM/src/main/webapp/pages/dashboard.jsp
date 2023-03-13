@@ -11,20 +11,22 @@
 	<% 
 		HttpSession sesh2 = request.getSession(); 
 		Users seshmsg = (Users)sesh2.getAttribute("userAccount"); 
-		out.println("<h1>" + seshmsg.getUserId() + "</h1></br>");
-		out.println("<h1>" + seshmsg.getRoleId() + "</h1></br>");
-		out.println("<h1>" + seshmsg.getUsername() + "</h1></br>");
-		out.println("<h1>" + seshmsg.getPassword() + "</h1></br>");
-		out.println("<h1>" + seshmsg.getEmail() + "</h1></br>");
-		out.println("<h1>" + seshmsg.getStatus() + "</h1></br>");
+		out.println("<p>" + seshmsg.getUserId() + "</p></br>");
+		out.println("<p>" + seshmsg.getRoleId() + "</p></br>");
+		out.println("<p>" + seshmsg.getUsername() + "</p></br>");
+		out.println("<p>" + seshmsg.getPassword() + "</p></br>");
+		out.println("<p>" + seshmsg.getEmail() + "</p></br>");
+		out.println("<p>" + seshmsg.getStatus() + "</p></br>");
 	%>
-	<%-- WELCOME ${user.getUsername()}  --%>
 	
 	<br/>
-	<button onClick = "window.location.href='/ORM/pages/register.jsp'">Register User</button><br/>
-	<button onClick = "window.location.href='/ORM/pages/display.jsp'">Display Product</button><br/>
-	<button onClick = "window.location.href='/ORM/pages/disable.jsp'">Disable Users</button><br/>
+	<h4>Account Controls</h4>
+	<button onClick = "window.location.href='/ORM/pages/register.jsp'">Register User</button>
 	<button onClick = "window.location.href='/ORM/pages/update.jsp'">Update Email / Pass</button>
+	<button onClick = "window.location.href='/ORM/pages/disable.jsp'">Disable Users</button>
+	
+	<h4>Product Controls</h4>
+	<button onClick = "window.location.href='/ORM/pages/display.jsp'">Display Product</button><br/>
 	<button onClick = "window.location.href='/ORM/pages/newProduct.jsp'">Add Product</button>
 	<button onClick = "window.location.href='/ORM/pages/updateProduct.jsp'">Update Product</button>
 	<!-- <form>

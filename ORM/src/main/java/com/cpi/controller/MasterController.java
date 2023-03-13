@@ -19,6 +19,7 @@ import com.cpi.model.Users;
 
 @Controller
 class Controllers {
+	
 	/*
 	 * @RequestMapping("CheckSession") public ModelAndView
 	 * checkSession(HttpServletRequest request) throws ServletException,
@@ -45,15 +46,15 @@ class Controllers {
 
 		if (user.getStatus().equals("ENABLED")) {
 			HttpSession sesh = request.getSession(); 
-			/* mv.addObject("user", user); */
 			sesh.setAttribute("userAccount", user);
 			mv.setViewName("dashboard.jsp");
 		} 
 		
 		else {
-			mv.addObject("message", "DISABLED KA MEN");
+			mv.addObject("message", "Account Disabled");
 			mv.setViewName("../index.jsp");
 		}
+		
 		return mv;
 
 	}
