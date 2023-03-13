@@ -22,12 +22,11 @@
 	<br/>
 	<h4>Account Controls</h4>
 	<% 
-		int uid = seshinfo.getRoleId();
-		if(uid == 1){ %>
+		int rid = seshinfo.getRoleId();
+		if(rid == 1){ %>
 		<button onClick = "window.location.href='/ORM/pages/register.jsp'">Register New User</button>
 		<button onClick = "window.location.href='/ORM/pages/edituser.jsp'">Disable/Edit Users</button>
-	<%	}
-	%>
+	<%	}%>
 	<button onClick = "window.location.href='/ORM/pages/updateuserinfo.jsp'">Update Email/Password</button>
 	
 	<h4>Product Controls</h4>
