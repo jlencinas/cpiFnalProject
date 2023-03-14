@@ -37,12 +37,18 @@ class Controllers {
 		ModelAndView mv = new ModelAndView();
 		UsersDao dao = new UsersDao();
 
-		Users user = dao.getUser(username, password);
+		Users user = dao.getUser(username);
 
 		if (user.getStatus().equals("ENABLED")) {
-			HttpSession sesh = request.getSession();
-			sesh.setAttribute("userAccount", user);
-			mv.setViewName("dashboard.jsp");
+			if(user.getPassword().equals(password)) {
+				HttpSession sesh = request.getSession();
+				sesh.setAttribute("userAccount", user);
+				mv.setViewName("dashboard.jsp");
+			}
+			else {
+				mv.addObject("message", "Wrong Password");
+				mv.setViewName("../index.jsp");
+			}
 		}
 
 		else {
@@ -111,20 +117,24 @@ class Controllers {
 		System.out.println(conpass);
 
 		String msg = "";
-		Users user = dao.getUser(username, password);
+		Users user = dao.getUser(username);
 
 		if (user != null) {
-			if (newpass.equals(conpass)) {
-				msg = dao.updateUser(user, newpass, newmail);
-				mv.addObject("msg", msg);
-				mv.setViewName("dashboard.jsp");
-			} else {
-				msg = "New Password and Confirm Password must be the Same!";
-				mv.addObject("msg", msg);
-				mv.setViewName("dashboard.jsp");
-			}
-		} else {
-			msg = "Password is Incorrect";
+			
+				if (newpass.equals(conpass)) {
+					msg = dao.updateUser(user, newpass, newmail);
+					mv.addObject("msg", msg);
+					mv.setViewName("dashboard.jsp");
+				} 
+				else {
+					msg = "New Password and Confirm Password must be the Same!";
+					mv.addObject("msg", msg);
+					mv.setViewName("dashboard.jsp");
+				}
+			
+		} 
+		else {
+			msg = "User does not exist";
 			mv.addObject("msg", msg);
 			mv.setViewName("dashboard.jsp");
 		}
@@ -138,12 +148,14 @@ class Controllers {
 
         if(stat.equals("ENABLED")) {
             dao.disableUser(uid,"DISABLED");
+            mv.addObject("msg", "Account Disabled");
         }
         else if (stat.equals("DISABLED")) {
             dao.disableUser(uid, "ENABLED");
+            mv.addObject("msg", "Account Enabled");
         }
-
-        mv.setViewName("edituser.jsp");
+        
+        mv.setViewName("dashboard.jsp");
         return mv;
     }
 
@@ -154,9 +166,10 @@ class Controllers {
 
         if(roleid != 0) {
             dao.editUser(uid, roleid);
+            mv.addObject("msg", "Account Role Changed");
         }
 
-        mv.setViewName("edituser.jsp");
+        mv.setViewName("dashboard.jsp");
         return mv;
     }
 

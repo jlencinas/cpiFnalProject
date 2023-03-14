@@ -51,7 +51,7 @@ public class UsersDao {
 	private static final String dbPassword = "calandria";
 	private static final String server = "training-db.cosujmachgm3.ap-southeast-1.rds.amazonaws.com";
 
-	public Users getUser(String username, String password) {
+	public Users getUser(String username) {
 		Users u = new Users();
 		Connection conn = null;
 		Statement st = null;
@@ -62,8 +62,7 @@ public class UsersDao {
 			DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
 			conn = db.getConnection();
 			st = conn.createStatement();
-			rs = st.executeQuery("SELECT * FROM users WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password
-					+ "' AND STATUS != 'DISABLED'");
+			rs = st.executeQuery("SELECT * FROM users WHERE USERNAME = '" + username + "' AND STATUS != 'DISABLED'");
 
 			if (rs.next()) {
 				u.setUserId(rs.getInt("USER_ID"));
@@ -125,15 +124,14 @@ public class UsersDao {
 		 * "SimpleEmail Testing Body";
 		 */
 
-		
-		//setup email
-		/*String to = email;
-		String from = "ibcalandria@gmail.com";
-		String host = "localhost";
-		Properties properties = System.getProperties();
-		properties.setProperty("mail.smtp.host", host);
-		Session session = Session.getDefaultInstance(properties);*/
-		
+		// setup email
+		/*
+		 * String to = email; String from = "ibcalandria@gmail.com"; String host =
+		 * "localhost"; Properties properties = System.getProperties();
+		 * properties.setProperty("mail.smtp.host", host); Session session =
+		 * Session.getDefaultInstance(properties);
+		 */
+
 		Connection conn = null;
 		Statement st = null;
 		ResultSet rs = null;
@@ -168,51 +166,42 @@ public class UsersDao {
 						 * { System.out.println("Email not sent"); msg += "<br/>Email not sent"; }
 						 */
 
-						
-						  try {
-						  
-								/*
-								 * MimeMessage message = new MimeMessage(session);
-								 * message.addHeader("Content-type", "text/HTML; charset=UTF-8");
-								 * message.addHeader("format", "flowed");
-								 * message.addHeader("Content-Transfer-Encoding", "8bit");
-								 * 
-								 * message.setFrom(new InternetAddress("no_reply@example.com", "NoReply-JD"));
-								 * message.setReplyTo(InternetAddress.parse("no_reply@example.com", false));
-								 * message.setSubject(subject, "UTF-8"); message.setText(body, "UTF-8");
-								 * message.setSentDate(new Date());
-								 * message.setRecipients(Message.RecipientType.TO,
-								 * InternetAddress.parse(toEmail, false));
-								 * System.out.println("Message is ready");
-								 * 
-								 * Transport.send(message);
-								 */
-						  
-							  sendMail(email);
-							  msg += "<br/>Email sent";
-						  
-						  }
-						  
-						  catch(Exception exce) { 
-							  System.out.println("Email not sent"); 
-							  msg += "<br/>Email not sent"; 
-						  }
-						 
+						/*
+						 * try {
+						 * 
+						 * 
+						 * MimeMessage message = new MimeMessage(session);
+						 * message.addHeader("Content-type", "text/HTML; charset=UTF-8");
+						 * message.addHeader("format", "flowed");
+						 * message.addHeader("Content-Transfer-Encoding", "8bit");
+						 * 
+						 * message.setFrom(new InternetAddress("no_reply@example.com", "NoReply-JD"));
+						 * message.setReplyTo(InternetAddress.parse("no_reply@example.com", false));
+						 * message.setSubject(subject, "UTF-8"); message.setText(body, "UTF-8");
+						 * message.setSentDate(new Date());
+						 * message.setRecipients(Message.RecipientType.TO,
+						 * InternetAddress.parse(toEmail, false));
+						 * System.out.println("Message is ready");
+						 * 
+						 * Transport.send(message);
+						 * 
+						 * 
+						 * sendMail(email); msg += "<br/>Email sent";
+						 * 
+						 * }
+						 * 
+						 * catch(Exception exce) { System.out.println("Email not sent"); msg +=
+						 * "<br/>Email not sent"; }
+						 */
 
-						
-						try {
-							/*MimeMessage message = new MimeMessage(session);
-							message.setFrom(new InternetAddress(from));
-							message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-							message.setSubject("This is the Subject Line!");
-							message.setText("This is actual message");
-							Transport.send(message);
-							System.out.println("Sent message successfully....");*/
-						}
-						catch(Exception exce) {
-							System.out.println("Email not sent");
-							msg += "<br/>Email not sent";
-						}
+						/*
+						 * try { MimeMessage message = new MimeMessage(session); message.setFrom(new
+						 * InternetAddress(from)); message.addRecipient(Message.RecipientType.TO, new
+						 * InternetAddress(to)); message.setSubject("This is the Subject Line!");
+						 * message.setText("This is actual message"); Transport.send(message);
+						 * System.out.println("Sent message successfully...."); } catch(Exception exce)
+						 * { System.out.println("Email not sent"); msg += "<br/>Email not sent"; }
+						 */
 
 					}
 
@@ -284,32 +273,42 @@ public class UsersDao {
 			System.out.println("Updating to server");
 
 			if (newemail != "" && newpass != "") {
-				updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "', EMAIL = '" + newemail
-						+ "' WHERE USER_ID = " + u.getUserId();
-				try {
-					st.executeUpdate(updateQuery);
-					msg = "Updated Email and Pass Successfully";
-					st.close();
-					conn.close();
-				} catch (Exception e) {
-					System.out.println("DI MAUPDATE YUNG EMAIL AT PASS");
-					msg = "Update PWD and Email Failed";
+				if(newpass.equals(u.getPassword())) {
+					updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "', EMAIL = '" + newemail
+							+ "' WHERE USER_ID = " + u.getUserId();
+					try {
+						st.executeUpdate(updateQuery);
+						msg = "Updated Email and Pass Successfully";
+						st.close();
+						conn.close();
+					} catch (Exception e) {
+						System.out.println("DI MAUPDATE YUNG EMAIL AT PASS");
+						msg = "Update PWD and Email Failed";
+					}
+				}
+				else {
+					msg = "Password is incorrect";
 				}
 			}
 
 			else if (newemail == "" && newpass != "") {
-				updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "' WHERE USER_ID = " + u.getUserId();
-
-				try {
-					st.executeUpdate(updateQuery);
-					msg = "Updated Password Successfully";
-					st.close();
-					conn.close();
+				if(newpass.equals(u.getPassword())) {
+					updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "' WHERE USER_ID = " + u.getUserId();
+					
+					try {
+						st.executeUpdate(updateQuery);
+						msg = "Updated Password Successfully";
+						st.close();
+						conn.close();
+					}
+	
+					catch (Exception e) {
+						System.out.println("DI MAUPDATE YUNG PASS");
+						msg = "Update Password Failed";
+					}
 				}
-
-				catch (Exception e) {
-					System.out.println("DI MAUPDATE YUNG PASS");
-					msg = "Update Password Failed";
+				else {
+					msg = "Password is incorrect";
 				}
 			}
 
@@ -334,33 +333,29 @@ public class UsersDao {
 		return msg;
 	}
 
-
 	public void disableUser(int uid, String status) {
 		Connection conn = null;
-        Statement st = null;
-        try {
-            DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
-            conn = db.getConnection();
-            st = conn.createStatement();
-            System.out.println("Updating to server");
-            String disableQuery = "UPDATE USERS SET STATUS = '" + status + "' WHERE USER_ID = " + uid;
-            try {
-                System.out.println("Run Able Query");
-                st.executeUpdate(disableQuery);
-                st.close();
-                conn.close();
-            }
-            catch(Exception ex) {
-                System.out.println("Cant Update Status");
-                System.out.println(ex);
-            }
-            
-        }
-        catch(Exception e) {
-        	System.out.println("NO DB CONNECTION");
-        }
-	}
+		Statement st = null;
+		try {
+			DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
+			conn = db.getConnection();
+			st = conn.createStatement();
+			System.out.println("Updating to server");
+			String disableQuery = "UPDATE USERS SET STATUS = '" + status + "' WHERE USER_ID = " + uid;
+			try {
+				System.out.println("Run Able Query");
+				st.executeUpdate(disableQuery);
+				st.close();
+				conn.close();
+			} catch (Exception ex) {
+				System.out.println("Cant Update Status");
+				System.out.println(ex);
+			}
 
+		} catch (Exception e) {
+			System.out.println("NO DB CONNECTION");
+		}
+	}
 
 	public void editUser(int uid, int roleid) {
 		Connection conn = null;
@@ -385,8 +380,7 @@ public class UsersDao {
 				st.close();
 				conn.close();
 
-			} 
-			catch (Exception exc) {
+			} catch (Exception exc) {
 				System.out.println("Cant Update ROLE_ID ");
 
 			}
@@ -399,10 +393,6 @@ public class UsersDao {
 		}
 
 	}
-
-
-
-			
 
 	public String createUser(Users u) {
 		String msg = "";
