@@ -7,13 +7,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+/*import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;*/
 
 import com.cpi.model.DBConnect;
 import com.cpi.model.Users;
 
-public class DisplayUsers {
+public class GetUserDetails {
 private static final String dbUsername = "CALANDRIA";
 private static final String dbPassword = "calandria";
 private static final String server = "training-db.cosujmachgm3.ap-southeast-1.rds.amazonaws.com";
@@ -28,7 +28,7 @@ public static List<Users> getUsers(int uid) throws ClassNotFoundException {
 		DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
 		conn = db.getConnection();
 		st = conn.createStatement();
-		rs = st.executeQuery("SELECT * FROM USERS WHERE USER_ID != " + uid + " ORDER BY USER_ID");
+		rs = st.executeQuery("SELECT * FROM USERS WHERE USER_ID != "+ uid + " ORDER BY USER_ID");
 						
 		while (rs.next()) {
 			Users u = new Users();
@@ -45,11 +45,13 @@ public static List<Users> getUsers(int uid) throws ClassNotFoundException {
 		st.close();
 		conn.close();
 	}
+	
 	catch(SQLException e) {
 		e.printStackTrace();
 		System.out.println("Di ka men nakonek sa server eh");
 	}
-		return userAccounts;
+	
+	return userAccounts;
 	}
 	
 }
