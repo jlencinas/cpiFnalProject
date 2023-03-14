@@ -54,27 +54,35 @@ public class OrderDao {
 				o.setDiscount(rs.getFloat("DISCOUNT"));
 				o.setRemarks(rs.getString("REMARKS"));
 
-				rs = st.executeQuery("SELECT * FROM orderdetails WHERE ORDER_ID = '" + orderId + "'");
-
-				while (rs.next()) {
-
-					int productId = rs.getInt("PRODUCT_ID");
-					int qty = rs.getInt("QUANTITY");
-
-					ResultSet product = st
-							.executeQuery("SELECT * FROM products WHERE PRODUCT_ID = '" + productId + "'");
-					if (product.next()) {
-
-						float price = product.getFloat("PRICE");
-						float orderPrice = price * qty;
-						o.setPrice(orderPrice);
-					}
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM orderdetails WHERE ORDER_ID = ?");
+				ps.setInt(1, orderId);
+				
+				ResultSet orderDetails = ps.executeQuery();
+				
+				while (orderDetails.next()) {
+					int productId = orderDetails.getInt("PRODUCT_ID");
+					int qty = orderDetails.getInt("QUANTITY");
+					PreparedStatement productStatement = conn.prepareStatement("SELECT * FROM products WHERE PRODUCT_ID = ?");
+					
+						productStatement.setInt(1, productId);
+					
+					ResultSet product = productStatement.executeQuery();
+					
+						if (product.next()) {
+							float price = product.getFloat("PRICE");
+							float orderPrice = price * qty;
+							
+							o.setPrice(orderPrice);
+						}
 					product.close();
+					productStatement.close();
 				}
+				orderDetails.close();
+				ps.close();
 			}
 
 		} catch (SQLException se) {
-		
+			System.out.println(se);
 		}
 
 		finally {
@@ -184,7 +192,7 @@ public class OrderDao {
 		Connection conn = null;
 		PreparedStatement ps = null;
 
-		String query = "UPDATE orders SET order_status = ?, payment_status = ? WHERE order_id = ?";
+		String query = "UPDATE orders SET order_status = ?, payment_status = ?, remarks = ? WHERE order_id = ?";
 
 		try {
 
@@ -193,7 +201,8 @@ public class OrderDao {
 
 			ps.setInt(1, order.getOrderStatus());
 			ps.setInt(2, order.getPaymentStatus());
-			ps.setInt(3, order.getOrderId());
+			ps.setString(3, order.getRemarks());
+			ps.setInt(4, order.getOrderId());
 
 			int rowsUpdated = ps.executeUpdate();
 
