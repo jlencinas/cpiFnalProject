@@ -11,6 +11,7 @@
 	<table border="1">
 		<thead>
 			<tr>
+				<th>Product Name</th>
 				<th>Product Code</th>
 				<th>Description</th>
 				<th>Picture URL</th>

@@ -35,7 +35,11 @@
 	<button onClick = "window.location.href='/ORM/pages/DisplayProduct'">Display Product</button><br/>
 	<button onClick = "window.location.href='/ORM/pages/ordering.jsp'">Ordering</button><br/>
 	<button onClick = "window.location.href='/ORM/pages/newProduct.jsp'">Add Product</button>
-	<button onClick = "window.location.href='/ORM/pages/updateProduct.jsp'">Update Product</button>
+	
+	<!-- <button onClick = "window.location.href='/ORM/pages/listOfProducts.jsp'">Update Products</button> -->
+	<form action ="listOfProducts" method="post">
+		<input type="submit" value="Update Products">
+	</form>
 	
 	
 	<% if(rid ==3) {%>

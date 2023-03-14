@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1" isELIgnored ="false" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +11,7 @@
 		<table>
 			<tr>
 				<td>PRODUCT ID</td>
-				<td><input type="number" name="productID"  value = "${product.productID}"></td>
+				<td><input type="number" name="productID" value="${product.productID}"></td>
 			</tr>
 			<tr>
 				<td>PRODUCT NAME</td>

@@ -25,10 +25,12 @@ import com.cpi.model.Users;
 class Controllers {
 
 	private OrderDao orderDao;
+	private ProductDao productDao;
 
 	@Autowired(required = false)
-	public Controllers(OrderDao orderDao) {
+	public Controllers(OrderDao orderDao, ProductDao productDao) {
 		this.orderDao = orderDao;
+		this.productDao = productDao;
 	}
 
 	@RequestMapping("pages/Login")
@@ -40,12 +42,11 @@ class Controllers {
 		Users user = dao.getUser(username);
 
 		if (user.getStatus().equals("ENABLED")) {
-			if(user.getPassword().equals(password)) {
+			if (user.getPassword().equals(password)) {
 				HttpSession sesh = request.getSession();
 				sesh.setAttribute("userAccount", user);
 				mv.setViewName("dashboard.jsp");
-			}
-			else {
+			} else {
 				mv.addObject("message", "Wrong Password");
 				mv.setViewName("../index.jsp");
 			}
@@ -76,7 +77,7 @@ class Controllers {
 		ModelAndView mv = new ModelAndView();
 		UsersDao dao = new UsersDao();
 		String msg = dao.forgotUser(username, email);
-		
+
 		mv.addObject("message", msg);
 		mv.setViewName("forgotpassword.jsp");
 		return mv;
@@ -120,20 +121,18 @@ class Controllers {
 		Users user = dao.getUser(username);
 
 		if (user != null) {
-			
-				if (newpass.equals(conpass)) {
-					msg = dao.updateUser(user, newpass, newmail);
-					mv.addObject("msg", msg);
-					mv.setViewName("dashboard.jsp");
-				} 
-				else {
-					msg = "New Password and Confirm Password must be the Same!";
-					mv.addObject("msg", msg);
-					mv.setViewName("dashboard.jsp");
-				}
-			
-		} 
-		else {
+
+			if (newpass.equals(conpass)) {
+				msg = dao.updateUser(user, newpass, newmail);
+				mv.addObject("msg", msg);
+				mv.setViewName("dashboard.jsp");
+			} else {
+				msg = "New Password and Confirm Password must be the Same!";
+				mv.addObject("msg", msg);
+				mv.setViewName("dashboard.jsp");
+			}
+
+		} else {
 			msg = "User does not exist";
 			mv.addObject("msg", msg);
 			mv.setViewName("dashboard.jsp");
@@ -141,37 +140,36 @@ class Controllers {
 		return mv;
 	}
 
-	@RequestMapping("pages/Disable") //disable or enable account
-    public ModelAndView disable(@RequestParam("uid") int uid, @RequestParam("stat") String stat) {
-        ModelAndView mv = new ModelAndView();
-        UsersDao dao = new UsersDao();
+	@RequestMapping("pages/Disable") // disable or enable account
+	public ModelAndView disable(@RequestParam("uid") int uid, @RequestParam("stat") String stat) {
+		ModelAndView mv = new ModelAndView();
+		UsersDao dao = new UsersDao();
 
-        if(stat.equals("ENABLED")) {
-            dao.disableUser(uid,"DISABLED");
-            mv.addObject("msg", "Account Disabled");
-        }
-        else if (stat.equals("DISABLED")) {
-            dao.disableUser(uid, "ENABLED");
-            mv.addObject("msg", "Account Enabled");
-        }
-        
-        mv.setViewName("dashboard.jsp");
-        return mv;
-    }
+		if (stat.equals("ENABLED")) {
+			dao.disableUser(uid, "DISABLED");
+			mv.addObject("msg", "Account Disabled");
+		} else if (stat.equals("DISABLED")) {
+			dao.disableUser(uid, "ENABLED");
+			mv.addObject("msg", "Account Enabled");
+		}
 
-    @RequestMapping("pages/Edit") //disable or enable account
-    public ModelAndView edit(@RequestParam("uid") int uid, @RequestParam("roleid") int roleid) {
-        ModelAndView mv = new ModelAndView();
-        UsersDao dao = new UsersDao();
+		mv.setViewName("dashboard.jsp");
+		return mv;
+	}
 
-        if(roleid != 0) {
-            dao.editUser(uid, roleid);
-            mv.addObject("msg", "Account Role Changed");
-        }
+	@RequestMapping("pages/Edit") // disable or enable account
+	public ModelAndView edit(@RequestParam("uid") int uid, @RequestParam("roleid") int roleid) {
+		ModelAndView mv = new ModelAndView();
+		UsersDao dao = new UsersDao();
 
-        mv.setViewName("dashboard.jsp");
-        return mv;
-    }
+		if (roleid != 0) {
+			dao.editUser(uid, roleid);
+			mv.addObject("msg", "Account Role Changed");
+		}
+
+		mv.setViewName("dashboard.jsp");
+		return mv;
+	}
 
 	@RequestMapping("pages/NewProduct")
 	public ModelAndView newProduct(@RequestParam("productName") String productName,
@@ -190,18 +188,36 @@ class Controllers {
 		return mv;
 	}
 
-	@RequestMapping("pages/UpdateProduct")
-	public ModelAndView updateProduct(@RequestParam("productID") int productId,
-			@RequestParam("productName") String productName, @RequestParam("description") String productDescription,
-			@RequestParam("url") String productPicture, @RequestParam("status") int productStatus,
-			@RequestParam("price") Float price) {
+	@RequestMapping("pages/updateProduct")
+	public ModelAndView updateProduct(@RequestParam("productName") String productName,
+			@RequestParam("description") String productDescription, @RequestParam("url") String productPicture,
+			@RequestParam("status") int productStatus, @RequestParam("price") Float price,
+			@RequestParam("productID") String productIdString) {
 
 		ModelAndView mv = new ModelAndView();
-		ProductDao dao = new ProductDao();
-		dao.updateProduct(productId, productName, productDescription, productPicture, productStatus, price);
-		mv.addObject("updatedProduct", dao);
+		Product product = new Product();
+
+		product.setProductName(productName);
+		product.setProductDescription(productDescription);
+		product.setProductPicture(productPicture);
+		product.setProductStatus(productStatus);
+		product.setProductPrice(price);
+		product.setProductID(productIdString);
+
+		productDao.updateProduct(product);
+		mv.addObject("product", product);
 		mv.setViewName("dashboard.jsp");
 
+		return mv;
+	}
+
+	@RequestMapping("pages/listOfProducts")
+	public ModelAndView listOfProducts() {
+
+		ModelAndView mv = new ModelAndView();
+		List<Product> products = productDao.getProduct();
+		mv.addObject("products", products);
+		mv.setViewName("listOfProducts.jsp");
 		return mv;
 	}
 
@@ -225,22 +241,22 @@ class Controllers {
 
 		return mv;
 	}
-	
+
 	@RequestMapping("pages/updateOrders")
 	public ModelAndView updateOrderStatusAndPayment(@RequestParam("orderStatus") Integer orderStatus,
 			@RequestParam("paymentStatus") Integer paymentStatus, @RequestParam("orderID") int orderId) {
 
 		Order order = orderDao.getOrder(orderId);
-		
+
 		order.setOrderStatus(orderStatus);
 		order.setPaymentStatus(paymentStatus);
 		orderDao.updateOrder(order);
-	
-		ModelAndView mv = new ModelAndView ();
+
+		ModelAndView mv = new ModelAndView();
 		List<Order> allOrders = orderDao.getOrdersByDate();
 		mv.addObject("allOrders", allOrders);
 		mv.setViewName("orderTaker.jsp");
 		return mv;
-		
+
 	}
 }

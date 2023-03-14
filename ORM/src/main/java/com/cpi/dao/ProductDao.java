@@ -146,17 +146,16 @@ public class ProductDao {
 			ps = conn.prepareStatement(query);
 
 			ps.setString(1, product.getProductName());
-
 			ps.setString(2, product.getProductDescription());
-
 			ps.setString(3, product.getProductPicture());
-
 			ps.setInt(4, product.getProductStatus());
-
 			ps.setFloat(5, product.getProductPrice());
-
 			ps.setString(6, product.getProductID());
+			
+			System.out.println("Product updated where product ID: " + product.getProductID());
 			ps.executeUpdate();
+			
+			
 
 		} catch (SQLException se) {
 			se.printStackTrace();
