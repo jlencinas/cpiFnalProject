@@ -11,15 +11,20 @@
 	<% 
 		HttpSession sesh2 = request.getSession(); 
 		Users seshinfo = (Users)sesh2.getAttribute("userAccount"); 
+		int uid = seshinfo.getUserId();
 	%>
 	
 	<br/>
 	<h4>Account Controls</h4>
 	<% 
-		int uid = seshinfo.getRoleId();
-		if(uid == 1){ %>
+		int rid = seshinfo.getRoleId();
+		if(rid == 1){ %>
 		<button onClick = "window.location.href='/ORM/pages/register.jsp'">Register User</button>
-		<button onClick = "window.location.href='/ORM/pages/edituser.jsp'">Disable Users</button>
+		<!-- <button onClick = "window.location.href='/ORM/pages/ShowUsers'">Disable / Edit Users</button> -->
+		<form action = "ShowUsers" method = "post">
+			<input type ="hidden" value ="<%= uid %>" name ="userid">
+			<input type = "submit" value = "Disable / Edit Users">
+		</form>
 	<%	}
 	%>
 	
@@ -31,16 +36,16 @@
 	<button onClick = "window.location.href='/ORM/pages/ordering.jsp'">Ordering</button><br/>
 	<button onClick = "window.location.href='/ORM/pages/newProduct.jsp'">Add Product</button>
 	<button onClick = "window.location.href='/ORM/pages/updateProduct.jsp'">Update Product</button>
-	<!-- <form>
-	<input type="submit" value ="Update">
-	</form> -->
 	
+	
+	<% if(rid ==3) {%>
 	<h4>Order Controls</h4>
 	<button onClick = "window.location.href='/ORM/pages/orderDetails.jsp'">Order Details</button><br/>
-	
 	<form action = "orderTaker" method = "post">
 		<input type ="submit" value = "Display Orders">
 	</form>
+	<% } %>
+	
 	<form action = "Logout" method = "post">
 		<input type="submit" value = "Logout">
 	</form>
