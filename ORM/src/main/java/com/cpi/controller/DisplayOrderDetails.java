@@ -5,15 +5,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cpi.dao.AddProduct;
+import com.cpi.dao.UpdateOrderDetailsDao;
 
 @Controller
 public class DisplayOrderDetails {
-	@RequestMapping("pages/DisplayOrder")
+	@RequestMapping("pages/DisplayUpdateOrder")
 	public ModelAndView displayOrder () {
-
-				
 		ModelAndView mv = new ModelAndView ();
-//		mv.addObject("orderdetails", CreateOrderDao.displayUpdateOrder());
+		mv.addObject("updateorderdetails", UpdateOrderDetailsDao.displayUpdateOrderDetails());
 		mv.setViewName("orderingDetails.jsp");
 		return mv;
 	}

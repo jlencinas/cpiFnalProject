@@ -15,7 +15,7 @@
 			<div class="product-card">
 			<div class="product-image">
 				<%-- <img src="data:image/png;base64,${product.productPicture}"
-					alt="<%=product.getProdname()%>"> --%>
+					alt="${product.productName}"> --%>
 			</div>
 			<div class="product-info">
 				<h2>${product.productName}</h2>
