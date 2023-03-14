@@ -37,6 +37,7 @@
 	
 	<h4>Order Controls</h4>
 	<button onClick = "window.location.href='/ORM/pages/orderDetails.jsp'">Order Details</button><br/>
+	<button onClick = "window.location.href='/ORM/pages/DisplayUpdateOrder'">Update Order Details</button><br/>
 	
 	<form action = "orderTaker" method = "post">
 		<input type ="submit" value = "Display Orders">

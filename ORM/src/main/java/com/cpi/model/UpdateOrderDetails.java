@@ -4,6 +4,8 @@ public class UpdateOrderDetails {
 	private int item_id;
 	private int order_id;
 	private int product_id;
+	private int quantity;
+	private float totalPrice;
 	private float price;
 	private float discount;
 	private String productName;
@@ -48,5 +50,17 @@ public class UpdateOrderDetails {
 	public String toString() {
 		return "UpdateOrderDetails [item_id=" + item_id + ", order_id=" + order_id + ", product_id=" + product_id
 				+ ", price=" + price + ", discount=" + discount + ", productName=" + productName + "]";
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	public float getTotalPrice() {
+		return totalPrice;
+	}
+	public void setTotalPrice(float totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 }
