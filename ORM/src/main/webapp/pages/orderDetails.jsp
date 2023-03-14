@@ -27,5 +27,6 @@
 			<td><c:out value="${order.paymentStatus}"></c:out></td>
 		</tr>
 	</table>
+	<button onClick="window.location.href='/ORM/pages/dashboard.jsp'">Back</button>
 </body>
 </html>

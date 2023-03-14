@@ -5,18 +5,29 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
 
 import com.cpi.model.DBConnect;
 import com.cpi.model.Product;
 
+@Component
 public class ProductDao {
 
 	private static final String dbUsername = "CALANDRIA";
 	private static final String dbPassword = "calandria";
 	private static final String server = "training-db.cosujmachgm3.ap-southeast-1.rds.amazonaws.com";
+	private final DBConnect db;
 
-	public Product getProduct() {
-		Product p = null;
+	public ProductDao() {
+		db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
+	}
+
+	public List<Product> getProduct() {
+
+		List<Product> p = new ArrayList<>();
 
 		Connection conn = null;
 		Statement st = null;
@@ -24,27 +35,23 @@ public class ProductDao {
 
 		try {
 
-			DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
 			conn = db.getConnection();
 			System.out.println("Connected to server");
 
 			st = conn.createStatement();
 			rs = st.executeQuery("SELECT * FROM Product");
 
-			if (rs.next()) {
+			while (rs.next()) {
 
-				p.setProductID(rs.getInt("PRODUCT_ID"));
+				Product product = new Product();
+				product.setProductID(rs.getString("PRODUCT_ID"));
+				product.setProductName(rs.getString("PRODUCT_NAME"));
+				product.setProductDescription(rs.getString("PRODUCT_DESCRIPTION"));
+				product.setProductPicture(rs.getString("PRODUCT_PICTURE"));
+				product.setProductStatus(rs.getInt("PRODUCT_STATUS"));
+				product.setProductPrice(rs.getFloat("PRICE"));
 
-				p.setProductName(rs.getString("PRODUCT_NAME"));
-				p.setProductDescription(rs.getString("PRODUCT_DESCRIPTION"));
-				p.setProductPicture(rs.getString("PRODUCT_PICTURE"));
-
-				p.setProductName(rs.getString("PRODUCT_NAME"));
-				p.setProductDescription(rs.getString("PRODUCT_DESCRIPTION"));
-				p.setProductPicture(rs.getString("PRODUCT_PICTURE"));
-
-				p.setProductStatus(rs.getInt("PRODUCT_STATUS"));
-				p.setProductPrice(rs.getFloat("PRICE"));
+				p.add(product);
 
 			}
 		} catch (SQLException se) {
@@ -82,7 +89,6 @@ public class ProductDao {
 
 		try {
 
-			DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
 			conn = db.getConnection();
 			System.out.println("Connected to server");
 
@@ -124,8 +130,7 @@ public class ProductDao {
 		return p;
 	}
 
-	public void updateProduct(int productId, String productName, String productDescription, String productPicture,
-			Integer productStatus, Float price) {
+	public void updateProduct(Product product) {
 
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -136,22 +141,21 @@ public class ProductDao {
 		System.out.println(query);
 
 		try {
-			DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
 			conn = db.getConnection();
 
 			ps = conn.prepareStatement(query);
 
-			ps.setString(1, productName);
+			ps.setString(1, product.getProductName());
 
-			ps.setString(2, productDescription);
+			ps.setString(2, product.getProductDescription());
 
-			ps.setString(3, productPicture);
+			ps.setString(3, product.getProductPicture());
 
-			ps.setInt(4, productStatus);
+			ps.setInt(4, product.getProductStatus());
 
-			ps.setFloat(5, price);
+			ps.setFloat(5, product.getProductPrice());
 
-			ps.setInt(6, productId);
+			ps.setString(6, product.getProductID());
 			ps.executeUpdate();
 
 		} catch (SQLException se) {
@@ -175,31 +179,26 @@ public class ProductDao {
 	public Product getByProductID(int productID) {
 
 		Connection conn = null;
-		PreparedStatement ps = null;
+		Statement st = null;
 		ResultSet rs = null;
-		Product product = null;
-
-		String query = "SELECT * FROM PRODUCT WHERE PRODUCT_ID = ?";
+		Product product = new Product();
 
 		try {
-			DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
 			conn = db.getConnection();
 			System.out.println("Connected to server");
 
-			ps = conn.prepareStatement(query);
-			ps.setInt(1, productID);
-			rs = ps.executeQuery();
+			st = conn.createStatement();
+			rs = st.executeQuery("SELECT * FROM PRODUCT WHERE PRODUCT_ID = '" + productID + "'");
 
 			if (rs.next()) {
 
-				int id = rs.getInt("PRODUCT_ID");
-				String name = rs.getString("PRODUCT_NAME");
-				String description = rs.getString("PRODUCT_DESCRIPTION");
-				String picture = rs.getString("PRODUCT_PICTURE");
-				int status = rs.getInt("PRODUCT_STATUS");
-				float price = rs.getFloat("PRICE");
+				product.setProductID(rs.getString("PRODUCT_ID"));
+				product.setProductName(rs.getString("PRODUCT_NAME"));
+				product.setProductDescription(rs.getString("PRODUCT_DESCRIPTION"));
+				product.setProductPicture(rs.getString("PRODUCT_PICTURE"));
+				product.setProductStatus(rs.getInt("PRODUCT_STATUS"));
+				product.setProductPrice(rs.getFloat("PRICE"));
 
-				product = new Product(id, name, description, picture, status, price);
 			}
 		} catch (SQLException se) {
 			System.out.println(se);

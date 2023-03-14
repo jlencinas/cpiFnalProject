@@ -7,11 +7,11 @@
 <title>Updating Products</title>
 </head>
 <body>
-	<form action="UpdateProduct" method="post">
+	<form action="updateProduct" method="post">
 		<table>
 			<tr>
 				<td>PRODUCT ID</td>
-				<td><input type="number" name="productID" required></td>
+				<td><input type="number" name="productID"  value = "${product.productID}"></td>
 			</tr>
 			<tr>
 				<td>PRODUCT NAME</td>

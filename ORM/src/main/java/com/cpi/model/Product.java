@@ -1,26 +1,17 @@
 package com.cpi.model;
 
 public class Product {
-	private int productID;
+	private String productID;
 	private String productName;
 	private String productDescription;
 	private String productPicture;
 	private int productStatus;
 	private float productPrice;
 	
-	public Product(int id, String name, String description, String picture, int status, float price) 
-	{
-		this.setProductID(id);
-		this.setProductName(name);
-		this.setProductDescription(description);
-		this.setProductPicture(picture);
-		this.setProductStatus(status);
-		this.setProductPrice(price);
-	}
-	public int getProductID() {
+	public String getProductID() {
 		return productID;
 	}
-	public void setProductID(int productID) {
+	public void setProductID(String productID) {
 		this.productID = productID;
 	}
 	public String getProductName() {

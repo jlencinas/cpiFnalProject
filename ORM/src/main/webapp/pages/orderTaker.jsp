@@ -46,15 +46,17 @@
 							<option value="1"
 								<c:if test="${order.paymentStatus == 1}">selected</c:if>>Not
 								Paid</option>
-							<option value="2"	
+							<option value="2"
 								<c:if test="${order.paymentStatus == 2}">selected</c:if>>Paid</option>
 					</select></td>
-					<td><input type="text" id="remarks_${order.orderId}" name="remarks" maxlength="30"></input></td>
+					<td><input type="text" id="remarks_${order.orderId}"
+						name="remarks" maxlength="30"></input></td>
 					<td><button type="submit">Apply Changes</button></td>
 				</tr>
 			</table>
 		</form>
 		<br>
 	</c:forEach>
+	<button onClick="window.location.href='/ORM/pages/dashboard.jsp'">Back</button>
 </body>
 </html>

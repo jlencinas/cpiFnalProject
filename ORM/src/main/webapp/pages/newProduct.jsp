@@ -36,8 +36,10 @@
 			<tr>
 				<td><input type="submit" value="Submit"></td>
 				<td><input type="reset" value="Clear"></td>
+				<td></td>
 			</tr>
 		</table>
 	</form>
+	<button onClick = "window.location.href='/ORM/pages/dashboard.jsp'">Back</button>
 </body>
 </html>
