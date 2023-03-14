@@ -18,7 +18,6 @@ public class Order {
 	private float price;
 	private String remarks;
 	
-	
 	public int getOrderId() {
 		return orderId;
 	}
