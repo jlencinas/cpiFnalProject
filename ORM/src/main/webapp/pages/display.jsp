@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ page import="java.util.List"%>
-<%@ page import="com.cpi.model.Product"%>
-<%@ page import="com.cpi.dao.AddProduct"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
 <html>
@@ -12,27 +11,23 @@
 </head>
 <body>
 	<main>
-		<%
-		List<Product> productList = AddProduct.getProducts();
-		for (Product product : productList) {
-		%>
-		<div class="product-card">
+		<c:forEach items="${products}" var="product">
+			<div class="product-card">
 			<div class="product-image">
-				<%-- <img src="data:image/png;base64,<%=product.convertImage()%>"
+				<%-- <img src="data:image/png;base64,${product.productPicture}"
 					alt="<%=product.getProdname()%>"> --%>
 			</div>
 			<div class="product-info">
-				<h2><%=product.getProductName()%></h2>
-				<p><%=product.getProductDescription()%></p>
-				<h3>$<%=product.getProductPrice()%></h3>
+				<h2>${product.productName}</h2>
+				<p>${product.productDescription}</p>
+				<h3>${product.productPrice}</h3>
 				<form action="addToCart" method="post">
-					<button class="buy-button" name="itemnum" value="<%=product.getProductID()%>">Add To Cart!</button>
+					<button class="buy-button" name="itemnum" value="${product.productID}">Add To Cart!</button>
 				</form>
 			</div>
 		</div>
-		<%
-		}
-		%>
+		</c:forEach>
+		
 	</main>
 </body>
 </html>

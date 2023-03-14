@@ -28,7 +28,7 @@ class Ordering {
 		order.setOrderStatus(1);
 		order.setPaymentStatus(1);							//PlaceHolder 1 payed 0 notpayed
 		order.setDiscount(15000);							//PlaceHolder
-		order.setPrice(500010);							;	//PlaceHolder price + quantity
+		order.setPrice(500010);								//PlaceHolder price + quantity
 		order.setRemarks("BAD");							//PlaceHolder
 		
 		CreateOrderDao.createOrder(order);
@@ -37,15 +37,6 @@ class Ordering {
 		
 		mv.setViewName("dashboard.jsp");
 		
-		return mv;
-	}
-	@RequestMapping("pages/DisplayOrder")
-	public ModelAndView displayOrder () {
-//		OrderDetails order = new OrderDetails();
-				
-		ModelAndView mv = new ModelAndView ();
-//		mv.addObject("orderdetails", CreateOrderDao.displayUpdateOrder());
-		mv.setViewName("orderingDetails.jsp");
 		return mv;
 	}
 }

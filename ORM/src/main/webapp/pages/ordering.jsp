@@ -19,7 +19,7 @@
 			</tr>
 			<tr>
 				<td>Mobile Number</td>
-				<td><input type="number" name="t3"></td>
+				<td><input type="number" name="t3" maxlength="11"></td>
 			</tr>
 			<tr>
 				<td>Expected Delivery Date</td>
