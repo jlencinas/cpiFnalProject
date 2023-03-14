@@ -148,6 +148,7 @@ class Controllers {
 
         if(stat.equals("ENABLED")) {
             dao.disableUser(uid,"DISABLED");
+            mv.addObject("msg", "Account Disabled");
         }
         else if (stat.equals("DISABLED")) {
             dao.disableUser(uid, "ENABLED");
