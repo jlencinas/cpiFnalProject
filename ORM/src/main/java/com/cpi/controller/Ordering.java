@@ -39,4 +39,13 @@ class Ordering {
 		
 		return mv;
 	}
+	@RequestMapping("pages/DisplayOrder")
+	public ModelAndView displayOrder () {
+//		OrderDetails order = new OrderDetails();
+				
+		ModelAndView mv = new ModelAndView ();
+//		mv.addObject("orderdetails", CreateOrderDao.displayUpdateOrder());
+		mv.setViewName("orderingDetails.jsp");
+		return mv;
+	}
 }
