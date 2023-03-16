@@ -1,0 +1,159 @@
+@charset "UTF-8";
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgb(255, 222, 212);
+    background: linear-gradient(318deg, rgba(255, 222, 212, 1) 0%, rgba(235, 162, 123, 1) 52%, rgba(204, 109, 77, 1) 100%);
+}
+
+.logInDiv {
+    max-width: 800px;
+    height: auto;
+    width: 600px;
+    background-color: #fff;
+    border-radius: 3rem;
+    display: flex;
+    flex-direction: column;
+    padding-block: 2rem;
+    padding-inline: 4rem;
+}
+
+.loginLogo {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 2rem;
+}
+
+.loginLogo img {
+    width: 300px;
+}
+
+.loginTitle {
+    width: 100%;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+.inputFieldLogin {
+    width: auto;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+h3 {
+    font-weight: 400;
+}
+
+.inputField {
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+
+.user-logo {
+    position: absolute;
+    font-size: 1.5rem;
+    margin-left: .75rem;
+    margin-top: .25rem;
+}
+
+.lock-logo {
+    position: absolute;
+    font-size: 1.5rem;
+    margin-left: .75rem;
+    margin-top: .25rem;
+}
+
+.inputField input[type="text"] {
+    border: none;
+    border-bottom: 2px solid #cc6d4d;
+    background-color: transparent !important;
+    font-size: 1.5rem;
+    padding-inline: 3.5rem;
+    padding-bottom: .2rem;
+    text-align: left;
+    width: 100%;
+}
+
+.inputField input[type="password"] {
+    border: none;
+    border-bottom: 2px solid #cc6d4d;
+    background-color: transparent !important;
+    font-size: 1.75rem;
+    padding-inline: 3.5rem;
+    padding-bottom: .2rem;
+    text-align: left;
+    width: 100%;
+}
+
+.inputField input[type="password"]:focus {
+    outline: none;
+}
+
+.inputField input[type="text"]:focus {
+    outline: none;
+}
+
+.forgotPasswordField {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    height: auto;
+    margin-bottom: 4rem;
+}
+
+.forgotPasswordField a {
+    text-decoration: none;
+    color: black;
+}
+
+.forgotPasswordField a:hover {
+    text-decoration: underline;
+    color: black;
+}
+
+.buttonDiv {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+}
+
+button {
+    width: 80%;
+    height: 50%;
+    border-radius: 2rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    border-style: none;
+    cursor: pointer;
+    transition: ease-out, .2s;
+}
+
+button:hover {
+    background-color: #ffca63;
+    transition: ease-in, .2s;
+}

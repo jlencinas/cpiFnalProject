@@ -1,0 +1,297 @@
+
+
+header nav .desktop-nav-container {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header nav .desktop-nav-container a.basket-a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    padding-inline: 2rem;
+    color: #fff;
+    transition: ease-out 0.125s;
+}
+
+header nav .desktop-nav-container a.basket-a:hover {
+    transform: scale(1.1);
+    color: #f46f36;
+    transition: ease-in 0.125s;
+}
+
+header nav .desktop-nav-container a span {
+    font-size: 1.25rem;
+    color: #fff;
+    text-decoration: none;
+}
+
+header nav .desktop-nav-container ul {
+    display: flex;
+    width: 500px;
+    height: auto;
+    align-items: center;
+    justify-content: space-around;
+}
+
+header nav .desktop-nav-container li {
+    list-style: none;
+}
+
+header nav .desktop-nav-container li a {
+    text-decoration: none;
+    color: #fff;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    transition: ease-out .125s;
+}
+
+header nav .desktop-nav-container li a:hover {
+    color: #F37346;
+    transition: ease-in .125s;
+}
+
+header nav .desktop-nav-container li a:active {
+    color: #F37346;
+}
+
+header nav .desktop-nav-container a img {
+    width: 150px;
+}
+
+header nav .desktop-nav-container a {
+    width: 150px;
+}
+
+
+main {
+    background-color: #f7f7f7;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+.container {
+    padding-block: 2rem;
+}
+
+.product-card {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.product-card .card-container {
+    width: 400px;
+    height: 200px;
+    border-radius: 2rem;
+    display: flex;
+    justify-content: space-between;
+    padding-inline: 1.75rem;
+    padding-block: 1.5rem;
+    background-color: #fff;
+    border: 1px solid #fff;
+    transition: ease-out .125s;
+}
+
+.product-card .card-container:hover {
+    border: 1px solid #F37346;
+    transition: ease-in .125s;
+}
+
+.card-left-container {
+    display: flex;
+}
+
+.card-right-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.card-right-container {
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-left-container .card-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 1rem;
+}
+
+.card-left-container .card-image img {
+    border-radius: 1rem;
+}
+
+.card-right-container .card-desc h4 {
+    font-weight: 600;
+    padding-bottom: .25rem;
+}
+
+.card-right-container .card-desc form .quantity-input {
+    display: flex;
+}
+
+.card-right-container .card-desc form .quantity-input input[type="number"] {
+    display: flex;
+    width: 100px;
+    text-align: center;
+    border: none;
+    background-color: #eae9e9;
+}
+
+.card-right-container .card-desc form .quantity-input input[type="number"]:focus {
+    outline: none;
+}
+
+/* Chrome, Safari, Edge, Opera */
+.card-right-container .card-desc form .quantity-input input::-webkit-outer-spin-button,
+.card-right-container .card-desc form  .quantity-input input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+
+.card-right-container .card-desc form .quantity-input button {
+    display: flex;
+    padding-block: 5px;
+    padding-inline: 10.45px;
+    border-radius: 0;
+    border-style: none;
+    background-color: #c3c3c3;
+    transition: ease-out .1s
+}
+
+.card-right-container .card-desc form .quantity-input button.button-decrease-quantity:hover {
+    background-color: #f44336;
+    transition: ease-in .1s
+}
+
+.card-right-container .card-desc form .quantity-input button.button-increase-quantity:hover {
+    background-color: #4CAF50;
+    transition: ease-in .1s
+}
+
+.card-right-container .button-selection button.button-addToCart {
+    display: flex;
+    padding-block: 5px;
+    padding-inline: 10.45px;
+    font-size: 1rem;
+    border-radius: 0;
+    border-style: none;
+    color: #fff;
+    background-color: #F37346;
+    border-radius: .25rem;
+    cursor: pointer;
+    transition: ease-out .1s;
+}
+
+.card-right-container .button-selection button.button-addToCart:hover {
+    transform: scale(1.05);
+    transition: ease-in .1s;
+}
+
+.card-image>img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.btn {
+    padding: 10px 60px;
+    background: #fff;
+    border: 0;
+    outline: none;
+    cursor: pointer;
+    font-size: 22px;
+    font-weight: 500;
+    border-radius: 2rem;
+}
+
+.confirmButton {
+    padding: 5px 30px;
+    background: orange;
+    border: 0;
+    outline: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 2rem;
+}
+
+
+.popup {
+    width: 400px;
+    background: #fff;
+    border-radius: 6px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    text-align: center;
+    padding: 0 1rem 1rem;
+    visibility: hidden;
+    display: none;
+    transition: ease-out .2s;
+    opacity: 0;
+    z-index: 2;
+}
+
+.card-container1 {
+    border-radius: 6px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    visibility: hidden;
+    display: none;
+    transition: ease-out .2s;
+    opacity: 0;
+    z-index: 2;
+
+    height: auto;
+    width: auto;
+    min-width: 600px;
+    background-color: #fff;
+    border-radius: 3rem;
+    display: flex;
+    flex-direction: column;
+    padding-block: 2rem;
+    padding-inline: 2.5rem;
+}
+
+.open-popup {
+    opacity: 100;
+    visibility: visible;
+    display: block;
+    transition: ease-in .2s;
+}
+
+.popup h2 {
+    font-size: 38px;
+    font-weight: 500;
+    margin: 30px 0 10px;
+}
+
+.blur-popup {
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+}
+
+img.popup-logo {
+    width: 100px;
+    margin-top: -50px;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
