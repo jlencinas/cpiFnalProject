@@ -41,6 +41,7 @@
 		<input type="submit" value="Update Products">
 	</form>
 	
+<<<<<<< HEAD
 	<% if(rid == 2)  { %>
 	<h4>Production Controls</h4>
 	<!-- <button onClick = "window.location.href='/ORM/pages/ordersToday.jsp'">Orders Today</button> -->
@@ -67,3 +68,22 @@
 	
 	<h2>${msg}</h2>
 </body>
+=======
+	
+	<% if(rid ==3) {%>
+	<h4>Order Controls</h4>
+	<button onClick = "window.location.href='/ORM/pages/orderDetails.jsp'">Order Details</button><br/>
+	<button onClick = "window.location.href='/ORM/pages/DisplayUpdateOrder'">Update Order Details</button><br/>
+	
+	<form action = "orderTaker" method = "post">
+		<input type ="submit" value = "Display Orders">
+	</form>
+	<% } %>
+	
+	<form action = "Logout" method = "post">
+		<input type="submit" value = "Logout">
+	</form>
+	
+	<h2>${msg}</h2>
+</body>
+>>>>>>> refs/remotes/origin/master

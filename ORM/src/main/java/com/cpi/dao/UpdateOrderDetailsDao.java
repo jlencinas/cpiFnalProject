@@ -54,41 +54,5 @@ public class UpdateOrderDetailsDao {
 		return uod;
 	}
 	
-	//Remember to everyone
-	
-//	public static List<Product> showOrderDetails(List<String> productid, List<String> quantity){
-//		List<Product> product = new ArrayList<>();
-//		Connection conn = null;
-//		DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
-//		conn = db.getConnection();
-//		System.out.println("Connected to server");
-//		String sql = "select product_id, product_name, price\r\n"
-//				+ "from product\r\n"
-//				+ "where product_id = 1";
-//		Statement stmt;
-//		try {
-//			stmt = conn.createStatement();
-//			ResultSet rs1 = stmt.executeQuery(sql);
-//			while (rs1.next()) {
-//				Product p = new Product();
-//				p.setProductID(rs1.getString("PRODUCT_ID"));
-//				p.setProductName(rs1.getString("PRODUCT_NAME"));
-//				p.setProductDescription(rs1.getString("PRODUCT_DESCRIPTION"));
-//				p.setProductPicture(rs1.getString("PICTURE"));
-//				p.setProductStatus(rs1.getInt("PRODUCT_STATUS"));
-//				p.setProductPrice(rs1.getFloat("PRICE"));
-//				product.add(p);
-//			}
-//			rs1.close();
-//			stmt.close();
-//			conn.close();
-//		} catch (SQLException e) {
-//
-//			e.printStackTrace();
-//		}
-//		
-//		
-//		return product;
-//	}
 
 }

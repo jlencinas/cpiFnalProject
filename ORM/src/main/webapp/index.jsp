@@ -114,7 +114,7 @@
 	</main>
 	<footer>
 		<div class="copyright-container">
-			<h2>© Copyright 2023 Q1 Developer Trainees</h2>
+			<h2>ï¿½ Copyright 2023 Q1 Developer Trainees</h2>
 			<!-- <button id="testOutputButton">Test</button> -->
 			
 			<!-- <button onClick="window.location.href='/ORM/pages/login.jsp'">Login</button><br /> -->

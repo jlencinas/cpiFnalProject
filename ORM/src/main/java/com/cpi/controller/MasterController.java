@@ -39,21 +39,6 @@ class Controllers {
 		this.productionDao = productionDao;
 	}
 
-//	@RequestMapping("checksessioncontroller")
-//	public ModelAndView checkSession(HttpServletRequest request, HttpServletResponse response)
-//		throws ServletException, IOException {
-//
-//		HttpSession session = request.getSession();
-//		ModelAndView mv = new ModelAndView();
-//		Users user = (Users) session.getAttribute("user");
-//		if (user != null) {
-//			mv.addObject("user", user);
-//			mv.setViewName("pages/dashboard.jsp");
-//		} else {
-//			mv.setViewName("pages/index.jsp");
-//		}
-//		return mv;
-//	}
 
 	@RequestMapping("pages/ShowUsers")
 	public ModelAndView showUsers(@RequestParam("userid") int uid) throws ClassNotFoundException {
