@@ -9,31 +9,21 @@
 <title>Update Information</title>
 </head>
 <body>
-	<% 
-		HttpSession sesh2 = request.getSession(); 
-		Users seshinfo = (Users)sesh2.getAttribute("userAccount"); 
-		int uid = seshinfo.getUserId();
-		String un = seshinfo.getUsername();
-		String pwd = seshinfo.getPassword();
-	%>
-	<form action="Update" method="post">
-		<h6>Only Fill Blanks to be Updated</h6>
-		<input type="hidden" value = "<%= un %>" name = "username">
-		<label>New Email: </label><input type="email" name = "new email"><br/>
-		<label>Password: </label><input type="password" name = "password"><br/>
-		<label>New Password</label><input type="password" name = "new pass"><br/>
-		<label>Confirm New Password</label><input type="password" name = "con pass">
-		<input type="submit" value = "Submit"><input type="reset" value ="Clear">
-	</form>
-	<button onClick = "window.location.href='/ORM/pages/dashboard.jsp'">Back</button>
-<!-- 	<form>   
-		<h3>Password Validation </h3>   
-		<td> Enter Password </td>  
-		<input type = "password" name = "pswd1"> <br><br>   
-		<td> Confirm Password </td>  
-		<input type = "password" name = "pswd2" onChange= "matchPassword()"> <br><br>  
-		<button type = "submit" hidden= "true">Submit</button>  
-		<button type = "reset" value = "Reset" >Reset</button>  
-	</form>   -->
-	
+    <% 
+        HttpSession sesh2 = request.getSession(); 
+        Users seshinfo = (Users)sesh2.getAttribute("userAccount"); 
+        int uid = seshinfo.getUserId();
+        String un = seshinfo.getUsername();
+        String pwd = seshinfo.getPassword();
+    %>
+    <form action="Update" method="post">
+        <h6>Only Fill Blanks to be Updated</h6>
+        <input type="hidden" value = "<%= un %>" name = "username">
+        <label>New Email: </label><input type="email" name = "newemail"><br/>
+        <label>Password: </label><input type="password" name = "password"><br/>
+        <label>New Password</label><input type="password" name = "newpass"><br/>
+        <label>Confirm New Password</label><input type="password" name = "conpass">
+        <input type="submit" value = "Submit"><input type="reset" value ="Clear">
+    </form>
+    <button onClick = "window.location.href='/ORM/pages/dashboard.jsp'">Back</button>
 </body>

@@ -1,64 +1,150 @@
 package com.cpi.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
 
 import com.cpi.model.DBConnect;
-import com.cpi.model.Production;
+import com.cpi.model.Order;
 
-/**
- * @author Jan Christian Buan
- *
- */
+@Component
 public class ProductionDao {
 
 	private static final String dbUsername = "CALANDRIA";
 	private static final String dbPassword = "calandria";
 	private static final String server = "training-db.cosujmachgm3.ap-southeast-1.rds.amazonaws.com";
-	
-	public Production getProduction() {
-		Production p = new Production ();
+	private static DBConnect db;
+
+	public ProductionDao() {
+		db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
+	}
+
+	public List<Order> getOrdersToday() {
+
+		List<Order> orders = new ArrayList<>();
 		Connection conn = null;
-		Statement st = null;
+		PreparedStatement ps = null;
 		ResultSet rs = null;
+
+		LocalDate today = getDateToday();
+		LocalDateTime startOfDay = LocalDateTime.of (today, LocalTime.MIN);
+		LocalDateTime endOfDay = LocalDateTime.of (today, LocalTime.MAX);
 		
 		try {
-			
-			 DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
-			 conn = db.getConnection();
-			 System.out.println("Connected to server");
-			 
-			 st = conn.createStatement();
-			 rs = st.executeQuery("SELECT * FROM PRODUCTION");
-			 
-			 if(rs.next()) {
-		
-				 p.setProductionID(rs.getInt("PRODUCTION_ID"));
-				 p.setProductionUser(rs.getString("PRODUCTION_USER"));
-				 p.setProductID(rs.getInt("PRODUCT_ID"));
-				 p.setProductionDate(rs.getDate("PRODUCTION_DATE"));
-				 p.setProductionQuantity(rs.getInt("PRODUCTION_QUANTITY")); 
-			 }
-			 
-			} catch (SQLException se) { System.out.println("No data found"); }
-		
-		finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (st != null) {
-					st.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} 
-			
-			catch (SQLException se) { System.out.println(se); }
+
+			conn = db.getConnection();
+			String query = "SELECT * FROM orders WHERE delivery_date > ? AND delivery_date < ?";
+			ps = conn.prepareStatement(query);
+
+			Timestamp ts = Timestamp.valueOf(startOfDay);
+			Timestamp ts2 = Timestamp.valueOf(endOfDay);
+			ps.setTimestamp(1, ts);
+			ps.setTimestamp(2, ts2);
+
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+
+				Order order = new Order();
+				order.setOrderId(rs.getInt("order_id"));
+				order.setCustomerFn(rs.getString("customer_fn"));
+				order.setSourceName(rs.getString("source_name"));
+				order.setOrderSource(rs.getString("order_source"));
+				order.setCustomerLn(rs.getString("customer_ln"));
+				order.setMobileNumber(rs.getString("mobile_number"));
+				order.setOrderDate(rs.getDate("order_date"));
+				order.setDeliveryDate(formatDate(rs.getDate("delivery_date")));
+				order.setOrderStatus(rs.getInt("order_status"));
+				order.setPaymentStatus(rs.getInt("payment_status"));
+				order.setDiscount(rs.getFloat("discount"));
+				order.setPrice(rs.getFloat("price"));
+				orders.add(order);
+
+				System.out.println(order.getDeliveryDate());
+			}
+
+		} catch (SQLException se) {
+			System.out.println(se);
 		}
-		return p;
+
+		return orders;
+	}
+
+	public List<Order> getOrdersTodayByTime(boolean isAM) {
+
+		List<Order> orders = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		LocalDate today = getDateToday();
+		LocalDateTime startOfDay = LocalDateTime.of(today, LocalTime.MIN);
+		LocalDateTime endOfDay = LocalDateTime.of(today, LocalTime.MAX);
+
+		if (isAM) {
+			startOfDay = LocalDateTime.of(today, LocalTime.MIN);
+			endOfDay = LocalDateTime.of(today, LocalTime.NOON);
+		} else {
+			startOfDay = LocalDateTime.of(today, LocalTime.NOON).plusNanos(1);
+			endOfDay = LocalDateTime.of(today, LocalTime.MAX);
+		}
+
+		try {
+
+			conn = db.getConnection();
+			String query = "SELECT * FROM orders WHERE delivery_date > ? AND delivery_date < ?";
+			ps = conn.prepareStatement(query);
+
+			Timestamp ts = Timestamp.valueOf(startOfDay);
+			Timestamp ts2 = Timestamp.valueOf(endOfDay);
+			ps.setTimestamp(1, ts);
+			ps.setTimestamp(2, ts2);
+
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+
+				Order order = new Order();
+				order.setOrderId(rs.getInt("order_id"));
+				order.setCustomerFn(rs.getString("customer_fn"));
+				order.setSourceName(rs.getString("source_name"));
+				order.setOrderSource(rs.getString("order_source"));
+				order.setCustomerLn(rs.getString("customer_ln"));
+				order.setMobileNumber(rs.getString("mobile_number"));
+				order.setOrderDate(rs.getDate("order_date"));
+				order.setDeliveryDate(formatDate(rs.getDate("delivery_date")));
+				order.setOrderStatus(rs.getInt("order_status"));
+				order.setPaymentStatus(rs.getInt("payment_status"));
+				order.setDiscount(rs.getFloat("discount"));
+				order.setPrice(rs.getFloat("price"));
+				orders.add(order);
+
+			}
+
+		} catch (SQLException se) {
+			System.out.println(se);
+		}
+
+		return orders;
+	}
+
+	public LocalDate getDateToday() {
+		return LocalDate.now();
+	}
+
+	private String formatDate(Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, yyyy");
+		return sdf.format(date);
 	}
 }

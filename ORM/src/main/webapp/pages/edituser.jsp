@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" isELIgnored="false"%>
 <%@ page import="java.util.*"%>
-<%-- <%@ page import="javax.servlet.http.HttpSession"%>
-<%@ page import="com.cpi.model.Users"%>
-<%@ page import="com.cpi.dao.GetUserDetails"%> --%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
@@ -13,11 +10,6 @@
 <title>Edit Employees</title> 
 </head>
 <body>
-	<%-- <%
-		HttpSession sesh2 = request.getSession(); 
-		Users seshcont = (Users)sesh2.getAttribute("userAccount"); 
-		int uid = seshcont.getUserId();
-	%> --%>
 	<h1>Employee Information</h1>
 	
 	<table>
@@ -28,77 +20,7 @@
 			<th>Status</th>
 			<th colspan = "2">Actions</th>
 		</tr>
-		<%-- <%
-				List<Users> userList = GetUserDetails.getUsers();
-				for (Users acct : userList) {
-		%>
-		<tr>
-			<td>
-				<% 
-					int rid = acct.getRoleId();
-					if(rid == 1){
-						out.println("ADMINISTRATOR");
-					} 
-					else if(rid == 2){
-						out.println("PRODUCER");
-					}
-					else if(rid == 3){
-						out.println("ORDER TAKER");
-					}
-					else if(rid == 4){
-						out.println("AUDITOR");
-					}
-				%>
-			</td>
-			<td><%= acct.getUsername() %></td> 
-			
-			
-			<td><%= acct.getEmail() %></td>
-			<td><%= acct.getStatus() %></td>
-			<td>
-			
-				</form>
-			</td>
-			<td>
-				<form action = "Edit"  method = "post">
-					<input type="hidden" name = "uid" value = "<%= acct.getUserId()%>">
-					<select name="roleid">
-						<% 
-						if(rid == 1){
-							out.println("<option value='0'></option>");
-							out.println("<option value='2'>PRODUCER</option>");
-							out.println("<option value='3'>ORDER TAKER</option>");
-							out.println("<option value='4'>AUDITOR</option>");
-						} 
-						else if(rid == 2){
-							out.println("<option value='0'></option>");
-							out.println("<option value='1'>ADMINISTRATOR</option>");
-							out.println("<option value='3'>ORDER TAKER</option>");
-							out.println("<option value='4'>AUDITOR</option>");
-						} 
-						else if(rid == 3){
-							out.println("<option value='0'></option>");
-							out.println("<option value='1'>ADMINISTRATOR</option>");
-							out.println("<option value='2'>PRODUCER</option>");
-							out.println("<option value='4'>AUDITOR</option>");
-						}
-						else if(rid == 4){
-							out.println("<option value='0'></option>");
-							out.println("<option value='1'>ADMINISTRATOR</option>");
-							out.println("<option value='2'>PRODUCER</option>");
-							out.println("<option value='3'>ORDER TAKER</option>");
-						}	
-						%>
-					
-					</select>
-					
-					<input type="submit" value = "Change Role">
-				
-		
-				</form>
-			</td>
-		</tr>
-		<% } %> --%>
+
 		<c:forEach items="${userprofile}" var="user">
 			<tr>
 				<td>

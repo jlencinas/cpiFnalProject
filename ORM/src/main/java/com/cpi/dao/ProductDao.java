@@ -36,8 +36,7 @@ public class ProductDao {
 		try {
 
 			conn = db.getConnection();
-			System.out.println("Connected to server");
-
+		
 			st = conn.createStatement();
 			rs = st.executeQuery("SELECT * FROM Product");
 
@@ -90,7 +89,6 @@ public class ProductDao {
 		try {
 
 			conn = db.getConnection();
-			System.out.println("Connected to server");
 
 			st = conn.createStatement();
 			rs = st.executeQuery("SELECT MAX(PRODUCT_ID) AS MPD FROM PRODUCT");
@@ -98,7 +96,6 @@ public class ProductDao {
 			if (rs.next()) {
 				prodId = rs.getInt("MPD") + 1;
 			}
-
 			ps = conn.prepareStatement(query);
 			ps.setInt(1, prodId);
 			ps.setString(2, productName);
@@ -184,7 +181,6 @@ public class ProductDao {
 
 		try {
 			conn = db.getConnection();
-			System.out.println("Connected to server");
 
 			st = conn.createStatement();
 			rs = st.executeQuery("SELECT * FROM PRODUCT WHERE PRODUCT_ID = '" + productID + "'");

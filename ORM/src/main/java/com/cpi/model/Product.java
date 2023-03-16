@@ -11,8 +11,8 @@ public class Product {
 	public String getProductID() {
 		return productID;
 	}
-	public void setProductID(String productId) {
-		this.productID = productId;
+	public void setProductID(String productID) {
+		this.productID = productID;
 	}
 	public String getProductName() {
 		return productName;

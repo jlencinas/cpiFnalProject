@@ -41,6 +41,15 @@
 		<input type="submit" value="Update Products">
 	</form>
 	
+	<% if(rid == 2)  { %>
+	<h4>Production Controls</h4>
+	<!-- <button onClick = "window.location.href='/ORM/pages/ordersToday.jsp'">Orders Today</button> -->
+	<form action ="pages/ordersToday" method="post">
+		<input type="submit" value="Orders Today">
+	</form>
+		
+	<%} %>
+	
 	
 	<% if(rid ==3) {%>
 	<h4>Order Controls</h4>
