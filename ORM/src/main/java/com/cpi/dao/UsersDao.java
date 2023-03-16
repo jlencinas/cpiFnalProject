@@ -1,22 +1,49 @@
 package com.cpi.dao;
 
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Properties;
 
+import com.cpi.model.DBConnect;
+import com.cpi.model.Users;
+
+/*import java.util.*;
+=======
+
+import java.util.*;
+>>>>>>> refs/remotes/origin/master
+import jakarta.mail.*;
+import jakarta.mail.internet.*;
+<<<<<<< HEAD
+import jakarta.activation.*;*/
+
+/*import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
+import javax.mail.Multipart;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.util.Properties;*/
+
+/*import java.util.Properties;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
-import com.cpi.model.DBConnect;
-import com.cpi.model.Users;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import jakarta.activation.*;*/
 
 public class UsersDao {
 
@@ -31,10 +58,11 @@ public class UsersDao {
 		ResultSet rs = null;
 
 		try {
+
 			DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
 			conn = db.getConnection();
 			st = conn.createStatement();
-			rs = st.executeQuery("SELECT * FROM users WHERE USERNAME = '" + username + "'");
+			rs = st.executeQuery("SELECT * FROM users WHERE USERNAME = '" + username + "' AND STATUS != 'DISABLED'");
 
 			if (rs.next()) {
 				u.setUserId(rs.getInt("USER_ID"));
@@ -46,11 +74,12 @@ public class UsersDao {
 			}
 
 			else {
-				u.setUserId(0);
+				u.setStatus("DISABLED");
 			}
 
 			st.close();
 			conn.close();
+
 		}
 
 		catch (SQLException se) {
@@ -77,6 +106,31 @@ public class UsersDao {
 		String msg = "";
 		String pwd = randPwd(12);
 
+		// setup email
+		/*
+		 * String to = email; String from = "ibcalandria@gmail.com"; String host =
+		 * "localhost";
+		 * 
+		 * Properties properties = System.getProperties();
+		 * properties.setProperty("mail.smtp.host", host); Session session =
+		 * Session.getDefaultInstance(properties);
+		 */
+
+		/*
+		 * String smtpHostServer = "smtp.example.com"; String toEmail = email;
+		 * Properties props = System.getProperties(); props.put("mail.smtp.host",
+		 * smtpHostServer); Session session = Session.getInstance(props, null); String
+		 * subject = "SimpleEmail Testing Subject"; String body =
+		 * "SimpleEmail Testing Body";
+		 */
+
+		// setup email
+		/*
+		 * String to = email; String from = "ibcalandria@gmail.com"; String host =
+		 * "localhost"; Properties properties = System.getProperties();
+		 * properties.setProperty("mail.smtp.host", host); Session session =
+		 * Session.getDefaultInstance(properties);
+		 */
 
 		Connection conn = null;
 		Statement st = null;
@@ -95,13 +149,60 @@ public class UsersDao {
 				if (rs.next()) {
 					String forgotQuery = "UPDATE USERS SET PASSWORD = '" + pwd + "' WHERE USERNAME = '" + username
 							+ "'";
-					System.out.println("Updating Password");
+					System.out.println("Updating Database");
 					try {
 						st.executeUpdate(forgotQuery);
-						msg = "Password Changed Successfully!<br/> Check your email";
+						msg = "Password Changed Successfully!";
 						st.close();
 						conn.close();
-						sendMail(email, pwd);
+
+						// email sending
+						/*
+						 * try { MimeMessage message = new MimeMessage(session); message.setFrom(new
+						 * InternetAddress(from)); message.addRecipient(Message.RecipientType.TO, new
+						 * InternetAddress(to)); message.setSubject("This is the Subject Line!");
+						 * message.setText("This is actual message"); Transport.send(message);
+						 * System.out.println("Sent message successfully...."); } catch(Exception exce)
+						 * { System.out.println("Email not sent"); msg += "<br/>Email not sent"; }
+						 */
+
+						/*
+						 * try {
+						 * 
+						 * 
+						 * MimeMessage message = new MimeMessage(session);
+						 * message.addHeader("Content-type", "text/HTML; charset=UTF-8");
+						 * message.addHeader("format", "flowed");
+						 * message.addHeader("Content-Transfer-Encoding", "8bit");
+						 * 
+						 * message.setFrom(new InternetAddress("no_reply@example.com", "NoReply-JD"));
+						 * message.setReplyTo(InternetAddress.parse("no_reply@example.com", false));
+						 * message.setSubject(subject, "UTF-8"); message.setText(body, "UTF-8");
+						 * message.setSentDate(new Date());
+						 * message.setRecipients(Message.RecipientType.TO,
+						 * InternetAddress.parse(toEmail, false));
+						 * System.out.println("Message is ready");
+						 * 
+						 * Transport.send(message);
+						 * 
+						 * 
+						 * sendMail(email); msg += "<br/>Email sent";
+						 * 
+						 * }
+						 * 
+						 * catch(Exception exce) { System.out.println("Email not sent"); msg +=
+						 * "<br/>Email not sent"; }
+						 */
+
+						/*
+						 * try { MimeMessage message = new MimeMessage(session); message.setFrom(new
+						 * InternetAddress(from)); message.addRecipient(Message.RecipientType.TO, new
+						 * InternetAddress(to)); message.setSubject("This is the Subject Line!");
+						 * message.setText("This is actual message"); Transport.send(message);
+						 * System.out.println("Sent message successfully...."); } catch(Exception exce)
+						 * { System.out.println("Email not sent"); msg += "<br/>Email not sent"; }
+						 */
+
 					}
 
 					catch (Exception exc) {
@@ -114,9 +215,8 @@ public class UsersDao {
 				else {
 					msg = "Account Does Not Exist";
 				}
-			} 
-			catch (Exception ex) {
-				System.out.println("User Does Not Exist");
+			} catch (Exception ex) {
+				System.out.println("Di ka totoong tao");
 				msg = "User Doesn't Exist";
 			}
 		} catch (Exception e) {
@@ -124,45 +224,40 @@ public class UsersDao {
 			msg = "No Connection to Database";
 		}
 
-		return msg;
+		return msg + "<br/> New Password : " + pwd;
 	}
 
-	public static void sendMail(String recipient, String text) throws Exception {
-		String to = recipient;
-		String content = text;
-		String from = "markjewel02@gmail.com";
-		String host = "smtp.gmail.com";
-		Properties properties = System.getProperties();
-		properties.put("mail.smtp.host", host);
-        properties.put("mail.smtp.port", "587");
-        properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.smtp.ssl.enable", "false");
-        properties.put("mail.smtp.auth", "true");
-        Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("markjewel02@gmail.com", "anrnelfirlyxjztb");
-            }
-        });
-        try {
-            // Create a default MimeMessage object.            
-        	MimeMessage message = new MimeMessage(session);
-            // Set From: header field of the header.            
-        	message.setFrom(new InternetAddress(from));
-            // Set To: header field of the header.            
-        	message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-            // Set Subject: header field            
-        	message.setSubject("Password Changed!");
-            // Now set the actual message            
-        	message.setText("This is your new password: "+ content);
-            System.out.println("Sending Email");
-            // Send message            
-            Transport.send(message);
-            System.out.println("Email Sent");
-        } 
-        catch (MessagingException mex) {
-            mex.printStackTrace();
-        }
+	public static void sendMail(String recipient) throws Exception {
+		/*
+		 * System.out.println("Creating Properties"); Properties properties = new
+		 * Properties(); properties.put("mail.smtp.auth", "true");
+		 * properties.put("mail.smtp.starttls.enable", "true");
+		 * properties.put("mail.smtp.host", "smtp.gmail.com");
+		 * properties.put("mail.smtp.port", "587");
+		 * 
+		 * final String myAccountEmail = "ivannbenedict.calandria.cics@ust.edu.ph";
+		 * final String myPassword = "SystemCrash";
+		 * System.out.println("Creating Session"); Session session =
+		 * Session.getInstance(properties, new Authenticator() {
+		 * 
+		 * @Override protected PasswordAuthentication getPasswordAuthentication() {
+		 * return new PasswordAuthentication(myAccountEmail, myPassword); } });
+		 * System.out.println("Sending Message"); Message message =
+		 * prepareMessage(session, myAccountEmail, recipient); Transport.send(message);
+		 * System.out.println("EMAIL SENT SUCCESS");
+		 */
 	}
+
+	/*
+	 * private static Message prepareMessage(Session session, String myAccountEmail,
+	 * String recipient) { Message message = new MimeMessage(session); try {
+	 * message.setFrom(new InternetAddress(myAccountEmail));
+	 * message.setRecipient(Message.RecipientType.TO, new
+	 * InternetAddress(recipient)); message.setSubject("Email Trial Using Java");
+	 * message.setText("HOPE IT WORKS"); return message; } catch (Exception e) {
+	 * System.out.println("Email is not working"); e.printStackTrace(); } return
+	 * null; }
+	 */
 
 	public String updateUser(Users u, String newpass, String newemail) {
 		String msg = "";
@@ -178,32 +273,42 @@ public class UsersDao {
 			System.out.println("Updating to server");
 
 			if (newemail != "" && newpass != "") {
-				updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "', EMAIL = '" + newemail
-						+ "' WHERE USER_ID = " + u.getUserId();
-				try {
-					st.executeUpdate(updateQuery);
-					msg = "Updated Email and Pass Successfully";
-					st.close();
-					conn.close();
-				} catch (Exception e) {
-					System.out.println("DI MAUPDATE YUNG EMAIL AT PASS");
-					msg = "Update PWD and Email Failed";
+				if(newpass.equals(u.getPassword())) {
+					updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "', EMAIL = '" + newemail
+							+ "' WHERE USER_ID = " + u.getUserId();
+					try {
+						st.executeUpdate(updateQuery);
+						msg = "Updated Email and Pass Successfully";
+						st.close();
+						conn.close();
+					} catch (Exception e) {
+						System.out.println("DI MAUPDATE YUNG EMAIL AT PASS");
+						msg = "Update PWD and Email Failed";
+					}
+				}
+				else {
+					msg = "Password is incorrect";
 				}
 			}
 
 			else if (newemail == "" && newpass != "") {
-				updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "' WHERE USER_ID = " + u.getUserId();
-
-				try {
-					st.executeUpdate(updateQuery);
-					msg = "Updated Password Successfully";
-					st.close();
-					conn.close();
+				if(newpass.equals(u.getPassword())) {
+					updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "' WHERE USER_ID = " + u.getUserId();
+					
+					try {
+						st.executeUpdate(updateQuery);
+						msg = "Updated Password Successfully";
+						st.close();
+						conn.close();
+					}
+	
+					catch (Exception e) {
+						System.out.println("DI MAUPDATE YUNG PASS");
+						msg = "Update Password Failed";
+					}
 				}
-
-				catch (Exception e) {
-					System.out.println("DI MAUPDATE YUNG PASS");
-					msg = "Update Password Failed";
+				else {
+					msg = "Password is incorrect";
 				}
 			}
 

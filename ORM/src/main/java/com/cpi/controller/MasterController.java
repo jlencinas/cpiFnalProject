@@ -1,7 +1,6 @@
 package com.cpi.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -15,10 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.cpi.dao.GetUserDetails;
 import com.cpi.dao.OrderDao;
 import com.cpi.dao.ProductDao;
-import com.cpi.dao.ProductionDao;
 import com.cpi.dao.UsersDao;
 import com.cpi.model.Order;
 import com.cpi.model.Product;
@@ -29,71 +26,38 @@ class Controllers {
 
 	private OrderDao orderDao;
 	private ProductDao productDao;
-	private ProductionDao productionDao;
 
 	@Autowired(required = false)
-	public Controllers(OrderDao orderDao, ProductDao productDao, ProductionDao productionDao) {
-
+	public Controllers(OrderDao orderDao, ProductDao productDao) {
 		this.orderDao = orderDao;
 		this.productDao = productDao;
-		this.productionDao = productionDao;
 	}
 
-
-	@RequestMapping("pages/ShowUsers")
-	public ModelAndView showUsers(@RequestParam("userid") int uid) throws ClassNotFoundException {
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("userprofile", GetUserDetails.getUsers(uid));
-		mv.setViewName("edituser.jsp");
-		return mv;
-	}
-
-	@RequestMapping("goToLogin")
-	public ModelAndView loginController(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		System.out.println("Redirected to Login");
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("pages/login.jsp");
-		return mv;
-	}
-
-	@RequestMapping("shopcontroller")
-	public ModelAndView shopController(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("pages/display.jsp");
-		return mv;
-	}
-
-	@RequestMapping("Login")
-	public ModelAndView login(HttpServletRequest request,
-			@RequestParam(required = false, name = "username") String username,
-			@RequestParam(required = false, name = "password") String password) {
-		System.out.println(username);
-		System.out.println(password);
+	@RequestMapping("pages/Login")
+	public ModelAndView login(HttpServletRequest request, @RequestParam("username") String username,
+			@RequestParam("password") String password) {
 		ModelAndView mv = new ModelAndView();
 		UsersDao dao = new UsersDao();
 
 		Users user = dao.getUser(username);
-		if (user.getUserId() != 0) {
-			if (user.getStatus().equals("ENABLED")) {
-				if (user.getPassword().equals(password)) {
-					HttpSession sesh = request.getSession();
-					sesh.setAttribute("userAccount", user);
-					mv.setViewName("pages/dashboard.jsp");
-				} else {
-					mv.addObject("msg", "Wrong Password");
-					mv.setViewName("pages/login.jsp");
-				}
+
+		if (user.getStatus().equals("ENABLED")) {
+			if (user.getPassword().equals(password)) {
+				HttpSession sesh = request.getSession();
+				sesh.setAttribute("userAccount", user);
+				mv.setViewName("dashboard.jsp");
 			} else {
-				mv.addObject("msg", "Account Disabled");
-				mv.setViewName("pages/login.jsp");
+				mv.addObject("message", "Wrong Password");
+				mv.setViewName("../index.jsp");
 			}
-		} else {
-			mv.addObject("msg", "Account Does Not Exist");
-			mv.setViewName("pages/login.jsp");
+		}
+
+		else {
+			mv.addObject("message", "Account Disabled");
+			mv.setViewName("../index.jsp");
 		}
 		return mv;
+
 	}
 
 	@RequestMapping("pages/Logout")
@@ -117,6 +81,7 @@ class Controllers {
 		mv.addObject("message", msg);
 		mv.setViewName("forgotpassword.jsp");
 		return mv;
+
 	}
 
 	@RequestMapping("pages/Register")
@@ -142,35 +107,33 @@ class Controllers {
 
 	@RequestMapping("pages/Update")
 	public ModelAndView update(@RequestParam("username") String username, @RequestParam("password") String password,
-			@RequestParam("newemail") String newmail, @RequestParam("newpass") String newpass,
-			@RequestParam("conpass") String conpass) {
+			@RequestParam("new email") String newmail, @RequestParam("new pass") String newpass,
+			@RequestParam("con pass") String conpass) {
 		ModelAndView mv = new ModelAndView();
 		UsersDao dao = new UsersDao();
+		System.out.println(username);
+		System.out.println(password);
+		System.out.println(newmail);
+		System.out.println(newpass);
+		System.out.println(conpass);
+
 		String msg = "";
 		Users user = dao.getUser(username);
 
-		if (user.getUserId() != 0) {
+		if (user != null) {
+
 			if (newpass.equals(conpass)) {
-				if (password.isEmpty()) {
-					msg = dao.updateUser(user, newpass, newmail);
-					mv.addObject("msg", msg);
-					mv.setViewName("dashboard.jsp");
-				} else if (password.equals(user.getPassword())) {
-					msg = dao.updateUser(user, newpass, newmail);
-					mv.addObject("msg", msg);
-					mv.setViewName("dashboard.jsp");
-				} else {
-					msg = "Password is incorrect";
-					mv.addObject("msg", msg);
-					mv.setViewName("dashboard.jsp");
-				}
+				msg = dao.updateUser(user, newpass, newmail);
+				mv.addObject("msg", msg);
+				mv.setViewName("dashboard.jsp");
 			} else {
 				msg = "New Password and Confirm Password must be the Same!";
 				mv.addObject("msg", msg);
 				mv.setViewName("dashboard.jsp");
 			}
+
 		} else {
-			msg = "User Does Not Exist";
+			msg = "User does not exist";
 			mv.addObject("msg", msg);
 			mv.setViewName("dashboard.jsp");
 		}
@@ -203,6 +166,7 @@ class Controllers {
 			dao.editUser(uid, roleid);
 			mv.addObject("msg", "Account Role Changed");
 		}
+
 		mv.setViewName("dashboard.jsp");
 		return mv;
 	}
@@ -233,12 +197,12 @@ class Controllers {
 		ModelAndView mv = new ModelAndView();
 		Product product = new Product();
 
-		product.setProductID(productIdString);
 		product.setProductName(productName);
 		product.setProductDescription(productDescription);
 		product.setProductPicture(productPicture);
 		product.setProductStatus(productStatus);
 		product.setProductPrice(price);
+		product.setProductID(productIdString);
 
 		productDao.updateProduct(product);
 		mv.addObject("product", product);
@@ -294,27 +258,5 @@ class Controllers {
 		mv.setViewName("orderTaker.jsp");
 		return mv;
 
-	}
-
-	@RequestMapping("pages/ordersToday")
-	public ModelAndView getOrdersToday(@RequestParam(value = "filter", required = false) String filter) {
-
-		ModelAndView mv = new ModelAndView();
-		List<Order> ordersToday = new ArrayList<>();
-
-		if (filter == null) {
-			filter = "all";
-		}
-
-		if (filter != null & filter.equals("AM")) {
-			ordersToday = productionDao.getOrdersTodayByTime(true);
-		} else if (filter != null & filter.equals("PM")) {
-			ordersToday = productionDao.getOrdersTodayByTime(false);
-		} else {
-			ordersToday = productionDao.getOrdersToday();
-		}
-		mv.addObject("ordersToday", ordersToday);
-		mv.setViewName("ordersToday.jsp");
-		return mv;
 	}
 }

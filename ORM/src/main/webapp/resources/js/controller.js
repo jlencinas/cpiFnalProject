@@ -3,11 +3,9 @@ function initTestButton(contextPath){
 		testButton(contextPath);
 	});
 	
-/*	$("#a-home").click(function() {
-		redirectHome(contextPath);
-	});
 	
-	$("#a-shop").click(function() {
+	
+/*	$("#a-shop").click(function() {
 		redirectShop(contextPath);
 	});
 	
@@ -52,6 +50,7 @@ function redirectHome (contextPath){
 
 function redirectShop(contextPath){
 	console.log("Proceeding to Shop");
+	
 	$.ajax({
 		url: contextPath + "pages/DisplayProduct",
 		method: "POST",

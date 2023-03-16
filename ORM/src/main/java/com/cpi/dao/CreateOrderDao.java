@@ -19,12 +19,9 @@ public class CreateOrderDao {
 	public static void createOrder(Order order) {
 		Connection conn = null;
 		Statement stmt = null;
-		Statement stmt2 = null;
 		PreparedStatement st = null;
 		ResultSet rs1 = null;
-		ResultSet rs2 = null;
 		int oid = 0;
-		float totalPrice= 0;
 		
 			try {
 			
@@ -39,18 +36,6 @@ public class CreateOrderDao {
 			}else {
 				oid = 1;
 			}
-			
-			stmt2 = conn.createStatement();
-			rs2 = stmt2.executeQuery("select SUM(a.quantity * b.price) as TOTAL_PRICE\r\n"
-					+ "from orderdetails a, product b\r\n"
-					+ "where a.product_ID = b.product_id\r\n"
-					+ "and a.order_id = " + oid);
-			 
-			if (rs2.next()){
-				totalPrice = rs2.getInt("TOTAL_PRICE");
-			}else {
-				totalPrice = 0;
-			}
 			System.out.println(order.getDeliveryDate());
 			String orderDeliver = order.getDeliveryDate();
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -64,13 +49,13 @@ public class CreateOrderDao {
 			st.setString(3, order.getSourceName());
 			st.setString(4, order.getOrderSource());
 			st.setString(5, order.getCustomerLn());
-			st.setDate(6, sqlDate);
-			st.setInt(7,  order.getOrderStatus());
-			st.setInt(8, order.getPaymentStatus());
-			st.setFloat(9,order.getDiscount());
-			st.setFloat(10, totalPrice);
-			st.setString(11, order.getRemarks());
-			st.setString(12, order.getMobileNumber());
+			st.setInt(6, order.getMobileNumber());
+			st.setDate(7, sqlDate);
+			st.setInt(8, order.getOrderStatus());
+			st.setInt(9, order.getPaymentStatus());
+			st.setFloat(10, order.getDiscount());
+			st.setFloat(11, order.getPrice());
+			st.setString(12, order.getRemarks());
 			st.executeUpdate();	
 			 
 		}  catch (SQLException | ParseException se) {
@@ -81,17 +66,11 @@ public class CreateOrderDao {
 				if (rs1 != null) {
 					rs1.close();
 				}
-				if (rs2 != null) {
-					rs2.close();
-				}
 				if (st != null) {
 					st.close();
 				}
 				if (stmt != null) {
 					stmt.close();
-				}
-				if (stmt2 != null) {
-					stmt2.close();
 				}
 				if (conn != null) {
 					conn.close();

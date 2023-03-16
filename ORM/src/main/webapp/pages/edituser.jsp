@@ -1,28 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" isELIgnored="false"%>
 <%@ page import="java.util.*"%>
-<<<<<<< HEAD
-
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Edit Employees</title> 
-</head>
-<body>
-	<h1>Employee Information</h1>
-	
-	<table>
-		<tr>
-			<th>Role</th>
-			<th>Username</th>
-			<th>Email</th>
-			<th>Status</th>
-			<th colspan = "2">Actions</th>
-		</tr>
-
-=======
 <%-- <%@ page import="javax.servlet.http.HttpSession"%>
 <%@ page import="com.cpi.model.Users"%>
 <%@ page import="com.cpi.dao.GetUserDetails"%> --%>
@@ -121,7 +99,6 @@
 			</td>
 		</tr>
 		<% } %> --%>
->>>>>>> refs/remotes/origin/master
 		<c:forEach items="${userprofile}" var="user">
 			<tr>
 				<td>

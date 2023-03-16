@@ -13,19 +13,6 @@
 				<td>First Name</td>
 				<td><input type="text" name="t1"></td>
 			</tr>
-<<<<<<< HEAD
-			
-			<tr>
-				<td>Last Name</td>
-				<td><input type="text" name="t2"></td>
-			</tr>
-			
-			<tr>
-				<td>Mobile Number</td>
-				<td><input type="number" name="t3"></td>
-			</tr>
-			
-=======
 			<tr>
 				<td>Last Name</td>
 				<td><input type="text" name="t2"></td>
@@ -34,7 +21,6 @@
 				<td>Mobile Number</td>
 				<td><input type="number" name="t3" maxlength="11"></td>
 			</tr>
->>>>>>> refs/remotes/origin/master
 			<tr>
 				<td>Expected Delivery Date</td>
 				<td><input type="date" name="dates" pattern="MM/DD/YYYY"></td>

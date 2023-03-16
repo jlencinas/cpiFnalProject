@@ -36,16 +36,10 @@
 			<tr>
 				<td><input type="submit" value="Submit"></td>
 				<td><input type="reset" value="Clear"></td>
-<<<<<<< HEAD
-			</tr>
-		</table>
-	</form>
-=======
 				<td></td>
 			</tr>
 		</table>
 	</form>
 	<button onClick = "window.location.href='/ORM/pages/dashboard.jsp'">Back</button>
->>>>>>> refs/remotes/origin/master
 </body>
 </html>

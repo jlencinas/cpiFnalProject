@@ -1,31 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1" isELIgnored="false"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+	pageEncoding="ISO-8859-1" isELIgnored ="false" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <title>Updating Products</title>
 </head>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script>
-	const urlParams = new URLSearchParams(window.location.search);
-	const greetingValue = urlParams.get('productID');
-	$(document).ready(function() {
-		newFunction();
-	});
-	function newFunction() {
-		var id = document.getElementById("productID");
-		id.value = greetingValue;
-	}
-</script>
 <body>
 	<form action="updateProduct" method="post">
 		<table>
 			<tr>
-				<td><input type="hidden" id="productID"
-					name="productID" /></td>
+				<td>PRODUCT ID</td>
+				<td><input type="number" name="productID" value="${product.productID}"></td>
 			</tr>
 			<tr>
 				<td>PRODUCT NAME</td>

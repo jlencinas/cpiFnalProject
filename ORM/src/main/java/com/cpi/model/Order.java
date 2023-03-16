@@ -9,7 +9,7 @@ public class Order {
 	private String sourceName;
 	private String orderSource;
 	private String customerLn;
-	private String mobileNumber;
+	private int mobileNumber;
 	private Date orderDate;
 	private String deliveryDate;
 	private int orderStatus;
@@ -17,7 +17,6 @@ public class Order {
 	private float discount;
 	private float price;
 	private String remarks;
-	
 	
 	public int getOrderId() {
 		return orderId;
@@ -49,10 +48,10 @@ public class Order {
 	public void setCustomerLn(String customerLn) {
 		this.customerLn = customerLn;
 	}
-	public String getMobileNumber() {
+	public int getMobileNumber() {
 		return mobileNumber;
 	}
-	public void setMobileNumber(String mobileNumber) {
+	public void setMobileNumber(int mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
 	public Date getOrderDate() {

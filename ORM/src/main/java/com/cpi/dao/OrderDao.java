@@ -46,7 +46,7 @@ public class OrderDao {
 				o.setSourceName(rs.getString("SOURCE_NAME"));
 				o.setOrderSource(rs.getString("ORDER_SOURCE"));
 				o.setCustomerLn(rs.getString("CUSTOMER_LN"));
-				o.setMobileNumber(rs.getString("MOBILE_NUMBER"));
+				o.setMobileNumber(rs.getInt("MOBILE_NUMBER"));
 				o.setOrderDate(rs.getDate("ORDER_DATE"));
 				o.setDeliveryDate(formatDate(rs.getDate("DELIVERY_DATE")));
 				o.setOrderStatus(rs.getInt("ORDER_STATUS"));

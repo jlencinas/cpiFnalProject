@@ -6,10 +6,21 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Order Taker</title>
+<script>
+	function confirmUpdate(orderId) {
+		var remarks = document.getElementById("remarks_" + orderId).value;
+		var message = "Are you sure you want to update this order?";
+		if (remarks != null) {
+			message += "\nRemarks: " + remarks;
+		}
+		return confirm(message);
+	}
+</script>
 </head>
 <body>
 	<c:forEach items="${allOrders}" var="order">
-		<form action="updateOrders?orderID=${order.orderId}" method="post">
+		<form action="updateOrders?orderID=${order.orderId}" method="post"
+			onsubmit="return confirmUpdate(${order.orderId})">
 			<table>
 				<tr>
 					<th>Order ID</th>
@@ -38,11 +49,14 @@
 							<option value="2"
 								<c:if test="${order.paymentStatus == 2}">selected</c:if>>Paid</option>
 					</select></td>
+					<td><input type="text" id="remarks_${order.orderId}"
+						name="remarks" maxlength="30"></input></td>
 					<td><button type="submit">Apply Changes</button></td>
 				</tr>
 			</table>
 		</form>
 		<br>
 	</c:forEach>
+	<button onClick="window.location.href='/ORM/pages/dashboard.jsp'">Back</button>
 </body>
 </html>
