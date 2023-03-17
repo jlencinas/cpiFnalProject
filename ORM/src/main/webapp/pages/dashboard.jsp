@@ -47,6 +47,10 @@
 	<form action ="pages/ordersToday" method="post">
 		<input type="submit" value="Orders Today">
 	</form>
+	
+	<form action="pages/availableProducts" method="post">
+		<input type="submit" value="Available Products">
+	</form>
 		
 	<%} %>
 	
