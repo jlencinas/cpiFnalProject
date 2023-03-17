@@ -247,6 +247,15 @@ class Controllers {
 		mv.setViewName("listOfProducts.jsp");
 		return mv;
 	}
+	
+	@RequestMapping("pages/availableProducts")
+	public ModelAndView availableProducts() {
+		ModelAndView mv = new ModelAndView();
+		List <Product> products = productionDao.availableProducts();
+		mv.addObject("products", products);
+		mv.setViewName("availableProducts.jsp");
+		return mv;
+		}
 
 	@RequestMapping("pages/orderDetails")
 	public ModelAndView orderDetails(@RequestParam("mobileNumber") String mobileNumber) {

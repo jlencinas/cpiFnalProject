@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import com.cpi.model.DBConnect;
 import com.cpi.model.Order;
+import com.cpi.model.Product;
 
 @Component
 public class ProductionDao {
@@ -137,6 +139,54 @@ public class ProductionDao {
 		}
 
 		return orders;
+	}
+	
+	public List<Product> availableProducts() {
+
+		List<Product> p = new ArrayList<>();
+
+		Connection conn = null;
+		Statement st = null;
+		ResultSet rs = null;
+
+		try {
+
+			conn = db.getConnection();
+		
+			st = conn.createStatement();
+			rs = st.executeQuery("SELECT * FROM Product WHERE product_status <> 2");
+
+			while (rs.next()) {
+
+				Product product = new Product();
+				product.setProductID(rs.getString("PRODUCT_ID"));
+				product.setProductName(rs.getString("PRODUCT_NAME"));
+				product.setProductDescription(rs.getString("PRODUCT_DESCRIPTION"));
+				product.setProductPicture(rs.getString("PRODUCT_PICTURE"));
+				product.setProductStatus(rs.getInt("PRODUCT_STATUS"));
+				product.setProductPrice(rs.getFloat("PRICE"));
+
+				p.add(product);
+
+			}
+		} catch (SQLException se) {
+			System.out.println(se);
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (st != null) {
+					st.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException se) {
+				System.out.println(se);
+			}
+		}
+		return p;
 	}
 
 	public LocalDate getDateToday() {
