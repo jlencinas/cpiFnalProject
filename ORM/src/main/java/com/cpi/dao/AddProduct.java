@@ -22,15 +22,12 @@ public class AddProduct {
             
             DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
             conn = db.getConnection();
-            System.out.println("Connected to server");
-            
             String sql = "SELECT * FROM product";
             Statement stmt = conn.createStatement();
             ResultSet rs1 = stmt.executeQuery(sql);
             while (rs1.next()) {
                 Product p = new Product();
                 p.setProductID(rs1.getString("product_id"));
-                System.out.println(p.getProductID());
                 p.setProductName(rs1.getString("product_name"));
                 p.setProductDescription(rs1.getString("product_description"));
                 p.setProductPicture(rs1.getString("product_picture"));

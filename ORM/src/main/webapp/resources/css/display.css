@@ -1,4 +1,42 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
 
+
+header {
+    width: 100vw;
+}
+
+nav {
+    box-shadow: 0px 3px 5px #573528;
+}
+
+header nav .desktop-nav-container {
+    display: flex;
+    max-width: 1200px;
+    margin-inline: auto;
+    align-items: center;
+    padding-block: 1rem;
+    justify-content: space-between;
+    text-align: center;
+    overflow: hidden;
+    user-select: none;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background: rgb(255, 222, 212);
+    background: linear-gradient(318deg, rgba(255, 222, 212, 1) 0%, rgba(235, 162, 123, 1) 52%, rgba(204, 109, 77, 1) 100%);
+    overflow-x: hidden;
+    height: 100vh;
+    width: 100vw;
+}
 
 header nav .desktop-nav-container {
 
@@ -132,16 +170,22 @@ main {
     border-radius: 1rem;
 }
 
+.card-right-container .card-form{
+	display:flex;
+	flex-direction: column;
+	row-gap: 10px;	
+}
+
 .card-right-container .card-desc h4 {
     font-weight: 600;
     padding-bottom: .25rem;
 }
 
-.card-right-container .card-desc form .quantity-input {
+.card-right-container .card-desc .quantity-input {
     display: flex;
 }
 
-.card-right-container .card-desc form .quantity-input input[type="number"] {
+.card-right-container .card-desc .quantity-input input[type="number"] {
     display: flex;
     width: 100px;
     text-align: center;
@@ -149,20 +193,20 @@ main {
     background-color: #eae9e9;
 }
 
-.card-right-container .card-desc form .quantity-input input[type="number"]:focus {
+.card-right-container .card-desc .quantity-input input[type="number"]:focus {
     outline: none;
 }
 
 /* Chrome, Safari, Edge, Opera */
-.card-right-container .card-desc form .quantity-input input::-webkit-outer-spin-button,
-.card-right-container .card-desc form  .quantity-input input::-webkit-inner-spin-button {
+.card-right-container .card-desc .quantity-input input::-webkit-outer-spin-button,
+.card-right-container .card-desc .quantity-input input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
 /* Firefox */
 
-.card-right-container .card-desc form .quantity-input button {
+.card-right-container .card-desc .quantity-input button {
     display: flex;
     padding-block: 5px;
     padding-inline: 10.45px;
@@ -172,18 +216,21 @@ main {
     transition: ease-out .1s
 }
 
-.card-right-container .card-desc form .quantity-input button.button-decrease-quantity:hover {
+.card-right-container .card-desc .quantity-input button.button-decrease-quantity:hover {
     background-color: #f44336;
     transition: ease-in .1s
 }
 
-.card-right-container .card-desc form .quantity-input button.button-increase-quantity:hover {
+.card-right-container .card-desc .quantity-input button.button-increase-quantity:hover {
     background-color: #4CAF50;
     transition: ease-in .1s
 }
 
-.card-right-container .button-selection button.button-addToCart {
+.card-right-container .button-selection{
     display: flex;
+    justify-content: center;
+}
+.card-right-container .button-selection button.button-addToCart {
     padding-block: 5px;
     padding-inline: 10.45px;
     font-size: 1rem;
@@ -205,6 +252,25 @@ main {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+footer {
+    background-color: #4e453d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+}
+
+footer .copyright-container {
+    padding-block: 1.75rem;
+}
+
+footer .copyright-container h2 {
+    padding-block: 0.5rem;
+    text-align: center;
+    color: #fff;
+    font-weight: 300;
 }
 
 

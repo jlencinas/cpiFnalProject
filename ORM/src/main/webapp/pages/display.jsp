@@ -3,50 +3,74 @@
 <%@ page import="java.util.List"%>
 <%@ page import="com.cpi.model.Product"%>
 <%@ page import="com.cpi.dao.AddProduct"%>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>  
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/display.css"/>">
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/product-page.css"/>">
 <title>Product Page</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script> var contextPath = '${pageContext.request.contextPath}' + '/'; </script>
-<script type="text/javascript" src="<c:url value="/resources/js/controller.js"/>"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
+	var contextPath = '${pageContext.request.contextPath}' + '/';
+</script>
 </head>
 
 <div class="container-product">
 	<c:forEach items="${products}" var="product">
-		<div class="product-card">
+		<script>var prodDesc = '${product.productDescription}'</script>
+		<div class="product-card" id="${product.productID}">
 			<div class="card-container">
 				<div class="card-left-container">
 					<div class="card-image">
-						<img src="<c:url value="/resources/images/bread1.jpg"/>" alt="products">
+						<img src="<c:url value="/resources/images/bread1.jpg"/>"
+							alt="products">
 					</div>
 				</div>
 				<div class="card-right-container">
 					<div class="card-title">
 						<h3>${product.productName}</h3>
 					</div>
+					<%-- 					<form class = "card-form" action="Test" method="post">
+						<div class="card-desc" >
+								<h4>$${product.productPrice}</h4>
+							<div class="quantity-input">
+								<button type = "button" class="button-decrease-quantity" id="button-decrease-quantity">-</button>
+								<input  name=quantity id="product-quantity" type="number" value="1" min="1">
+								<button type="button" class="button-increase-quantity" id="button-increase-quantity">+</button>
+							</div>
+						</div>
+	
+						<div class="button-selection">
+							<input id="cart-value" type="hidden" value="${product.productID}">
+							<button type = "submit" class="button-addToCart" name="itemnum" id="button-addToCart"
+								value="${product.productID}">Add To Cart</button>
+						</div>
+					</form> --%>
 
-					<form action="pages/AddOrderDetails" method="post">
-					<div class="quantity-input">
+
+					<div class="card-form" action="Test" method="post">
 						<div class="card-desc">
 							<h4>$${product.productPrice}</h4>
-							<button class="button-decrease-quantity"
-								id="button-decrease-quantity" onclick="minusQuantityButton()">-</button>
-							<input  name=quantity id="product-quantity" type="number" value="1" min="1">
-							<button class="button-increase-quantity"
-								id="button-increase-quantity" onclick="addQuantityButton()">+</button>
+							<div class="quantity-input">
+								<button type="button" class="button-decrease-quantity" id="button-decrease-quantity">-</button>
+								<input name=quantity id="product-quantity-${product.productID}" type="number" value="1" min="1">
+								<button type="button" class="button-increase-quantity" id="button-increase-quantity">+</button>
+							</div>
+						</div>
+
+						<div class="button-selection">
+							<input id="cart-value" type="hidden" value="${product.productID}">
+							<button type="submit" class="button-addToCart" name="itemnum" id="button-addToCart" 
+								onclick = "addCart(contextPath, ${product.productID}, ${product.productPrice}, '${product.productDescription}')">
+									Add To Cart
+							</button>
 						</div>
 					</div>
-
-					<div class="button-selection">
-
-						<input id="cart-value" type="hidden" value="${product.productID}">
-						<button class="button-addToCart" name="itemnum" id="button-addToCart"
-							value="${product.productID}">Add To Cart</button>
-					</div>
-					</form>
 				</div>
 			</div>
 		</div>
@@ -75,6 +99,10 @@
 		main.style.pointerEvents = "all";
 		closeOrderDetails();
 	}
+	
+	$(document).ready(function() {
+		initTestButton(contextPath);
+	});
 </script>
 </html>
 

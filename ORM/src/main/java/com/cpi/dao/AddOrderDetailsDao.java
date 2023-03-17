@@ -27,7 +27,6 @@ public class AddOrderDetailsDao {
 			
 			DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
 			conn = db.getConnection();
-			System.out.println("Connected to server");
 			stmt = conn.createStatement();
 			rs1 = stmt.executeQuery("select MAX(ORDER_ID) as MOID from orders");
 			 

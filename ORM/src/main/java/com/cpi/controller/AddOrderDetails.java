@@ -13,17 +13,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cpi.dao.AddOrderDetailsDao;
-import com.cpi.dao.AddProduct;
+
+import javax.servlet.http.HttpSession;
 
 
 @Controller
 public class AddOrderDetails {
+	
 	@RequestMapping("pages/AddOrderDetails")
 	public ModelAndView addOrderDetails (@RequestParam("quantity") int quantity,
 											@RequestParam("itemnum") int productID,
 											HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("Test");
 		ModelAndView mv = new ModelAndView ();
-		
+		HttpSession session = request.getSession();
 		String productid = Integer.toString(productID);
 		String quantities = Integer.toString(quantity);
         Cookie[] cookies = request.getCookies();
@@ -50,6 +53,7 @@ public class AddOrderDetails {
                     continue;
                 }
             }
+            session.setAttribute("cookie", cookies);
         }
         if (!found) {
             Cookie cookie = new Cookie("cart", productid);
@@ -58,8 +62,8 @@ public class AddOrderDetails {
             response.addCookie(cookie2);
             AddOrderDetailsDao.createOrderDetails(productID, quantity);
         }
-       
-       mv.setViewName("DisplayProduct");
+        mv.setViewName("DisplayProduct");
+        System.out.println("End Test");
 		return mv;
 	}
 	

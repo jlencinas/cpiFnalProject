@@ -40,7 +40,7 @@
 					alt="logo-image" onclick = "loginButton(contextPath)">
 				<ul>
 					<li><a href="/ORM/" id="a-home">HOME</a></li>
-					<li><a href="#"id="a-shop">SHOP</a></li>
+					<li><a href="#/Shop"id="a-shop">SHOP</a></li>
 					<li><a href="#" id="a-about">ABOUT</a></li>
 					<li><a href="#" id="a-contact">CONTACT US</a></li>
 				</ul>

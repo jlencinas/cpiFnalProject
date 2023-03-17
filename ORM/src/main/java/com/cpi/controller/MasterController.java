@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -47,6 +48,25 @@ class Controllers {
 		mv.setViewName("pages/login.jsp");
 		return mv;
 	}
+	
+	@RequestMapping("goToForgot")
+	public String forgotController(Model model){
+		model.addAttribute("products", "product123");
+		System.out.println("Redirected to Forgot");
+		return "pages/forgotpassword.jsp";
+	}
+	
+	@RequestMapping("Test")
+	public void test(Model model) {
+		System.out.println("Test");
+	}
+	
+//	@RequestMapping("pages/availableProducts")
+//	public String availableProducts(Model model) {
+//	    List<Product> products = productionDao.availableProducts();
+//	    model.addAttribute("products", products);
+//	    return "dashboard.jsp";
+//	}
 
 	@RequestMapping("shopcontroller")
 	public ModelAndView shopController(HttpServletRequest request, HttpServletResponse response)
@@ -109,6 +129,8 @@ class Controllers {
 		mv.setViewName("forgotpassword.jsp");
 		return mv;
 	}
+	
+
 
 	@RequestMapping("pages/Register")
 	public ModelAndView register(@RequestParam("username") String username, @RequestParam("email") String email,
@@ -256,6 +278,13 @@ class Controllers {
 		mv.setViewName("availableProducts.jsp");
 		return mv;
 		}
+	//Sample Model
+//	@RequestMapping("pages/availableProducts")
+//	public String availableProducts(Model model) {
+//	    List<Product> products = productionDao.availableProducts();
+//	    model.addAttribute("products", products);
+//	    return "dashboard.jsp";
+//	}
 
 	@RequestMapping("pages/orderDetails")
 	public ModelAndView orderDetails(@RequestParam("mobileNumber") String mobileNumber) {
