@@ -126,7 +126,7 @@ class Controllers {
 		String msg = dao.createUser(u);
 
 		mv.addObject("msg", msg);
-		mv.setViewName("dashboard.jsp");
+		mv.setViewName("register.jsp");
 		return mv;
 
 	}
@@ -145,25 +145,25 @@ class Controllers {
 				if (password.isEmpty()) {
 					msg = dao.updateUser(user, newpass, newmail);
 					mv.addObject("msg", msg);
-					mv.setViewName("dashboard.jsp");
+					mv.setViewName("updateuserinfo.jsp");
 				} else if (password.equals(user.getPassword())) {
 					msg = dao.updateUser(user, newpass, newmail);
 					mv.addObject("msg", msg);
-					mv.setViewName("dashboard.jsp");
+					mv.setViewName("updateuserinfo.jsp");
 				} else {
 					msg = "Password is incorrect";
 					mv.addObject("msg", msg);
-					mv.setViewName("dashboard.jsp");
+					mv.setViewName("updateuserinfo.jsp");
 				}
 			} else {
 				msg = "New Password and Confirm Password must be the Same!";
 				mv.addObject("msg", msg);
-				mv.setViewName("dashboard.jsp");
+				mv.setViewName("updateuserinfo.jsp");
 			}
 		} else {
 			msg = "User Does Not Exist";
 			mv.addObject("msg", msg);
-			mv.setViewName("dashboard.jsp");
+			mv.setViewName("updateuserinfo.jsp");
 		}
 		return mv;
 	}
@@ -181,7 +181,7 @@ class Controllers {
 			mv.addObject("msg", "Account Enabled");
 		}
 
-		mv.setViewName("dashboard.jsp");
+		mv.setViewName("ShowUsers");
 		return mv;
 	}
 
@@ -194,7 +194,7 @@ class Controllers {
 			dao.editUser(uid, roleid);
 			mv.addObject("msg", "Account Role Changed");
 		}
-		mv.setViewName("dashboard.jsp");
+		mv.setViewName("ShowUsers");
 		return mv;
 	}
 

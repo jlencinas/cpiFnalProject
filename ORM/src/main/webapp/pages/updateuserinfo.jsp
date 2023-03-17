@@ -9,6 +9,7 @@
 <title>Update Information</title>
 </head>
 <body>
+	${msg}
     <% 
         HttpSession sesh2 = request.getSession(); 
         Users seshinfo = (Users)sesh2.getAttribute("userAccount"); 

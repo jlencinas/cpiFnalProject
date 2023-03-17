@@ -2,6 +2,7 @@ package com.cpi.dao;
 
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -289,49 +290,57 @@ public class UsersDao {
 
 	}
 
-	public String createUser(Users u) {
-		String msg = "";
-		Connection conn = null;
-		Statement st = null;
-		ResultSet rs = null;
-		int uid;
+    public String createUser(Users u) {
+        String msg = "";
+        Connection conn = null;
+        Statement st = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int uid;
 
-		try {
+        try {
 
-			DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
-			conn = db.getConnection();
-			st = conn.createStatement();
-			rs = st.executeQuery("SELECT MAX(USER_ID) AS MUS FROM USERS");
+            DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
+            conn = db.getConnection();
+            st = conn.createStatement();
+            rs = st.executeQuery("SELECT MAX(USER_ID) AS MUS FROM USERS");
 
-			if (rs.next()) {
-				uid = rs.getInt("MUS") + 1;
-			} else {
-				uid = 1;
-			}
+            if (rs.next()) {
+                uid = rs.getInt("MUS") + 1;
+            } else {
+                uid = 1;
+            }
 
-			String addQuery = "INSERT INTO USERS VALUES (" + uid + ", " + u.getRoleId() + ", '" + u.getUsername()
-					+ "', '" + u.getPassword() + "', '" + u.getEmail() + "', 'ENABLED')";
+            String addQuery = "INSERT INTO USERS VALUES (?, ?, ?, ?, ?, ?)";
 
-			try {
-				st.executeUpdate(addQuery);
-				msg = "New Account Added";
-				st.close();
-				conn.close();
-			}
+            try {
+                ps = conn.prepareStatement(addQuery);
+                ps.setInt(1, uid);
+                ps.setInt(2, u.getRoleId());
+                ps.setString(3, u.getUsername());
+                ps.setString(4, u.getPassword());
+                ps.setString(5, u.getEmail());
+                ps.setString(6, "ENABLED");
+                ps.executeUpdate();
+                msg = "New Account Added";
+                st.close();
+                conn.close();
+            }
 
-			catch (Exception ex) {
-				msg = "Account Failed to be added";
-				st.close();
-				conn.close();
-			}
+            catch (Exception ex) {
+                msg = "Account Failed to be added";
+                st.close();
+                conn.close();
+            }
 
-		}
+        }
 
-		catch (Exception e) {
-			System.out.println("MAY EXCEPTION");
-			msg = "Di maka konek";
-		}
+        catch (Exception e) {
+            System.out.println("Cant Connect To Database");
+            msg = "Cant Connect To Database";
+        }
 
-		return msg;
-	}
+        return msg;
+    }
 }
+

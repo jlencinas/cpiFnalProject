@@ -10,9 +10,9 @@ import com.cpi.dao.GetUserDetails;
 @Controller
 public class ShowUserDetails {
 	@RequestMapping("pages/ShowUsers")
-	public ModelAndView showUsers (@RequestParam("userid") int uid) throws ClassNotFoundException {
+	public ModelAndView showUsers () throws ClassNotFoundException {
 		ModelAndView mv = new ModelAndView ();
-		mv.addObject("userprofile", GetUserDetails.getUsers(uid));
+		mv.addObject("userprofile", GetUserDetails.getUsers());
 		mv.setViewName("edituser.jsp");
 		return mv;
 	}

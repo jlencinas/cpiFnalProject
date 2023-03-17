@@ -22,7 +22,6 @@
 		<button onClick = "window.location.href='/ORM/pages/register.jsp'">Register User</button>
 		<!-- <button onClick = "window.location.href='/ORM/pages/ShowUsers'">Disable / Edit Users</button> -->
 		<form action = "ShowUsers" method = "post">
-			<input type ="hidden" value ="<%= uid %>" name ="userid">
 			<input type = "submit" value = "Disable / Edit Users">
 		</form>
 	<%	}
@@ -65,7 +64,7 @@
 	</form>
 	<% } %>
 	
-	<form action = "pages/Logout" method = "post">
+	<form action = "Logout" method = "post">
 		<input type="submit" value = "Logout">
 	</form>
 	

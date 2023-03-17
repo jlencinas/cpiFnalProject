@@ -15,7 +15,7 @@ private static final String dbUsername = "CALANDRIA";
 private static final String dbPassword = "calandria";
 private static final String server = "training-db.cosujmachgm3.ap-southeast-1.rds.amazonaws.com";
 
-public static List<Users> getUsers(int uid) throws ClassNotFoundException {
+public static List<Users> getUsers() throws ClassNotFoundException {
 	List<Users> userAccounts = new ArrayList<>();
 	Connection conn = null;
 	Statement st = null;
@@ -25,7 +25,7 @@ public static List<Users> getUsers(int uid) throws ClassNotFoundException {
 		DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
 		conn = db.getConnection();
 		st = conn.createStatement();
-		rs = st.executeQuery("SELECT * FROM USERS WHERE USER_ID != "+ uid + " ORDER BY USER_ID");
+		rs = st.executeQuery("SELECT * FROM USERS ORDER BY USER_ID");
 						
 		while (rs.next()) {
 			Users u = new Users();

@@ -1,4 +1,4 @@
-function initLogin() {
+function initButtons() {
 	$("#loginButton").click(function() {
 		var username = $('#username').val();
 		var password = $('#password').val();
@@ -9,6 +9,11 @@ function initLogin() {
 		} else {
 			login(username, password);
 		}
+	});
+	
+	
+	$("#forgot-pass-button").click(function()  {
+		forgotPass();
 	});
 }
 
@@ -25,6 +30,17 @@ function login(username, password) {
 		},
 		success: function() {
 			window.location.href = contextPath +  "pages/dashboard.jsp";
+		}
+	});
+}
+
+function forgotPass(){
+	console.log("proceeding to forgot pass");
+	$.ajax({
+		url: contextPath + "pages/Forgot",
+		method: "POST",
+		success: function() {
+			window.location.href = contextPath +  "pages/forgotpassword.jsp";
 		}
 	});
 }

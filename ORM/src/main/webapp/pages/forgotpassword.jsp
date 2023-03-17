@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" isELIgnored="false"%>
 <form action="Forgot" method="post">
+	<h2>${message}</h2>
 	<h5>Forgot Password</h5>
 	<label>Username: </label><input type="text" name = "username"><br/>
 	<label>Email: </label><input type="email" name = "email"><br/>
