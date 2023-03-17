@@ -20,7 +20,7 @@
 			<div class="card-container">
 				<div class="card-left-container">
 					<div class="card-image">
-						<img src="resources/images/bread1.jpg" alt="products">
+						<img src="<c:url value="/resources/images/bread1.jpg"/>" alt="products">
 					</div>
 				</div>
 				<div class="card-right-container">

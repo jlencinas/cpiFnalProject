@@ -154,7 +154,7 @@ public class ProductionDao {
 			conn = db.getConnection();
 		
 			st = conn.createStatement();
-			rs = st.executeQuery("SELECT * FROM Product WHERE product_status <> 2");
+			rs = st.executeQuery("SELECT * FROM PRODUCT WHERE PRODUCT_STATUS NOT IN (0,2)");
 
 			while (rs.next()) {
 
