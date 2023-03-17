@@ -61,7 +61,7 @@
 	</form>
 	<% } %>
 	
-	<form action = "Logout" method = "post">
+	<form action = "pages/Logout" method = "post">
 		<input type="submit" value = "Logout">
 	</form>
 	

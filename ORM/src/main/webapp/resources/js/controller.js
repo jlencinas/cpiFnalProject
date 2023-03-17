@@ -1,11 +1,11 @@
-function initTestButton(contextPath){
+
+
+function initTestButton(){
 	$("#testOutputButton").click(function() {
 		testButton(contextPath);
 	});
 	
-	
-	
-/*	$("#a-shop").click(function() {
+	$("#a-shop").click(function() {
 		redirectShop(contextPath);
 	});
 	
@@ -15,10 +15,11 @@ function initTestButton(contextPath){
 	
 	$("#a-contact").click(function() {
 		redirectContact(contextPath);
-	});*/
+	});
 }
 
 function initLoginButton(contextPath){
+	console.log(contextPath);
 	$("#span-login").click(function() {
 		loginButton(contextPath);
 	});

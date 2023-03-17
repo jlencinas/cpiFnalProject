@@ -3,24 +3,15 @@
 <%@ page import="java.util.List"%>
 <%@ page import="com.cpi.model.Product"%>
 <%@ page import="com.cpi.dao.AddProduct"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>  
 
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="../resources/css/product-page.css">
-<link rel="stylesheet" href="resources/css/product-page.css">
-<link rel="stylesheet" href="../resources/css/index.css">
-<link rel="stylesheet" href="../resources/css/display.css">
-<link rel="stylesheet" href="resources/css/index.css">
-<link rel="stylesheet" href="resources/css/display.css">
 <title>Product Page</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script>
-	var contextPath = '${pageContext.request.contextPath}' + '/';
-</script>
-<script type="text/javascript" src="../resources/js/controller.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script> var contextPath = '${pageContext.request.contextPath}' + '/'; </script>
+<script type="text/javascript" src="<c:url value="/resources/js/controller.js"/>"></script>
 </head>
 
 <div class="container-product">
@@ -29,7 +20,7 @@
 			<div class="card-container">
 				<div class="card-left-container">
 					<div class="card-image">
-						<img src="resources/images/bread1.jpg" alt="">
+						<img src="resources/images/bread1.jpg" alt="products">
 					</div>
 				</div>
 				<div class="card-right-container">

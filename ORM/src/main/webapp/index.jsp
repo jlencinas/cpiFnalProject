@@ -1,17 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1" isELIgnored="false"%>    
+    pageEncoding="ISO-8859-1" isELIgnored="false"%>  
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>  
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="resources/css/index.css">
-<link rel="stylesheet" href="resources/css/display.css">
-<link rel="stylesheet" href="resources/css/product-page.css">
-<script type="text/javascript" src="resources/js/controller.js"></script>
-<script type="text/javascript" src="resources/js/main.js"></script>
-<script type="text/javascript" src="resources/js/product-page.js"></script>
+<link rel="stylesheet" href="<c:url value="/resources/css/index.css"/>">
+<link rel="stylesheet" href="<c:url value="/resources/css/display.css"/>" >
+<link rel="stylesheet" href="<c:url value="/resources/css/product-page.css"/>">
+<script type="text/javascript" src="<c:url value="/resources/js/controller.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/main.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/product-page.js"/>"></script>
+
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
@@ -19,7 +21,7 @@
 	display: none;
 }
 </style>
-
+<script>var contextPath = '${pageContext.request.contextPath}' + '/';</script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script type="module"
@@ -28,28 +30,20 @@
 	src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <title>Home page</title>
 
-<script>
-	var contextPath = '${pageContext.request.contextPath}' + '/';
-</script>
-
 </head>
 <body>
 	<header id="myHeader">
 		<nav>
 			<div class="desktop-nav-container">
-			<img class = "homepage-logo" src="resources/images/Logo-01.png"
+			<img class = "homepage-logo" src="<c:url value="/resources/images/Logo-01.png"/>"
 					alt="logo-image" onclick = "loginButton(contextPath)">
 				<ul>
 					<li><a href="/ORM/" id="a-home">HOME</a></li>
-					<li><a href="#" onclick="redirectShop(contextPath)"
-						id="a-shop">SHOP</a></li>
-					<li><a href="#" onclick="redirectAbout(contextPath)"
-						id="a-about">ABOUT</a></li>
-					<li><a href="#" onclick="redireContact(contextPath)"
-						id="a-contact">CONTACT US</a></li>
+					<li><a href="#"id="a-shop">SHOP</a></li>
+					<li><a href="#" id="a-about">ABOUT</a></li>
+					<li><a href="#" id="a-contact">CONTACT US</a></li>
 				</ul>
-				<a href="#" class="basket-a" name="Checkout" onclick="openPopup()"><ion-icon
-						name="basket"></ion-icon></a>
+				<a href="#" class="basket-a" name="Checkout" onclick="openPopup()"><ion-icon name="basket"></ion-icon></a>
 			</div>
 		</nav>
 	</header>
@@ -61,7 +55,7 @@
 			<div class="left-container">
 				<div class="logo-title">
 					<img class="logo-text-image"
-						src="resources/images/Logo-Text-02.png" alt="">
+						src="<c:url value="/resources/images/Logo-Text-02.png"/>" alt="">
 				</div>
 				<div class="message">
 					<h1>
@@ -77,10 +71,10 @@
 			</div>
 			<div class="right-container">
 				<div class="screen" style="max-width: 500px">
-					<img class="mySlides" src="resources/images/bread1.jpg"> <img
-						class="mySlides" src="resources/images/bread2.jpg"> <img
-						class="mySlides" src="resources/images/bread3.jpg"> <img
-						class="mySlides" src="resources/images/bread4.jpg">
+					<img class="mySlides" src="<c:url value="/resources/images/bread1.jpg"/>">
+					<img class="mySlides" src="<c:url value="/resources/images/bread2.jpg"/>"> 
+					<img class="mySlides" src="<c:url value="/resources/images/bread3.jpg"/>">
+					<img class="mySlides" src="<c:url value="/resources/images/bread4.jpg"/>">
 				</div>
 			</div>
 			<script>
@@ -109,15 +103,13 @@
 		<script>
 			$(document).ready(function() {
 				initLoginButton(contextPath);
+				initTestButton(contextPath);
 			});
 		</script>
 	</main>
 	<footer>
 		<div class="copyright-container">
-			<h2>� Copyright 2023 Q1 Developer Trainees</h2>
-			<!-- <button id="testOutputButton">Test</button> -->
-			
-			<!-- <button onClick="window.location.href='/ORM/pages/login.jsp'">Login</button><br /> -->
+			<h2>Copyright 2023 Q1 Developer Trainees</h2>
 		</div>
 	</footer>
 
