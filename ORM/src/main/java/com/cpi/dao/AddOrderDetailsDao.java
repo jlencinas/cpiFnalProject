@@ -5,8 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.cpi.model.DBConnect;
+import com.cpi.model.OrderSummary;
 
 public class AddOrderDetailsDao {
 	private static final String dbUsername = "CALANDRIA";
@@ -27,11 +30,12 @@ public class AddOrderDetailsDao {
 			
 			DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
 			conn = db.getConnection();
+			System.out.println("Connected to server");
 			stmt = conn.createStatement();
 			rs1 = stmt.executeQuery("select MAX(ORDER_ID) as MOID from orders");
 			 
 			if (rs1.next()){
-				oid = rs1.getInt("MOID") + 1;
+				oid = rs1.getInt("MOID");
 			}else {
 				oid = 1;
 			}
@@ -79,6 +83,51 @@ public class AddOrderDetailsDao {
 			} catch (SQLException se) {
 				System.out.println(se);
 			}
+		}
+	}
+	
+	@SuppressWarnings("finally")
+	public static OrderSummary displayOrderSummary(int productID, int quantity) {
+		OrderSummary ordersummary = new OrderSummary();
+		Statement stmt = null;
+		ResultSet rs1 = null;
+		Connection conn = null;
+		try {    
+            DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
+            conn = db.getConnection();
+            System.out.println("Connected to server");
+            
+            String sql = "select product_name, product_description, product_picture, price\r\n"
+            		+ "from product\r\n"
+            		+ "where product_id = " + productID;
+            stmt = conn.createStatement();
+            rs1 = stmt.executeQuery(sql);
+            while (rs1.next()) {
+               
+            	ordersummary.setOrderName(rs1.getString("product_name"));
+            	ordersummary.setOrderDescription(rs1.getString("product_description"));
+            	ordersummary.setOrderPicture(rs1.getString("product_picture"));
+            	ordersummary.setOrderPrice(rs1.getFloat("price"));
+            	ordersummary.setOrderquantity(quantity);
+            	ordersummary.setOrderItemID(productID);
+            }
+        }catch (SQLException se) {
+			System.out.println(se);
+		} finally {
+			try {
+				if (rs1 != null) {
+					rs1.close();
+				}
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException se) {
+				System.out.println(se);
+			}
+        return ordersummary;
 		}
 	}
 }

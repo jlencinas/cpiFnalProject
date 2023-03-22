@@ -59,17 +59,27 @@ public class MvcConfig implements WebMvcConfigurer {
 	}
 
 	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new SessionInterceptor())
+                                .addPathPatterns("/pages/Register")
+                                .addPathPatterns("/pages/ShowUsers")
+                                .addPathPatterns("/pages/Edit")
+                                .addPathPatterns("/pages/Disable")
+                                .addPathPatterns("/pages/Update")
+                                .addPathPatterns("/pages/UpdateEmail")
+                                .addPathPatterns("/pages/UpdatePassword")
+                                .addPathPatterns("/pages/ShowSummary")
+                                .addPathPatterns("/pages/NewProduct")
+                                .addPathPatterns("/pages/updateProduct")
+                                .addPathPatterns("/pages/ordersToday")
+                                .addPathPatterns("/pages/availableProducts");
+    }
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry
         .addResourceHandler("/resources/**")
 		.addResourceLocations("/resources/"); /* Note niyo men para to sa resources folder */
-		
 	}
 
 	@Override

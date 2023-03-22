@@ -1,0 +1,87 @@
+
+.card-container1 {
+    height: auto !important;
+    width: auto !important;
+    min-width: unset !important;
+    border-radius: 3rem !important;
+    border: 3px solid #cc6d4d !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.card-container-confirmation-number {
+    height: auto;
+    width: 450px;
+    background-color: #fff;
+    border-radius: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-block: 2rem;
+    padding-inline: 2.5rem;
+}
+
+.title-confirmation-number{
+    padding-bottom: 2rem;
+}
+h2{
+    font-size: 2rem;
+    text-align: center;
+}
+
+.message-confirmation-number{
+    width: 350px;
+    text-align: center;
+}
+
+.message-confirmation-number h3{
+    font-weight: 500;
+}
+
+h1.confirmation-num{
+    padding-block: 1rem;
+    font-size: 3rem;
+    color: #ffa789;
+}
+
+p{
+    font-size: 1.25rem;
+}
+
+.close-button-confirmation-number{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.close-button-confirmation-number button{
+    padding-block: .5rem;
+    padding-inline: 2rem;
+    border-radius: 2rem;
+    border: none;
+    font-size: 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: ease-out 0.2s;
+}
+
+.close-button-confirmation-number button:active{
+    filter: brightness(50%);
+    transition: ease-in 0.1s
+}
+
+
+
+button.button-exit-confirmation-box:hover{
+    background-color: rgb(255, 80, 80);
+    transition: ease-in 0.1s
+}
+
+span.remember-confirmation-number{
+    font-size: 1.5rem;
+    font-weight: 600;
+    color:rgb(255, 80, 80);
+    
+}

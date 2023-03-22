@@ -5,27 +5,6 @@
     font-family: 'Poppins', sans-serif;
 }
 
-
-header {
-    width: 100vw;
-}
-
-nav {
-    box-shadow: 0px 3px 5px #573528;
-}
-
-header nav .desktop-nav-container {
-    display: flex;
-    max-width: 1200px;
-    margin-inline: auto;
-    align-items: center;
-    padding-block: 1rem;
-    justify-content: space-between;
-    text-align: center;
-    overflow: hidden;
-    user-select: none;
-}
-
 body {
     display: flex;
     flex-direction: column;
@@ -37,75 +16,6 @@ body {
     height: 100vh;
     width: 100vw;
 }
-
-header nav .desktop-nav-container {
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-header nav .desktop-nav-container a.basket-a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.5rem;
-    padding-inline: 2rem;
-    color: #fff;
-    transition: ease-out 0.125s;
-}
-
-header nav .desktop-nav-container a.basket-a:hover {
-    transform: scale(1.1);
-    color: #f46f36;
-    transition: ease-in 0.125s;
-}
-
-header nav .desktop-nav-container a span {
-    font-size: 1.25rem;
-    color: #fff;
-    text-decoration: none;
-}
-
-header nav .desktop-nav-container ul {
-    display: flex;
-    width: 500px;
-    height: auto;
-    align-items: center;
-    justify-content: space-around;
-}
-
-header nav .desktop-nav-container li {
-    list-style: none;
-}
-
-header nav .desktop-nav-container li a {
-    text-decoration: none;
-    color: #fff;
-    font-family: inherit;
-    font-weight: 600;
-    font-size: 1.5rem;
-    letter-spacing: 2px;
-    transition: ease-out .125s;
-}
-
-header nav .desktop-nav-container li a:hover {
-    color: #F37346;
-    transition: ease-in .125s;
-}
-
-header nav .desktop-nav-container li a:active {
-    color: #F37346;
-}
-
-header nav .desktop-nav-container a img {
-    width: 150px;
-}
-
-header nav .desktop-nav-container a {
-    width: 150px;
-}
-
 
 main {
     background-color: #f7f7f7;
@@ -185,7 +95,7 @@ main {
     display: flex;
 }
 
-.card-right-container .card-desc .quantity-input input[type="number"] {
+.card-right-container .card-desc .quantity-input input[type="text"] {
     display: flex;
     width: 100px;
     text-align: center;
@@ -193,9 +103,10 @@ main {
     background-color: #eae9e9;
 }
 
-.card-right-container .card-desc .quantity-input input[type="number"]:focus {
+.card-right-container .card-desc .quantity-input input[type="text"]:focus {
     outline: none;
 }
+
 
 /* Chrome, Safari, Edge, Opera */
 .card-right-container .card-desc .quantity-input input::-webkit-outer-spin-button,
@@ -204,7 +115,10 @@ main {
     margin: 0;
 }
 
-/* Firefox */
+.card-right-container .card-desc .quantity-input input[type=number] {
+    -moz-appearance:textfield;
+}
+
 
 .card-right-container .card-desc .quantity-input button {
     display: flex;

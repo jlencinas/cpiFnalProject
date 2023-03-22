@@ -131,7 +131,7 @@ public class UsersDao {
 	public static void sendMail(String recipient, String text) throws Exception {
 		String to = recipient;
 		String content = text;
-		String from = "markjewel02@gmail.com";
+		String from = "jlouisencinas@gmail.com";
 		String host = "smtp.gmail.com";
 		Properties properties = System.getProperties();
 		properties.put("mail.smtp.host", host);
@@ -141,7 +141,7 @@ public class UsersDao {
         properties.put("mail.smtp.auth", "true");
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("markjewel02@gmail.com", "anrnelfirlyxjztb");
+                return new PasswordAuthentication("jlouisencinas@gmail.com", "euvupwmvzxyjheqw");
             }
         });
         try {
@@ -165,71 +165,65 @@ public class UsersDao {
         }
 	}
 
-	public String updateUser(Users u, String newpass, String newemail) {
-		String msg = "";
-		Connection conn = null;
-		Statement st = null;
-
-		try {
-
-			DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
-			conn = db.getConnection();
-			st = conn.createStatement();
-			String updateQuery;
-			System.out.println("Updating to server");
-
-			if (newemail != "" && newpass != "") {
-				updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "', EMAIL = '" + newemail
-						+ "' WHERE USER_ID = " + u.getUserId();
-				try {
-					st.executeUpdate(updateQuery);
-					msg = "Updated Email and Pass Successfully";
-					st.close();
-					conn.close();
-				} catch (Exception e) {
-					System.out.println("DI MAUPDATE YUNG EMAIL AT PASS");
-					msg = "Update PWD and Email Failed";
-				}
-			}
-
-			else if (newemail == "" && newpass != "") {
-				updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "' WHERE USER_ID = " + u.getUserId();
-
-				try {
-					st.executeUpdate(updateQuery);
-					msg = "Updated Password Successfully";
-					st.close();
-					conn.close();
-				}
-
-				catch (Exception e) {
-					System.out.println("DI MAUPDATE YUNG PASS");
-					msg = "Update Password Failed";
-				}
-			}
-
-			else if (newemail != "" && newpass == "") {
-				updateQuery = "UPDATE USERS SET EMAIL = '" + newemail + "' WHERE USER_ID = " + u.getUserId();
-				try {
-					st.executeUpdate(updateQuery);
-					msg = "Updated Email Successfully";
-					st.close();
-					conn.close();
-				} catch (Exception e) {
-					System.out.println("DI MAUPDATE YUNG EMAIL");
-					msg = "Update Email Failed";
-				}
-			}
-		}
-
-		catch (SQLException se) {
-			System.out.println(se);
-		}
-
-		return msg;
-	}
-
-	public void disableUser(int uid, String status) {
+	public String updateEmail(String username, String newmail) {
+        String msg = "";
+        Connection conn = null;
+        Statement st = null;
+        
+        try {
+            DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
+            conn = db.getConnection();
+            st = conn.createStatement();
+            
+            try {
+                String updateQuery = "UPDATE USERS SET EMAIL = '" + newmail + "' WHERE USERNAME = '" + username + "'";
+                st.executeUpdate(updateQuery);
+                msg = "success";
+                st.close();
+                conn.close();
+            }
+            catch(Exception ex) {
+                System.out.println("Cant Update Email");
+                msg = "Cant Update Password";
+            }
+        }
+        catch(Exception e) {
+            msg = "Cant Connect To DB in Update Email";
+        }
+        
+        return msg;
+    }
+	public String updatePassword(String username, String newpass) {
+        String msg = "";
+        Connection conn = null;
+        Statement st = null;
+        
+        try {
+            DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
+            conn = db.getConnection();
+            st = conn.createStatement();
+            
+            try {
+                String updateQuery = "UPDATE USERS SET PASSWORD = '" + newpass + "' WHERE USERNAME = '" + username + "'";
+                st.executeUpdate(updateQuery);
+                msg = "Updated Password Successfully";
+                st.close();
+                conn.close();
+            }
+            catch(Exception ex) {
+                System.out.println("Cant Update Password");
+                msg = "Cant Update Password";
+            }
+        
+        }
+        catch(Exception e) {
+            System.out.println("Cant Connect To Database in Update Password");
+            msg = "Cant connect to DB in Update Password";
+        }
+        return msg;
+    }
+	
+	public void disableUser(String username, String status) {
 		Connection conn = null;
 		Statement st = null;
 		try {
@@ -237,7 +231,7 @@ public class UsersDao {
 			conn = db.getConnection();
 			st = conn.createStatement();
 			System.out.println("Updating to server");
-			String disableQuery = "UPDATE USERS SET STATUS = '" + status + "' WHERE USER_ID = " + uid;
+			String disableQuery = "UPDATE USERS SET STATUS = '" + status + "' WHERE USERNAME = '" + username + "'";
 			try {
 				System.out.println("Run Able Query");
 				st.executeUpdate(disableQuery);
@@ -253,7 +247,7 @@ public class UsersDao {
 		}
 	}
 
-	public void editUser(int uid, int roleid) {
+	public void editUser(String username, int roleid) {
 		Connection conn = null;
 		Statement st = null;
 
@@ -265,7 +259,7 @@ public class UsersDao {
 
 			System.out.println("Updating to server");
 
-			String editQuery = "UPDATE USERS SET ROLE_ID = " + roleid + " WHERE USER_ID = " + uid;
+			String editQuery = "UPDATE USERS SET ROLE_ID = " + roleid + " WHERE USERNAME = '" + username + "'";
 
 			try {
 				System.out.println("Run Edit Query");

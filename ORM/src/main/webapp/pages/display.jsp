@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" isELIgnored="false"%>
+	pageEncoding="ISO-8859-1" isELIgnored="false"%>
 <%@ page import="java.util.List"%>
 <%@ page import="com.cpi.model.Product"%>
 <%@ page import="com.cpi.dao.AddProduct"%>
@@ -8,100 +8,126 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet"
-	href="<c:url value="/resources/css/display.css"/>">
-<link rel="stylesheet"
-	href="<c:url value="/resources/css/product-page.css"/>">
-<title>Product Page</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script>
-	var contextPath = '${pageContext.request.contextPath}' + '/';
-</script>
+	<link rel="stylesheet" href="<c:url value="/resources/css/display.css"/>">
+	<link rel="stylesheet" href="<c:url value="/resources/css/product-page.css"/>">
+	<script type="text/javascript" src="<c:url value="/resources/js/product-page.js"/>"></script>
+	<title>Product Page</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+	<script> var contextPath = '${pageContext.request.contextPath}' + '/';</script>
+	<c:set var="seshinfo" value="${cart}" />
+	<c:set var="seshinfoPrice" value="${price_cart}" />
+	<c:set var="seshcart" value="${not empty seshinfo ? 'true' : 'false'}"/>
+	<script>var boolCart = '${seshcart}'</script>
+	<c:set var="quantitySesh" value="${0}"/>
+	<c:set var="totalpriceSesh" value="${0}"/>
+	<c:forEach items="${seshinfo}" var="sesh">
+		<c:set var="quantitySesh" value="${sesh.value + quantitySesh}"/>
+	</c:forEach>
+	<c:forEach items="${seshinfoPrice}" var="sesh2">
+		<c:set var="totalpriceSesh" value="${sesh2.value + totalpriceSesh}"/>
+	</c:forEach>
+	<script>var quantity = '${quantitySesh}'</script>
+	<script>var totalPrice = '${totalpriceSesh}'</script>
+	
 </head>
 
 <div class="container-product">
 	<c:forEach items="${products}" var="product">
 		<script>var prodDesc = '${product.productDescription}'</script>
-		<div class="product-card" id="${product.productID}">
-			<div class="card-container">
-				<div class="card-left-container">
-					<div class="card-image">
-						<img src="<c:url value="/resources/images/bread1.jpg"/>"
-							alt="products">
-					</div>
-				</div>
-				<div class="card-right-container">
-					<div class="card-title">
-						<h3>${product.productName}</h3>
-					</div>
-					<%-- 					<form class = "card-form" action="Test" method="post">
-						<div class="card-desc" >
-								<h4>$${product.productPrice}</h4>
-							<div class="quantity-input">
-								<button type = "button" class="button-decrease-quantity" id="button-decrease-quantity">-</button>
-								<input  name=quantity id="product-quantity" type="number" value="1" min="1">
-								<button type="button" class="button-increase-quantity" id="button-increase-quantity">+</button>
-							</div>
+		<script>var prodPrice = '${product.productPrice}'</script>
+		<script>var prodID = '${product.productID}'</script>
+		<c:set var = "prodStat" value = "${product.productStatus}"/>
+		<c:if test = "${prodStat == 0}">
+			<!-- do nothing -->
+		</c:if>
+		<c:if  test = "${prodStat == 1}">
+			<script>displayFormattedPrice(prodID, prodPrice);</script>
+			<div class="product-card" id="${product.productID}">
+				<div class="card-container">
+					<div class="card-left-container">
+						<div class="card-image">
+							<img src="<c:url value="/resources/images/bread1.jpg"/>"
+								alt="products">
 						</div>
+					</div>
+					<div class="card-right-container">
+						<div class="card-title">
+							<h3>${product.productName}</h3>
+						</div>
+						<div class="card-form" action="Test" method="post">
+							<div class="card-desc">
+								<h4 class = "" id = "product-price-${product.productID}"></h4>
+								<div class="quantity-input">
+									<button type="button" class="button-decrease-quantity"
+										onclick = "decreaseQuan(${product.productID})" id="button-decrease-quantity">-</button>
+									<input name=quantity class = "product-quantity" id="product-quantity-${product.productID}"
+										onkeyup = "checkEmpty(${product.productID})" type="text" value = "1">
+									<button type="button" class="button-increase-quantity" 
+										onclick = "increaseQuan(${product.productID})" id="button-increase-quantity">+</button>
+								</div>
+							</div>
 	
-						<div class="button-selection">
-							<input id="cart-value" type="hidden" value="${product.productID}">
-							<button type = "submit" class="button-addToCart" name="itemnum" id="button-addToCart"
-								value="${product.productID}">Add To Cart</button>
-						</div>
-					</form> --%>
-
-
-					<div class="card-form" action="Test" method="post">
-						<div class="card-desc">
-							<h4>$${product.productPrice}</h4>
-							<div class="quantity-input">
-								<button type="button" class="button-decrease-quantity" id="button-decrease-quantity">-</button>
-								<input name=quantity id="product-quantity-${product.productID}" type="number" value="1" min="1">
-								<button type="button" class="button-increase-quantity" id="button-increase-quantity">+</button>
+							<div class="button-selection">
+								<input id="cart-value" type="hidden" value="${product.productID}">
+								<button type="submit" class="button-addToCart" name="itemnum" id="button-addToCart" 
+									onclick = "addCart(contextPath, ${product.productID}, ${product.productPrice}, '${product.productDescription}', boolCart);">
+										Add To Cart
+								</button>
 							</div>
-						</div>
-
-						<div class="button-selection">
-							<input id="cart-value" type="hidden" value="${product.productID}">
-							<button type="submit" class="button-addToCart" name="itemnum" id="button-addToCart" 
-								onclick = "addCart(contextPath, ${product.productID}, ${product.productPrice}, '${product.productDescription}')">
-									Add To Cart
-							</button>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</c:if>
+		<c:if test = "${prodStat == 2}">
+			<script>displayFormattedPrice(prodID, prodPrice);</script>
+			<div class="product-card" id="${product.productID}">
+				<div class="card-container">
+					<div class="card-left-container">
+						<div class="card-image">
+							<img src="<c:url value="/resources/images/bread1.jpg"/>"
+								alt="products">
+						</div>
+					</div>
+					<div class="card-right-container">
+						<div class="card-title">
+							<h3>${product.productName}</h3>
+						</div>
+						<div class="card-form" action="Test" method="post">
+							<div class="card-desc">
+								<h4 class = "" id = "product-price-${product.productID}"></h4>
+								<div class="quantity-input">
+									<button type="button" class="button-decrease-quantity"
+										onclick = "decreaseQuan(${product.productID})" id="button-decrease-quantity">-</button>
+									<input name=quantity class = "product-quantity" id="product-quantity-${product.productID}"
+										onkeyup = "checkEmpty(${product.productID})" type="text" value = "1">
+									<button type="button" class="button-increase-quantity" 
+										onclick = "increaseQuan(${product.productID})" id="button-increase-quantity">+</button>
+								</div>
+							</div>
+	
+							<div class="button-selection">
+								<input id="cart-value" type="hidden" value="${product.productID}">
+								<button type="submit" class="button-addToCart" name="itemnum" id="button-addToCart" 
+									onclick = "addCart(contextPath, ${product.productID}, ${product.productPrice}, '${product.productDescription}', boolCart);">
+										Add To Cart
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</c:if>
 	</c:forEach>
+	
 
 </div>
 
 <script>
-	var popup = document.getElementById("card-container1");
-	var header = document.getElementById("myHeader");
-	var main = document.getElementById("myMain");
-	function openPopup() {
-		openOrderDetails();
-		popup.classList.add("open-popup");
-		header.style.filter = "blur(8px)";
-		main.style.filter = "blur(8px)";
-		header.style.pointerEvents = "none";
-		main.style.pointerEvents = "none";
-	}
-
-	function closePopup() {
-		popup.classList.remove("open-popup");
-		header.style.filter = "none";
-		main.style.filter = "none";
-		header.style.pointerEvents = "all";
-		main.style.pointerEvents = "all";
-		closeOrderDetails();
-	}
-	
 	$(document).ready(function() {
-		initTestButton(contextPath);
+		checkCartSession(boolCart);
+		initButton();
+		initFunction();
 	});
 </script>
 </html>

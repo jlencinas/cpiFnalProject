@@ -1,0 +1,112 @@
+@charset "UTF-8";
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgb(255, 222, 212);
+    background: linear-gradient(318deg, rgba(255, 222, 212, 1) 0%, rgba(235, 162, 123, 1) 52%, rgba(204, 109, 77, 1) 100%);
+}
+
+.card-container-tracking-order {
+    height: auto;
+    width: 450px;
+    background-color: #fff;
+    border-radius: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-block: 2rem;
+    padding-inline: 2.5rem;
+}
+
+.title-tracking-order{
+}
+h2{
+    font-size: 3rem;
+    text-align: center;
+}
+
+.status-tracking-order{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding-block: 2rem;
+}
+
+.delivery-date-tracking-order{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+.payment-tracking-order{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding-block: 2rem;
+}
+
+.card-container-tracking-order h3{
+    font-weight: 500;
+}
+
+h1.tracking-num{
+    padding-block: 1rem;
+    font-size: 3rem;
+    color: #ffa789;
+}
+
+p{
+    font-size: 1.25rem;
+}
+
+.button-tracking-order{
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+}
+
+button{
+    padding-block: .5rem;
+    padding-inline: 2rem;
+    border-radius: 2rem;
+    width: 150px;
+    border: none;
+    font-size: 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: ease-out 0.2s;
+}
+
+button:active{
+    filter: brightness(50%);
+    transition: ease-in 0.1s
+}
+
+button.button-exit-tracking-box:hover{
+    background-color: rgb(255, 80, 80);
+    transition: ease-in 0.1s
+}
+
+button.button-enter-tracking-box:hover{
+    background-color: rgb(118, 255, 118);
+    transition: ease-in 0.1s
+}
+
+span.remember-tracking-order{
+    font-size: 1.5rem;
+    font-weight: 600;
+    color:rgb(255, 80, 80);
+    
+}

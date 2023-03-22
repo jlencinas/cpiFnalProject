@@ -105,77 +105,85 @@ public class OrderDao {
 		return o;
 	}
 
-	public Order getOrderDetails(String mobileNumber) {
+	public Order getOrderDetails(String orderSource, String orderId) {
 
-		Order order = new Order();
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+        Order order = new Order();
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-		String query = "SELECT * FROM orders WHERE mobile_number = ?";
+        String query = "SELECT * FROM orders WHERE order_source = ? AND order_id = ?";
 
-		try {
+        try {
 
-			conn = db.getConnection();
-			ps = conn.prepareStatement(query);
-			ps.setString(1, mobileNumber);
-			rs = ps.executeQuery();
+            conn = db.getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setString(1, orderSource);
+            ps.setString(2, orderId);
+            rs = ps.executeQuery();
 
-			if (rs.next()) {
-				order.setOrderId(rs.getInt("ORDER_ID"));
-				order.setOrderStatus(rs.getInt("ORDER_STATUS"));
-				order.setDeliveryDate(formatDate(rs.getDate("DELIVERY_DATE")));
-				order.setPaymentStatus(rs.getInt("PAYMENT_STATUS"));
-			}
+            if (rs.next()) {
+                order.setOrderStatus(rs.getInt("ORDER_STATUS"));
+                order.setDeliveryDate(formatDate(rs.getDate("DELIVERY_DATE")));
+                order.setPaymentStatus(rs.getInt("PAYMENT_STATUS"));
+            }
 
-		} catch (SQLException se) {
-			System.out.println(se);
-		}
+        } catch (SQLException se) {
+            System.out.println(se);
+        }
 
-		finally {
+        finally {
 
-			try {
-				if (rs != null) {
-					rs.close();
-				}
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
 
-				if (ps != null) {
-					ps.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException se) {
-				System.out.println(se);
-			}
-		}
-		return order;
-	}
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                System.out.println(se);
+            }
+        }
+        return order;
+    }
 
-	public List<Order> getOrdersByDate() {
+	public List<Order> getOrdersByDate(int page, int rows) {
 
 		List<Order> orders = new ArrayList<>();
 
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		int offset = (page-1) * rows;
 
-		String query = "SELECT * FROM orders ORDER BY order_date ASC";
+		String query = "SELECT * FROM orders ORDER BY delivery_date ASC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
 		try {
 
 			conn = db.getConnection();
 			ps = conn.prepareStatement(query);
+			ps.setInt(1, offset);
+			ps.setInt(2, rows);
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
 
 				Order order = new Order();
 				order.setOrderId(rs.getInt("ORDER_ID"));
+				order.setCustomerFn(rs.getString("CUSTOMER_FN"));
+				order.setCustomerLn(rs.getString("CUSTOMER_LN"));
+				order.setMobileNumber(rs.getString("MOBILE_NUMBER"));
 				order.setOrderDate(rs.getDate("ORDER_DATE"));
 				order.setOrderStatus(rs.getInt("ORDER_STATUS"));
 				order.setDeliveryDate(formatDate(rs.getDate("DELIVERY_DATE")));
 				order.setPaymentStatus(rs.getInt("PAYMENT_STATUS"));
+				order.setPrice(rs.getFloat("PRICE"));
+				order.setRemarks(rs.getString("REMARKS"));
 
 				orders.add(order);
 			}
@@ -187,6 +195,26 @@ public class OrderDao {
 		return orders;
 	}
 
+	public int getTotalOrdersCount() {
+
+		int total = 0;
+		try {
+			DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
+			Connection conn = db.getConnection();
+			PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) FROM orders");
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				total = rs.getInt(1);
+			}
+			rs.close();
+			ps.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return total;
+	}
+	
 	public void updateOrder(Order order) {
 
 		Connection conn = null;

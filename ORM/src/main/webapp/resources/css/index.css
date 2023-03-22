@@ -43,20 +43,56 @@ header nav .desktop-nav-container {
     justify-content: space-between;
 }
 
-header nav .desktop-nav-container a.basket-a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.5rem;
-    padding-inline: 2rem;
-    color: #fff;
-    transition: ease-out 0.125s;
+.disabled-container{
+    pointer-events: none;
+    opacity: 50% !important;
 }
 
-header nav .desktop-nav-container a.basket-a:hover {
-    transform: scale(1.1);
-    color: #f46f36;
-    transition: ease-in 0.125s;
+.disabled-logo-quantity{
+    display: none;
+}
+
+.disabled-logo-totalprice{
+    display: none;
+}
+
+header nav .desktop-nav-container .basket-logo-container{
+    display: flex;
+    align-items: center;
+    border: 2px solid #fff;
+    border-radius: .25rem;
+    padding: .25rem;
+    position: relative;
+    cursor: pointer;
+    opacity: 100%;
+}
+header nav .desktop-nav-container .basket-logo-container .basket-logo-quantity{
+    border: 2px solid #fff;
+    background-color: #fff;
+    color: #F37346;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 1rem;
+    padding-inline: .5rem;
+    position: absolute;
+    top: -15px;
+    left: -15px;
+}
+
+header nav .desktop-nav-container .basket-logo-container .basket-logo-totalprice{
+    padding-inline: .5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #fff;
+}
+
+header nav .desktop-nav-container .basket-logo-container a.basket-a {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 2.5rem;
+    color: #fff;
+    width: auto;
 }
 
 header nav .desktop-nav-container a span {
@@ -279,6 +315,8 @@ span.span-login{
 span.span-login:hover{
     text-decoration: underline;
 }
+
+
 
 
 

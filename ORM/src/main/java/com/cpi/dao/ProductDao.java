@@ -25,20 +25,23 @@ public class ProductDao {
 		db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
 	}
 
-	public List<Product> getProduct() {
+	public List<Product> getProduct(int page, int rows) {
 
 		List<Product> p = new ArrayList<>();
 
 		Connection conn = null;
-		Statement st = null;
+		PreparedStatement st = null;
 		ResultSet rs = null;
+		int offset = (page - 1) * rows;
 
 		try {
 
 			conn = db.getConnection();
-		
-			st = conn.createStatement();
-			rs = st.executeQuery("SELECT * FROM Product");
+
+			st = conn.prepareStatement("SELECT * FROM Product ORDER BY product_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+			st.setInt(1, offset);
+			st.setInt(2, rows);
+			rs = st.executeQuery();
 
 			while (rs.next()) {
 
@@ -73,6 +76,26 @@ public class ProductDao {
 		return p;
 	}
 
+	public static int getTotalProductCount() {
+
+		int total = 0;
+		try {
+			DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
+			Connection conn = db.getConnection();
+			PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) FROM product");
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				total = rs.getInt(1);
+			}
+			rs.close();
+			ps.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return total;
+	}
+
 	public Product newProduct(int productId, String productName, String productDescription, String productPicture,
 			int productStatus, float price) {
 
@@ -82,7 +105,6 @@ public class ProductDao {
 		Statement st = null;
 		ResultSet rs = null;
 		int prodId = 1;
-
 		String query = "INSERT INTO product (product_id, product_name, product_description, "
 				+ "product_picture, product_status, price) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -103,7 +125,6 @@ public class ProductDao {
 			ps.setString(4, productPicture);
 			ps.setInt(5, productStatus);
 			ps.setFloat(6, price);
-
 			ps.executeUpdate();
 			System.out.println("Added new product");
 
@@ -186,14 +207,12 @@ public class ProductDao {
 			rs = st.executeQuery("SELECT * FROM PRODUCT WHERE PRODUCT_ID = '" + productID + "'");
 
 			if (rs.next()) {
-
 				product.setProductID(rs.getString("PRODUCT_ID"));
 				product.setProductName(rs.getString("PRODUCT_NAME"));
 				product.setProductDescription(rs.getString("PRODUCT_DESCRIPTION"));
 				product.setProductPicture(rs.getString("PRODUCT_PICTURE"));
 				product.setProductStatus(rs.getInt("PRODUCT_STATUS"));
 				product.setProductPrice(rs.getFloat("PRICE"));
-
 			}
 		} catch (SQLException se) {
 			System.out.println(se);

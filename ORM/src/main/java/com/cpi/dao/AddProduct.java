@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.text.DecimalFormat;
 
 import com.cpi.model.DBConnect;
 import com.cpi.model.Product;
@@ -14,6 +15,8 @@ public class AddProduct {
     private static final String dbUsername = "CALANDRIA";
     private static final String dbPassword = "calandria";
     private static final String server = "training-db.cosujmachgm3.ap-southeast-1.rds.amazonaws.com";
+    private static final DecimalFormat df = new DecimalFormat("0.00");
+    
     public static List<Product> getProducts() throws ClassNotFoundException {
         
         List<Product> products = new ArrayList<>();

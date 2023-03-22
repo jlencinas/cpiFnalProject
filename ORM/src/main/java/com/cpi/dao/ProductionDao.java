@@ -28,31 +28,34 @@ public class ProductionDao {
 	private static final String server = "training-db.cosujmachgm3.ap-southeast-1.rds.amazonaws.com";
 	private static DBConnect db;
 
+	LocalDate today = getDateToday();
+	LocalDateTime startOfDay = LocalDateTime.of (today, LocalTime.MIN);
+	LocalDateTime endOfDay = LocalDateTime.of (today, LocalTime.MAX);
+	
 	public ProductionDao() {
 		db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
 	}
 
-	public List<Order> getOrdersToday() {
+	public List<Order> getOrdersToday(int page, int rows) {
 
 		List<Order> orders = new ArrayList<>();
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-
-		LocalDate today = getDateToday();
-		LocalDateTime startOfDay = LocalDateTime.of (today, LocalTime.MIN);
-		LocalDateTime endOfDay = LocalDateTime.of (today, LocalTime.MAX);
-		
+		int offset = (page-1) * rows;
+	
 		try {
 
 			conn = db.getConnection();
-			String query = "SELECT * FROM orders WHERE delivery_date > ? AND delivery_date < ?";
+			String query = "SELECT * FROM orders WHERE delivery_date > ? AND delivery_date < ? OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 			ps = conn.prepareStatement(query);
 
 			Timestamp ts = Timestamp.valueOf(startOfDay);
 			Timestamp ts2 = Timestamp.valueOf(endOfDay);
 			ps.setTimestamp(1, ts);
 			ps.setTimestamp(2, ts2);
+			ps.setInt(3, offset);
+			ps.setInt(4, rows);
 
 			rs = ps.executeQuery();
 
@@ -72,8 +75,6 @@ public class ProductionDao {
 				order.setDiscount(rs.getFloat("discount"));
 				order.setPrice(rs.getFloat("price"));
 				orders.add(order);
-
-				System.out.println(order.getDeliveryDate());
 			}
 
 		} catch (SQLException se) {
@@ -196,5 +197,29 @@ public class ProductionDao {
 	private String formatDate(Date date) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, yyyy");
 		return sdf.format(date);
+	}
+	
+	public int getTodayOrdersCount() {
+
+		int total = 0;
+		try {
+			DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
+			Connection conn = db.getConnection();
+			PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) FROM orders WHERE delivery_date > ? AND delivery_date < ?");
+			Timestamp ts = Timestamp.valueOf(startOfDay);
+			Timestamp ts2 = Timestamp.valueOf(endOfDay);
+			ps.setTimestamp(1, ts);
+			ps.setTimestamp(2, ts2);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				total = rs.getInt(1);
+			}
+			rs.close();
+			ps.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return total;
 	}
 }
