@@ -37,10 +37,11 @@
 		<script>var prodPrice = '${product.productPrice}'</script>
 		<script>var prodID = '${product.productID}'</script>
 		<c:set var = "prodStat" value = "${product.productStatus}"/>
-		<c:if test = "${prodStat == 0}">
-			<!-- do nothing -->
+		<c:if test = "${prodStat == 2}">
+			<!-- Removed Product Will Not Display -->
 		</c:if>
 		<c:if  test = "${prodStat == 1}">
+			<!-- Available Product Display -->
 			<script>displayFormattedPrice(prodID, prodPrice);</script>
 			<div class="product-card" id="${product.productID}">
 				<div class="card-container">
@@ -79,10 +80,12 @@
 				</div>
 			</div>
 		</c:if>
-		<c:if test = "${prodStat == 2}">
+		<c:if test = "${prodStat == 0}">
+			<!-- Disabled Products -->
 			<script>displayFormattedPrice(prodID, prodPrice);</script>
-			<div class="product-card" id="${product.productID}">
-				<div class="card-container">
+			<div class="product-card-disabled" id="${product.productID}">
+				<h4 class = "message-disabled">Product Unavailable.</h4>
+				<div class="card-container disabled-product">
 					<div class="card-left-container">
 						<div class="card-image">
 							<img src="<c:url value="/resources/images/bread1.jpg"/>"
@@ -92,27 +95,6 @@
 					<div class="card-right-container">
 						<div class="card-title">
 							<h3>${product.productName}</h3>
-						</div>
-						<div class="card-form" action="Test" method="post">
-							<div class="card-desc">
-								<h4 class = "" id = "product-price-${product.productID}"></h4>
-								<div class="quantity-input">
-									<button type="button" class="button-decrease-quantity"
-										onclick = "decreaseQuan(${product.productID})" id="button-decrease-quantity">-</button>
-									<input name=quantity class = "product-quantity" id="product-quantity-${product.productID}"
-										onkeyup = "checkEmpty(${product.productID})" type="text" value = "1">
-									<button type="button" class="button-increase-quantity" 
-										onclick = "increaseQuan(${product.productID})" id="button-increase-quantity">+</button>
-								</div>
-							</div>
-	
-							<div class="button-selection">
-								<input id="cart-value" type="hidden" value="${product.productID}">
-								<button type="submit" class="button-addToCart" name="itemnum" id="button-addToCart" 
-									onclick = "addCart(contextPath, ${product.productID}, ${product.productPrice}, '${product.productDescription}', boolCart);">
-										Add To Cart
-								</button>
-							</div>
 						</div>
 					</div>
 				</div>

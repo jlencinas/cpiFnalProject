@@ -35,6 +35,24 @@ main {
     display: flex;
     flex-wrap: wrap;
 }
+.product-card-disabled{
+    display: flex;
+    flex-wrap: wrap;
+	position: relative;
+}
+
+.product-card-disabled .card-container {
+    height: 200px;
+    border-radius: 2rem;
+    display: flex;
+    padding-inline: 1.75rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #fff;
+    transition: ease-out .125s;
+}
 
 .product-card .card-container {
     width: 400px;
@@ -274,4 +292,19 @@ img.popup-logo {
     margin-top: -50px;
     border-radius: 50%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.disabled-product{
+	opacity: 50%;
+}
+
+.message-disabled{
+	position: absolute;
+	transform: translate(-50%,-50%);
+	top: 50%;
+	left: 50%;
+	opacity: 100%;
+	color: red;
+	font-size: 1.5rem;
+	text-align: center;
 }
