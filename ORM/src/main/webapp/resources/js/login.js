@@ -10,9 +10,8 @@ function initButtons() {
 			login(username, password);
 		}
 	});
-	
-	
-	$("#forgot-pass-button").click(function()  {
+
+	$("#forgot-pass-button").click(function() {
 		forgotPass();
 	});
 }
@@ -24,23 +23,33 @@ function login(username, password) {
 	$.ajax({
 		url: contextPath + "Login",
 		method: "POST",
+    	dataType: "json",
 		data: {
 			username: username,
 			password: password
 		},
-		success: function() {
-			window.location.href = contextPath +  "pages/dashboard.jsp";
+		success: function(response) {
+			console.log(response.redirect);
+			window.location.href = contextPath + "pages/adminTable.jsp";
+		},
+		error: function(httpRequest, textStatus, errorThrown) {  // detailed error messsage 
+			window.location.href = contextPath +  "index.jsp"
 		}
 	});
 }
 
-function forgotPass(){
+function forgotPass() {
 	console.log("proceeding to forgot pass");
 	$.ajax({
-		url: contextPath + "pages/Forgot",
+		url: contextPath + "goToForgot",
 		method: "POST",
 		success: function() {
-			window.location.href = contextPath +  "pages/forgotpassword.jsp";
+			window.location.href = contextPath + "pages/forgotpassword.jsp";
 		}
 	});
 }
+
+
+
+
+
