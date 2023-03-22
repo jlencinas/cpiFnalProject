@@ -32,37 +32,39 @@
 <body>
 	<div class="logInDiv">
 		<div class="loginLogo">
-			<img class="logo" src="<c:url value="resources/images/Logo-01.png"/>" alt="">
+			<a href = "/ORM/"> <img id = "login-logo" class="logo" src="<c:url value="resources/images/Logo-01.png"/>" alt=""></a>
 		</div>
 		<h2>${msg}</h2>
 		<div class="loginTitle">
 			<h1>Login</h1>
 		</div>
+		<form action = "Login" method = "POST">
 		<div class="inputFieldLogin">
 			<div class="inputField">
 				<h3>User Name:</h3>
 				<div class="inputFieldLogo">
 					<ion-icon name="person" class="user-logo"></ion-icon>
-					<input type="text" id="username">
+					<input name = "username" type="text" id="username" maxlength = "20" pattern="[a-zA-Z0-9\s]+" required>
 				</div>
 			</div>
 			<div class="inputField">
 				<h3>Password:</h3>
 				<div class="inputFieldLogo">
 					<ion-icon name="lock-closed" class="lock-logo"></ion-icon>
-					<input type="password" id="password">
+					<input name = "password" type="password" id="password" maxlength = "12"  required>
 				</div>
 			</div>
 		</div>
 		<div class="forgotPasswordField">
-			<a href="" id = "forgot-pass-button">Forgot password?</a>
+			<a href="#" id = "forgot-pass-button">Forgot password?</a>
 		</div>
 		<div class="buttonDiv">
 			<!-- <input class="submitButton" id="loginButton" type="submit" value="Log In"> -->
-			<button id="loginButton">LOGIN</button>
+			<!-- <input type = "submit" value ="LOGIN"/> -->
+			<button type = "submit">LOGIN</button>
 		</div>
+		</form>
 	</div>
-	
 	
 	<!-- <form action="Login">
 		<label>Login Account</label> <label>Username: </label><input
