@@ -92,7 +92,7 @@
 							<h2>Change Email Address</h2>
 							<label for="email"><b>New Email Address</b></label> 
 							<input type="text" placeholder="Enter New Email Address" name="newemail" required>
-							<button type="submit" class="btn" id="updateEmailBtn" onclick="updateEmail(); javascript:$('#dlg').dialog('close'); javascript$('#dg').datagrid('reload');">Save Changes</button>
+							<button type="submit" class="btn" id="updateEmailBtn" onclick="updateEmail()">Save Changes</button>
 							<br>
 							<button type="button" class="btn cancel" onclick="closeEmailForm()">Close</button>
 						</form>
@@ -115,26 +115,43 @@
 			<!-- ================ Table ================= -->
 			<div style="text-align: center;">
 				<br><br>
-				<h1>REPORTING LIST</h1>
+				<h1>AUDIT ORDER LIST</h1>
 				<br><br>
 			</div>
+
 			<center>
-				<table class="easyui-datagrid" url="ordersReport" pagination="true" fitColumns="true" singleSelect="true" style="width: 95%; height: 390px;">
+				<table id="dg" class="easyui-datagrid" url="listOfOrders" toolbar="#toolbar" pagination="true" fitColumns="true" singleSelect="true" style="width: 95%; height: 425px;">
 					<thead>
 						<tr>
-							<th field="order_id" width="10%">Order ID</th>
-							<th field="customer_name" width="15%">Customer Name</th>
-							<th field="mobile_number" width="12%">Mobile Number</th>
-							<th field="order_date" width="10%">Order Date</th>
-							<th field="delivery_date" width="10%">Delivery Date</th>
-							<th field="payment_status" width="15%">Payment Status</th>
-							<th field="price" width="10%">Total Price</th>
-							<th field="remarks" width="20%">Remarks</th>
+							<th field="order_id" width="25%">Order ID</th>
+							<th field="order_status" width="25%">Order Status</th>
+							<th field="delivery_date" width="25%">Expected Delivery Date</th>
+							<th field="payment_status" width="26%">Payment Status</th>
 						</tr>
 					</thead>
 				</table>
-				<script src="/ORM/resources/js/admin.js"></script>
-				<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-				<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+			<br><br>
+			<!-- ================ Table2 ================= -->
+			<div style="text-align: center;">
+				<br><br>
+				<h1>AUDIT ORDER SUMMARY</h1>
+				<br><br>
+			</div>
+			<center>
+				<table class="easyui-datagrid" url="ShowSummary" pagination="true" fitColumns="true" singleSelect="true" style="width: 95%; height: 400px;">
+					<thead>
+						<tr>
+							<th field="prod_id" width="21%">Product ID</th>
+							<th field="delivery_date" width="20%">Delivery Date</th>
+							<th field="payment_status" width="20%">Payment Status</th>
+							<th field="quantity" width="20%">Quantity</th>
+							<th field="price" width="20%">Total Price</th>
+						</tr>
+					</thead>
+				</table>
+			<br><br>
+			<script src="/ORM/resources/js/admin.js"></script>
+			<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+			<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>	
 </body>
 </html>

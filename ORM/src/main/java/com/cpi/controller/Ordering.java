@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cpi.dao.AddOrderDetailsDao;
+import com.cpi.dao.AuditOrderDetailsDao;
 import com.cpi.dao.CreateOrderDao;
 import com.cpi.dao.GetUserDetails;
+import com.cpi.model.AuditOrderDetails;
 import com.cpi.model.Order;
 import com.cpi.model.OrderSummary;
 import com.cpi.model.Users;
@@ -59,7 +61,7 @@ class Ordering {
         if (user != null) {
         	roleId = user.getRoleId();
         }
-        updateOrderSummaries(allParams, session);
+        updateOrderSummaries(allParams, session, orderFname, orderLname);
         @SuppressWarnings("unchecked")
 		Map<Integer, Integer> cart = (Map<Integer, Integer>) session.getAttribute("cart");
 		if (cart == null) {
@@ -106,7 +108,7 @@ class Ordering {
     }
     
     
-    public void updateOrderSummaries(Map<String, String> allParams, HttpSession session) {
+    public void updateOrderSummaries(Map<String, String> allParams, HttpSession session, String fname, String lname) {
 		@SuppressWarnings("unchecked")
 		Map<Integer, Integer> cart = (Map<Integer, Integer>) session.getAttribute("cart");
 		if (cart == null) {
@@ -139,6 +141,7 @@ class Ordering {
     				} else if (oldQuantity != newQuantity) {
     					System.out.println("The Item is Updated");
     					cart.put(itemId, newQuantity);
+        				auditOrderDetailsChanges(itemId, newQuantity, oldQuantity, fname, lname);
     				}
                 }
             }
@@ -147,4 +150,15 @@ class Ordering {
 		session.setAttribute("cart", cart);
 		System.out.println("Updated Session: " + cart);
 	}
+    
+    private void auditOrderDetailsChanges(int itemid, int newquantity, int oldquantity, String fName, String lName) {
+        AuditOrderDetails aod = new AuditOrderDetails();
+        String customeName = fName + " " + lName;
+        aod.setUsername(customeName);
+        aod.setItemID(itemid);
+        aod.setNewQuantity(newquantity);
+        aod.setOldQuantity(oldquantity);
+        
+        AuditOrderDetailsDao.setAuditOrderDetails(aod);
+    }
 }

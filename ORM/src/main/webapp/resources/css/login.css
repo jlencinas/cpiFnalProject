@@ -7,7 +7,7 @@
 }
 
 body {
-    height: 100vh;
+    min-height: 100vh;
     width: 100vw;
     display: flex;
     justify-content: center;
@@ -26,6 +26,7 @@ body {
     flex-direction: column;
     padding-block: 2rem;
     padding-inline: 4rem;
+    margin-block: 2rem;
 }
 
 .loginLogo {
@@ -156,4 +157,36 @@ button {
 button:hover {
     background-color: #ffca63;
     transition: ease-in, .2s;
+}
+
+h2.message-text{
+	padding-top: 1rem;
+	text-align:center;
+	color: red;
+}
+@media only screen and (max-width: 1250px) {
+	.logInDiv{
+	max-width: 600px;
+	width: 600px;
+	}
+	
+	.loginLogo a img.logo{
+	width: 200px;
+	}
+	
+	.loginTitle{
+	height:  75px;
+	}
+
+}
+
+@media only screen and (max-width: 650px){
+	.logInDiv{
+	max-width: 450px;
+	width: 450px;
+	}
+}
+
+@media only screen and (max-width: 550px){
+	
 }

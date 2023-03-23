@@ -34,11 +34,11 @@
 		<div class="loginLogo">
 			<a href = "/ORM/"> <img id = "login-logo" class="logo" src="<c:url value="resources/images/Logo-01.png"/>" alt=""></a>
 		</div>
-		<h2>${msg}</h2>
+		<h2 class = "message-text">${msg}</h2>
 		<div class="loginTitle">
 			<h1>Login</h1>
 		</div>
-		<form action = "Login" method = "POST">
+		<!-- <form action = "Login" method = "POST"> -->
 		<div class="inputFieldLogin">
 			<div class="inputField">
 				<h3>User Name:</h3>
@@ -61,9 +61,9 @@
 		<div class="buttonDiv">
 			<!-- <input class="submitButton" id="loginButton" type="submit" value="Log In"> -->
 			<!-- <input type = "submit" value ="LOGIN"/> -->
-			<button type = "submit">LOGIN</button>
+			<button id = "loginButton">LOGIN</button>
 		</div>
-		</form>
+		<!-- </form> -->
 	</div>
 	
 	<!-- <form action="Login">

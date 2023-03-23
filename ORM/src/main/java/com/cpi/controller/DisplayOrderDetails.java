@@ -28,7 +28,7 @@ public class DisplayOrderDetails {
 		return mv;
 	}
 
-	@RequestMapping("pages/DisplayProduct")
+	@RequestMapping(value = {"pages/DisplayProduct", "DisplayProduct"})
 	public ModelAndView displayPorudct() throws ClassNotFoundException {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("products", AddProduct.getProducts());

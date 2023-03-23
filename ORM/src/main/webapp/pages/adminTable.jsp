@@ -34,7 +34,7 @@
 		<div class="navigation">
 			<ul>
 				<li>
-					<a href="#"> <span class="icon"> <img src="/ORM/resources/images/Logo-01.svg">
+					<a href="#"> <span class="icon"> <img class = "logo-image" src="/ORM/resources/images/Logo-01.png">
 					</span> <span class="title">CPI Bakery</span>
 					</a>
 				</li>
@@ -61,6 +61,11 @@
 				<li>
 					<a href="reportTable.jsp"> <span class="icon"> <ion-icon name="newspaper-outline"></ion-icon>
 					</span> <span class="title">Reporting</span>
+					</a>
+				</li>
+				<li>
+					<a href="auditTable.jsp"> <span class="icon"> <ion-icon name="newspaper-outline"></ion-icon>
+					</span> <span class="title">Auditing</span>
 					</a>
 				</li>
 			</ul>
@@ -176,7 +181,7 @@
 						</div>
 					</form>
 					<div id="dlg-buttons">
-						<a class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveUser()" style="width: 90px">Register</a> 
+						<a class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveUser();  javascript:$('#dlg').dialog('close'); javascript$('#dg').datagrid('reload');" style="width: 90px">Register</a> 
 						<a class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width: 90px">Cancel</a>
 					</div>
 				</div>

@@ -21,7 +21,9 @@
 <body>
     <div class="card-container">
         <div class="forgotPassLogo">
-            <img class = "logo" src="../resources/images/Logo-01.png" alt="">
+	        <a href = "#" id="goback-login" onclick = "loginButton(contextPath)">
+	        	<img class = "logo" src="../resources/images/Logo-01.png" alt="">
+	        </a>
         </div>
         <div class="title">
             <h1>Forgot Password</h1>
@@ -32,7 +34,7 @@
                     <h3>Username: </h3>
                 </div>
                 <div class="inputFieldInput">
-                    <input type="text" id = "username-input">
+                    <input type="text" id = "username-input" required>
                 </div>
             </div>
             <div class="inputField">
@@ -42,11 +44,11 @@
                 <div class="inputFieldInput">
                     <input type="email"
                     placeholder="sample123@email.com"
-                    id = "email-input">
+                    id = "email-input" required>
                 </div>
             </div>
         <div class="buttonDiv">
-            <button onclick = "forgotPassword()">Reset</button>
+            <button type = "submit" onclick = "forgotPassword()">Reset</button>
         </div>
     </div>
 </body>

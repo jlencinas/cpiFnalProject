@@ -156,38 +156,62 @@ function checkOut() {
 	var deliveryDate = $("#inputDate").val().toString();
 	var deliveryTime = $("#inputTime").val().toString();
 	var contactNum = $("#telField").val().toString();
+	var checkValidityTime = document.getElementById("inputTime");
+	var checkValidityContactNum = document.getElementById("telField");
 	var productinfo_array = [];
 
-	$("tr#row-order-info").each(function(index) {
-		productinfo_array.push({
-			"itemId": $(this).find("#itemId").val().toString(),
-			"oldQuantity": $(this).find("#old-quantity").val().toString(),
-			"quantity": $(this).find(".order-quantity").val().toString()
-		});
-	});
-
-	$.ajax({
-		type: "POST",
-		url: "NewOrder",
-		data: {
-			t1: fName,
-			t2: lName,
-			t3: contactNum,
-			dates: deliveryDate,
-			times: deliveryTime,
-			allParams: productinfo_array
-		},
-		success: function(response) {
-			closePopup();
-			totalPrice = 0;
-			quantity = 0;
-			console.log(totalPrice);
-			console.log(quantity);
-			checkQuan(quantity, totalPrice);
-			openConfirmationPopup()
+	console.log(checkValidityTime.value);
+	console.log(checkValidityContactNum.value);
+	console.log(checkValidityTime.checkValidity());
+	console.log(checkValidityContactNum.checkValidity());
+	
+	
+	
+	if ((fName == "") || (lName == "") || (deliveryDate == "") || 
+	(deliveryTime == "") || (contactNum == "")){
+		alert("Please fill up the Field and necessary details!");
+	}
+	else{
+		if ( (checkValidityTime.checkValidity() == true) && (checkValidityContactNum.checkValidity() == true)) {
+			$("tr#row-order-info").each(function(index) {
+				productinfo_array.push({
+					"itemId": $(this).find("#itemId").val().toString(),
+					"oldQuantity": $(this).find("#old-quantity").val().toString(),
+					"quantity": $(this).find(".order-quantity").val().toString()
+				});
+			});
+			
+			closeOrderDetails();
+			$.ajax({
+				type: "POST",
+				url: "NewOrder",
+				data: {
+					t1: fName,
+					t2: lName,
+					t3: contactNum,
+					dates: deliveryDate,
+					times: deliveryTime,
+					allParams: productinfo_array
+				},
+				success: function(response) {
+					closePopup();
+					totalPrice = 0;
+					quantity = 0;
+					console.log(totalPrice);
+					console.log(quantity);
+					checkQuan(quantity, totalPrice);
+					openConfirmationPopup()
+				}
+		
+			});
 		}
+		else{
+			alert("Please check the validity of your input information!");
+		}
+	}
+	
 
-	});
+	
 
 
 
@@ -244,7 +268,11 @@ function forgotPassword(){
 			email:emailAdd
 		},
 		success: function(result) {
-			console.log("Resetted")
+			alert("Password Reseted Successfully! Please check your E-mail");
+			window.location.href = contextPath + "login.jsp";
+		},
+		error :function(){
+			alert("Error! Password Reset Fail!");
 		}
 	});
 }

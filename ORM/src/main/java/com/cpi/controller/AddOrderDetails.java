@@ -72,7 +72,7 @@ public class AddOrderDetails {
         session.setAttribute("price_cart", price_cart);
         System.out.println("Session Cart: " + price_cart);
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("dashboard.jsp");
+        mv.setViewName("DisplayProduct");
         return mv;
     }
 }

@@ -72,7 +72,8 @@ public class MvcConfig implements WebMvcConfigurer {
                                 .addPathPatterns("/pages/NewProduct")
                                 .addPathPatterns("/pages/updateProduct")
                                 .addPathPatterns("/pages/ordersToday")
-                                .addPathPatterns("/pages/availableProducts");
+                                .addPathPatterns("/pages/availableProducts")
+        						.addPathPatterns("/pages/adminTable.jsp");
     }
 
 	@Override

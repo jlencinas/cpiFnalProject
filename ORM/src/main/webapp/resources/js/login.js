@@ -23,17 +23,30 @@ function login(username, password) {
 	$.ajax({
 		url: contextPath + "Login",
 		method: "POST",
-    	dataType: "json",
 		data: {
 			username: username,
 			password: password
 		},
-		success: function(response) {
-			console.log(response.redirect);
-			window.location.href = contextPath + "pages/adminTable.jsp";
-		},
-		error: function(httpRequest, textStatus, errorThrown) {  // detailed error messsage 
-			window.location.href = contextPath +  "index.jsp"
+		success: function(output, status, xhr) {
+			console.log(output);
+			console.log(status);
+			console.log(xhr.getResponseHeader('REQUIRES_AUTH'));
+			if (xhr.getResponseHeader('REQUIRES_AUTH') == 2){
+				console.log("Wrong Username or Password");
+				window.location.href = contextPath + "WrongUsernameOrPass";
+			}
+			else if (xhr.getResponseHeader('REQUIRES_AUTH') == 3){
+				console.log("Account Disabled");
+				window.location.href = contextPath + "DisabledAccount";
+			}
+			else if (xhr.getResponseHeader('REQUIRES_AUTH') == 4){
+				console.log("Account Does Not Exist");
+				window.location.href = contextPath + "AccountDoesNotExist";
+			}
+			else if (xhr.getResponseHeader('REQUIRES_AUTH') == null){
+				console.log("Access Granted");
+				window.location.href = contextPath + "pages/adminTable.jsp";
+			}
 		}
 	});
 }

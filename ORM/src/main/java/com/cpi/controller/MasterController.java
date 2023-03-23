@@ -1,5 +1,6 @@
 package com.cpi.controller;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,19 +17,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.supercsv.io.CsvBeanWriter;
+import org.supercsv.io.ICsvBeanWriter;
+import org.supercsv.prefs.CsvPreference;
 
+import com.cpi.dao.AuditOrderDao;
 import com.cpi.dao.GetSummaryDetails;
 import com.cpi.dao.GetUserDetails;
 import com.cpi.dao.OrderDao;
 import com.cpi.dao.ProductDao;
 import com.cpi.dao.ProductionDao;
 import com.cpi.dao.UsersDao;
+import com.cpi.model.AuditOrder;
 import com.cpi.model.Order;
 import com.cpi.model.Product;
 import com.cpi.model.Summary;
 import com.cpi.model.Users;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 @Controller
 class Controllers {
@@ -45,7 +54,7 @@ class Controllers {
 		this.productionDao = productionDao;
 	}
 
-	@RequestMapping("goToLogin")
+	@RequestMapping(value = { "goToLogin", "pages/goToLogin" })
 	public ModelAndView loginController(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		System.out.println("Redirected to Login");
@@ -74,34 +83,65 @@ class Controllers {
 		return mv;
 	}
 
-	@RequestMapping(value = {"pages/Login", "Login"})
-	public ModelAndView login(HttpServletRequest request,
-			@RequestParam(required = false, name = "username") String username,
-			@RequestParam(required = false, name = "password") String password) {
+	@RequestMapping(value = { "pages/Login", "Login" })
+	public ModelAndView login(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(name = "username") String username, @RequestParam(name = "password") String password) {
 		System.out.println(username);
 		System.out.println(password);
 		ModelAndView mv = new ModelAndView();
 		UsersDao dao = new UsersDao();
-
 		Users user = dao.getUser(username);
 		if (user.getUserId() != 0) {
-			if (user.getStatus().equals("ENABLED")) {
+			if (user.getStatus().equals("DISABLED")) {
+				System.out.println("test");
+				response.addHeader("REQUIRES_AUTH", "3");
+				mv.setViewName("DisabledAccount");
+			} else {
 				if (user.getPassword().equals(password)) {
 					HttpSession sesh = request.getSession();
+					response.addHeader("REQUIRES_AUTH", "1");
 					sesh.setAttribute("userAccount", user);
 					mv.setViewName("redirect:pages/adminTable.jsp");
 				} else {
-					mv.addObject("msg", "Wrong Password");
-					mv.setViewName("pages/login.jsp");
+					response.addHeader("REQUIRES_AUTH", "2");
+					mv.setViewName("WrongUsernameOrPass");
 				}
-			} else {
-				mv.addObject("msg", "Account Disabled");
-				mv.setViewName("pages/login.jsp");
 			}
 		} else {
-			mv.addObject("msg", "Account Does Not Exist");
-			mv.setViewName("pages/login.jsp");
+			response.addHeader("REQUIRES_AUTH", "4");
+			mv.setViewName("AccountDoesNotExist");
 		}
+		/*
+		 * else { response.addHeader("REQUIRES_AUTH","2"); mv.addObject("msg",
+		 * "Account Does Not Exist"); mv.setViewName("pages/login.jsp"); }
+		 */
+		return mv;
+	}
+
+	@RequestMapping(value = { "pages/WrongUsernameOrPass", "WrongUsernameOrPass" })
+	public ModelAndView wrongUnameOrPass(HttpServletRequest request, HttpServletResponse reponse) {
+		System.out.println("Redirected to Login");
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("msg", "Wrong Username or Password");
+		mv.setViewName("pages/login.jsp");
+		return mv;
+	}
+
+	@RequestMapping(value = { "pages/DisabledAccount", "DisabledAccount" })
+	public ModelAndView disabledAccount(HttpServletRequest request, HttpServletResponse reponse) {
+		System.out.println("Redirected to Login");
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("msg", "Account Disabled");
+		mv.setViewName("pages/login.jsp");
+		return mv;
+	}
+
+	@RequestMapping(value = { "pages/AccountDoesNotExist", "AccountDoesNotExist" })
+	public ModelAndView accountNotExist(HttpServletRequest request, HttpServletResponse reponse) {
+		System.out.println("Redirected to Login");
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("msg", "Account Not Exist");
+		mv.setViewName("pages/login.jsp");
 		return mv;
 	}
 
@@ -112,7 +152,6 @@ class Controllers {
 		HttpSession session = request.getSession();
 		ModelAndView mv = new ModelAndView();
 		session.removeAttribute("userAccount");
-		session.invalidate();
 		mv.setViewName("redirect:/");
 
 		return mv;
@@ -266,7 +305,14 @@ class Controllers {
 			productJson.addProperty("product_id", p.getProductID());
 			productJson.addProperty("product_description", p.getProductDescription());
 			productJson.addProperty("product_picture", p.getProductPicture());
-			productJson.addProperty("product_status", p.getProductStatus());
+
+			if (p.getProductStatus() == 0) {
+				productJson.addProperty("product_status", "DISABLED");
+			} else if (p.getProductStatus() == 1) {
+				productJson.addProperty("product_status", "AVAILABLE");
+			} else if (p.getProductStatus() == 2) {
+				productJson.addProperty("product_status", "REMOVED");
+			}
 			productJson.addProperty("product_price", p.getProductPrice());
 			rowsJson.add(productJson);
 
@@ -336,41 +382,102 @@ class Controllers {
 		return json.toString();
 	}
 
-	@RequestMapping("pages/updateOrders")
-	public ModelAndView updateOrderStatusAndPayment(@RequestParam("orderStatus") Integer orderStatus,
-			@RequestParam("paymentStatus") Integer paymentStatus, @RequestParam("order_id") int orderId,
-			@RequestParam("remarks") String remarks) {
-
-		Order order = orderDao.getOrder(orderId);
-
+	@RequestMapping(value = { "pages/updateOrders", "updateOrders" })
+	public ModelAndView updateOrderStatusAndPayment(@RequestParam("order_status") String currStatus, 
+			@RequestParam("payment_status") String currPayment, @RequestParam("status") int orderStatus, @RequestParam("paymentStatus") Integer paymentStatus, 
+			@RequestParam("order_id") int orderId, @RequestParam("remarks") String remarks,
+			HttpSession session) {
+		
+		Order order = new Order();
+		int intCurrPay = 0;
+		int intCurrStatus = 0;
+		order.setOrderId(orderId);
+		
+		//Audit OrderStatus
 		order.setOrderStatus(orderStatus);
+		if (currStatus.equals("Not Paid")) {
+			intCurrStatus = 1;
+		} else if (currStatus.equals("Paid")) {
+			intCurrStatus = 2;
+		}
+		
+		if (intCurrStatus != orderStatus) {
+            auditOrderChanges(orderId, "Order Status", orderStatus, intCurrStatus, session);
+        }
+		
+		//Audit PaymentStatus
+		order.setPaymentStatus(paymentStatus);
+		if (currPayment.equals("Pending")){
+			intCurrPay =  1;
+		} else if (currPayment.equals("Ready for Pick up")) {
+			intCurrPay =  2;
+		} else if (currPayment.equals("Completed")) {
+			intCurrPay =  3;
+		} else if (currPayment.equals("Cancelled")) {
+			intCurrPay =  50;
+		} else if (currPayment.equals("Rejected")) {
+			intCurrPay =  90;
+		}
+		if (intCurrPay != paymentStatus) {
+            auditOrderChanges(orderId, "Payment Status", paymentStatus, intCurrPay, session);
+        }
+		order.setRemarks(remarks);
+		orderDao.updateOrder(order);
+
+		ModelAndView mv = new ModelAndView();
+		mv.addObject(order);
+		return mv;
+	}
+	
+	private void auditOrderChanges(int orderid, String field, int newvalue, int oldvalue, HttpSession session) {
+        AuditOrder auditorder = new AuditOrder();
+        Users user = (Users) session.getAttribute("userAccount");
+        auditorder.setUsername(user.getUsername());
+        auditorder.setItemID(orderid);
+        auditorder.setFieldChanged(field);
+        auditorder.setNewValue(newvalue);
+        auditorder.setOldValue(oldvalue);
+        
+        AuditOrderDao.setAuditOrder(auditorder);
+   }
+	
+	@RequestMapping(value = { "pages/updateProductionsOrder", "updateProductionsOrder" })
+	public ModelAndView updateOrderProductStatusAndPayment(@RequestParam("status") String orderStatus,
+			@RequestParam("paymentStatus") Integer paymentStatus, @RequestParam("order_id") int orderId, 
+			@RequestParam("remarks") String remarks) {
+		
+		Order order = new Order();
+		order.setOrderId(orderId);
+		order.setOrderStatus(Integer.parseInt(orderStatus));
 		order.setPaymentStatus(paymentStatus);
 		order.setRemarks(remarks);
 		orderDao.updateOrder(order);
 
 		ModelAndView mv = new ModelAndView();
+		mv.addObject(order);
 		return mv;
-
 	}
 
 	@RequestMapping(value = { "pages/ordersToday", "ordersToday" })
 	@ResponseBody
 	public String getOrdersToday(@RequestParam("page") int page, @RequestParam("rows") int rows,
-		@RequestParam(value = "filter", required = false) String filter) {
+			@RequestParam(value = "filter", required = false) String filter) {
 		List<Order> ordersToday = new ArrayList<>();
-
+		System.out.println("Filtering");
 		if (filter == null) {
 			filter = "all";
+			System.out.println("Filtering All");
 		}
 
 		if (filter != null & filter.equals("AM")) {
+			System.out.println("Filtering AM");
 			ordersToday = productionDao.getOrdersTodayByTime(true);
 		} else if (filter != null & filter.equals("PM")) {
+			System.out.println("Filtering PM");
 			ordersToday = productionDao.getOrdersTodayByTime(false);
 		} else {
 			ordersToday = productionDao.getOrdersToday(page, rows);
 		}
-
 
 		int total = productionDao.getTodayOrdersCount();
 
@@ -394,9 +501,9 @@ class Controllers {
 				orderJson.addProperty("order_status", "Rejected");
 			}
 			orderJson.addProperty("delivery_date", o.getDeliveryDate());
-			if (o.getPaymentStatus() == 1) {
+			if (o.getPaymentStatus() == 0) {
 				orderJson.addProperty("payment_status", "Not Paid");
-			} else if (o.getPaymentStatus() == 2) {
+			} else if (o.getPaymentStatus() == 1) {
 				orderJson.addProperty("payment_status", "Paid");
 			}
 			rowsJson.add(orderJson);
@@ -466,11 +573,9 @@ class Controllers {
 			userJson.addProperty("status", u.getStatus());
 			rowsJson.add(userJson);
 
-			System.out.println("LOOP");
 		}
 
 		json.add("rows", rowsJson);
-		System.out.println("AFTER");
 
 		return json.toString();
 	}
@@ -504,6 +609,52 @@ class Controllers {
 		}
 		json.add("rows", rowsJson);
 		return json.toString();
+	}
+	
+	@RequestMapping(value = { "pages/CSV", "CSV" })
+	@ResponseBody
+	public void downloadSummaryCSV(HttpServletResponse response) throws ClassNotFoundException, IOException {
+		String csvFileName = "OrderSummary.csv";
+		response.setContentType("text/csv");
+		String headerKey = "Content-Disposition";
+		String headerValue = String.format("attachment; filename=\"%s\"", csvFileName);
+		response.setHeader(headerKey, headerValue);
+		List<Summary> summarylist = GetSummaryDetails.getSummaryDownload();
+		ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
+		String[] header = { "prodId", "deliveryDate", "paymentStatus", "quantity", "price" };
+		csvWriter.writeHeader(header);
+		for (Summary aSum : summarylist) {
+			csvWriter.write(aSum, header);
+		}
+		csvWriter.close();
+
+	}
+
+	@RequestMapping(value = { "pages/PDF", "PDF" })
+	@ResponseBody
+	public ModelAndView downloadPDF() throws ClassNotFoundException {
+		ModelAndView mv = new ModelAndView();
+		List<Summary> summarylist = GetSummaryDetails.getSummaryDownload();
+		mv.addObject("summary", summarylist);
+
+		try {
+			Document pdfdoc = new Document();
+			String home = System.getProperty("user.home");
+			PdfWriter writer = PdfWriter.getInstance(pdfdoc, new FileOutputStream(home + "/Downloads/summary.pdf"));
+			pdfdoc.open();
+
+			pdfdoc.add(new Paragraph("PRODUCT ID  DELIVERY DATE  PAYMENT STATUS  QUANTITY  PRICE"));
+			pdfdoc.add(new Paragraph("___________  _______________  _______________  __________  ______"));
+			for (Summary aSum : summarylist) {
+				pdfdoc.add(new Paragraph(aSum.getProdId() + "  |  " + aSum.getDeliveryDate() + "  |  "
+						+ aSum.getPaymentStatus() + "  |  " + aSum.getQuantity() + "  |  " + aSum.getPrice()));
+			}
+			pdfdoc.close();
+			writer.close();
+		} catch (Exception e) {
+			System.out.println("Exception Occured PDF");
+		}
+		return mv;
 	}
 
 }

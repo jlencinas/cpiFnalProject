@@ -35,15 +35,14 @@
 	<title>Home page</title>
 
 </head>
-<body>
-	<header id="myHeader">
+<header id="myHeader">
 		<nav>
 			<div class="desktop-nav-container">
 			<img class = "homepage-logo" src="<c:url value="/resources/images/Logo-01.png"/>"
 					alt="logo-image" onclick = "loginButton(contextPath)">
-				<ul>
+				<ul >
 					<li><a href="/ORM/" id="a-home">HOME</a></li>
-					<li><a href="#"id="a-shop">SHOP</a></li>
+					<li class = "listed-directories"><a href="#"id="a-shop">SHOP</a></li>
 				</ul>
 				<div class="basket-logo-container disabled-container" onclick="openPopup()" id = "basket-logo-container" >
                         <div class="basket-logo-quantity disabled-logo-quantity" id = "basket-logo-quantity">
@@ -58,6 +57,8 @@
 			</div>
 		</nav>
 	</header>
+<body>
+	
 
 <div class="card-container1" id="card-container1"></div>
 	<main id="myMain">
@@ -154,12 +155,13 @@
 			});
 		</script>
 	</main>
+
+</body>
+
 	<footer id = "myFooter">
 		<div class="copyright-container">
 			<h2>Copyright 2023 Q1 Developer Trainees</h2>
 		</div>
 	</footer>
-
-</body>
 </html>
 

@@ -233,9 +233,10 @@ function editProduction() {
 	if (row) {
 		$('#dlg').dialog('open').dialog('center').dialog('setTitle', 'Edit Product');
 		$('#fm').form('load', row);
-		url = 'update_user.java?id=' + row.id;
+		url = 'updateProductionsOrder';
 	}
 }
+
 function saveProduction() {
 	$('#fm').form('submit', {
 		url: url,
@@ -283,9 +284,12 @@ function checkInput() {
 }
 
 
-function filterAM() {
+function filterAM(items, rows) {
+	console.log(items.toString());
+	console.log(rows.toString());
+	var pages = Math.ceil(parseInt(items)/parseInt(rows));
+	console.log(pages);
 	var data = $("#filterAM").val()
-	var dataPage = 1;
 	console.log(data);
 	console.log("Proceed to filter to only AM Schedules");
 	$.ajax({
@@ -293,7 +297,8 @@ function filterAM() {
 		method: "POST",
 		data: {
 			filter: data,
-			page: dataPage
+			page: pages,
+			rows: rows
 		},
 			success: function() {
 				console.log("refresh the table")
@@ -301,20 +306,26 @@ function filterAM() {
 	});
 }
 
-function filterPM() {
+function filterPM(items, rows) {
+	console.log(items.toString());
+	console.log(rows.toString());
+	var pages = Math.ceil(parseInt(items)/parseInt(rows));
+	console.log(pages);
 	var data = $("#filterPM").val()
 	console.log(data);
 	console.log("Proceed to filter to only PM Schedules");
-	/*	$.ajax({
+		$.ajax({
 			url: contextPath + "ordersToday",
 			method: "POST",
 			data: {
-				filter: data
-			}
+				filter: data,
+				page: pages,
+				rows: rows
+			},
 			success: function() {
-				window.location.href = contextPath + "goToLogin";
+				console.log("refresh the table")
 			}
-		});*/
+		});
 }
 
 function filterReset() {
@@ -338,7 +349,7 @@ function updateEmail() {
 	var username = $("#usernameAcc").val();
 	console.log(username);
 	var newemail = $('input[name="newemail"]').val();
-
+	
 	$.ajax({
 		type: "POST",
 		url: "UpdateEmail",
@@ -399,4 +410,24 @@ $('#passwordUpdateForm').submit(function(event) {
 	event.preventDefault(); // Prevent form submission
 	updatePassword(); // Call the updateEmail function
 });
+
+ function downloadCSV() {
+    $.ajax({
+        url: contextPath + "pages/CSV",
+        method: "POST",
+        success: function() {
+            console.log("Downloaded CSV")
+        }
+    });
+}
+
+function downloadPDF() {
+    $.ajax({
+        url: contextPath + "pages/PDF",
+        method: "POST",
+        success: function() {
+            console.log("Downloaded PDF")
+        }
+    });
+}
 

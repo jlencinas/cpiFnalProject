@@ -33,7 +33,6 @@
 
 <div class="container-product">
 	<c:forEach items="${products}" var="product">
-		<script>var prodDesc = '${product.productDescription}'</script>
 		<script>var prodPrice = '${product.productPrice}'</script>
 		<script>var prodID = '${product.productID}'</script>
 		<c:set var = "prodStat" value = "${product.productStatus}"/>
@@ -47,7 +46,7 @@
 				<div class="card-container">
 					<div class="card-left-container">
 						<div class="card-image">
-							<img src="<c:url value="/resources/images/bread1.jpg"/>"
+							<img src="${product.productPicture}"
 								alt="products">
 						</div>
 					</div>
@@ -71,7 +70,7 @@
 							<div class="button-selection">
 								<input id="cart-value" type="hidden" value="${product.productID}">
 								<button type="submit" class="button-addToCart" name="itemnum" id="button-addToCart" 
-									onclick = "addCart(contextPath, ${product.productID}, ${product.productPrice}, '${product.productDescription}', boolCart);">
+									onclick = "addCart(contextPath, ${product.productID}, ${product.productPrice}, boolCart);">
 										Add To Cart
 								</button>
 							</div>
@@ -88,7 +87,7 @@
 				<div class="card-container disabled-product">
 					<div class="card-left-container">
 						<div class="card-image">
-							<img src="<c:url value="/resources/images/bread1.jpg"/>"
+							<img src= "${product.productPicture}"
 								alt="products">
 						</div>
 					</div>

@@ -3,11 +3,6 @@
 	pageEncoding="ISO-8859-1" isELIgnored="false"%>
 <%@ page import="javax.servlet.http.HttpSession"%>
 <%@ page import="com.cpi.model.Users"%>
-<%
-HttpSession sesh2 = request.getSession();
-Users seshinfo = (Users) sesh2.getAttribute("userAccount");
-String usern = seshinfo.getUsername();
-%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,6 +12,12 @@ String usern = seshinfo.getUsername();
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CPI Bakery</title>
 <!-- ======= Styles ====== -->
+<c:set var="seshinfo" value="${sessionScope.userAccount}" />
+	<c:if test="${not empty seshinfo}">
+		<c:set var="uid" value="${seshinfo.userId}" />
+	</c:if>
+<c:set var = "usern" value = "${seshinfo.username}"/>
+<c:set var = "roleID" value = "${seshinfo.roleId}"/>
 <link rel="stylesheet" href="/ORM/resources/css/style.css">
 <link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/default/easyui.css">
 <link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/icon.css">
@@ -25,61 +26,7 @@ String usern = seshinfo.getUsername();
 <script type="text/javascript" src="https://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/tablecontent.js"/>"></script>
 <script type="text/javascript">
-function updateEmail() {
-	var username = '<%=usern%>';
-		var newemail = $('input[name="newemail"]').val();
 
-		$.ajax({
-			type : "POST",
-			url : "UpdateEmail",
-			data : {
-				username : username,
-				newemail : newemail
-			},
-			success : function(data) {
-				// Handle the server response if necessary
-				$('#dg').edatagrid('reload');
-			},
-			error : function(jqXHR, textStatus, errorThrown) {
-				console.log("Error: " + errorThrown);
-			}
-		});
-	}
-
-	$('#emailUpdateForm').submit(function(event) {
-		event.preventDefault(); // Prevent form submission
-		updateEmail(); // Call the updateEmail function
-	});
-
-	function updatePassword() {
-		var username = '<%=usern%>';
-			var password = $('input[name="password"]').val();
-			var newpass = $('input[name="newpass"]').val();
-			var conpass = $('input[name="conpass"]').val();
-
-			$.ajax({
-				type : "POST",
-				url : "UpdatePassword",
-				data : {
-					username : username,
-					password : password,
-					newpass : newpass,
-					conpass : conpass
-				},
-				success : function(data) {
-					// Handle the server response if necessary
-					$('#dg').edatagrid('reload');
-				},
-				error : function(jqXHR, textStatus, errorThrown) {
-					console.log("Error: " + errorThrown);
-				}
-			});
-		}
-
-		$('#passwordUpdateForm').submit(function(event) {
-			event.preventDefault(); // Prevent form submission
-			updatePassword(); // Call the updateEmail function
-		});	
 </script>
 </head>
 <body>
@@ -88,7 +35,7 @@ function updateEmail() {
 		<div class="navigation">
 			<ul>
 				<li>
-					<a href="#"> <span class="icon"> <img src="/ORM/resources/images/Logo-01.svg">
+					<a href="#"> <span class="icon"> <img class = "logo-image" src="/ORM/resources/images/Logo-01.png">
 					</span> <span class="title">CPI Bakery</span>
 					</a>
 				</li>
@@ -117,6 +64,11 @@ function updateEmail() {
 					</span> <span class="title">Reporting</span>
 					</a>
 				</li>
+				<li>
+					<a href="auditTable.jsp"> <span class="icon"> <ion-icon name="newspaper-outline"></ion-icon>
+					</span> <span class="title">Auditing</span>
+					</a>
+				</li>
 			</ul>
 		</div>
 		<!-- ========================= Main ==================== -->
@@ -128,17 +80,17 @@ function updateEmail() {
 				<div class="titles"></div>
 				<div class="user">
 					<div class="dropdown">
-						<button onclick="myFunction()" class="dropbtn"><%=usern%></button>
+						<button onclick="myFunction()" class="dropbtn">${usern}</button>
 						<div id="myDropdown" class="dropdown-content">
 							<a href="#" onclick="openEmailForm()"><ion-icon name="mail-outline"></ion-icon>Change Email Address</a> 
 							<a href="#" onclick="openPasswordForm()"><ion-icon name="lock-open-outline"></ion-icon>Change Password</a> 
-							<a href="#"><ion-icon name="log-out-outline"></ion-icon>Logout</a>
+							<a href="Logout"><ion-icon name="log-out-outline"></ion-icon>Logout</a>
 						</div>
 					</div>
 					<div class="modal-overlay"></div>
 					<div id="emailForm" class="form-popup">
 						<form class="form-container" id="emailUpdateForm">
-							<input type="hidden" value="<%=usern%>" name="username">
+							<input type="hidden" value="${usern}" name="username">
 							<h2>Change Email Address</h2>
 							<label for="email"><b>New Email Address</b></label> 
 							<input type="text" placeholder="Enter New Email Address" name="newemail" required>
@@ -149,7 +101,7 @@ function updateEmail() {
 					</div>
 					<div id="passwordForm" class="form-popup">
 						<form class="form-container" id="passwordUpdateForm">
-							<input type="hidden" value="<%=usern%>" name="username">
+							<input type="hidden" value="${usern} name="username">
 							<h2>Change Password</h2>
 							<label for="current_password"><b>Current Password</b></label> 
 							<input type="password" placeholder="Enter Current Password" name="password" required> <label for="new_password"><b>New Password</b></label> <input type="password" placeholder="Enter New Password" name="newpass" required>
@@ -245,7 +197,7 @@ function updateEmail() {
 						</div>
 					</form>
 					<div id="dlg-buttons">
-						<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveProduct()" style="width: 90px">Add Product</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveProduct(); javascript:$('#dlg').dialog('close'); javascript$('#dg').datagrid('reload');" style="width: 90px">Add Product</a>
 						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width: 90px">Cancel</a>	
 					</div>
 				</div>

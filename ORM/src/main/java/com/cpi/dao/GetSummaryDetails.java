@@ -82,4 +82,47 @@ public static int getTotalCount() {
 		}
 		return total;
 	}
+
+
+public static List<Summary> getSummaryDownload() throws ClassNotFoundException {
+    List<Summary> summary = new ArrayList<>();
+    Connection conn = null;
+    PreparedStatement st = null;
+    ResultSet rs = null;
+
+    try {
+        DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
+        conn = db.getConnection();
+        String query = "SELECT p.PRODUCT_ID, o.DELIVERY_DATE, o.PAYMENT_STATUS, "
+                + "SUM(od.QUANTITY) AS \"QUANTITY\", SUM(p.PRICE * od.QUANTITY) AS \"PRICE\" "
+                + "FROM PRODUCT p, ORDERS o, ORDERDETAILS od WHERE o.ORDER_ID = od.ORDER_ID "
+                + "AND od.PRODUCT_ID = p.PRODUCT_ID AND o.ORDER_STATUS NOT IN (50,90) "
+                + "GROUP BY p.PRODUCT_ID, o.DELIVERY_DATE, o.PAYMENT_STATUS "
+                + "ORDER BY p.PRODUCT_ID, o.DELIVERY_DATE, o.PAYMENT_STATUS";
+        st = conn.prepareStatement(query);
+        rs = st.executeQuery();
+
+        while (rs.next()) {
+            Summary sum = new Summary();
+            sum.setProdId(rs.getInt("PRODUCT_ID"));
+            sum.setDeliveryDate(rs.getString("DELIVERY_DATE"));
+            sum.setPaymentStatus(rs.getInt("PAYMENT_STATUS"));
+            sum.setQuantity(rs.getInt("QUANTITY"));
+            sum.setPrice(rs.getInt("PRICE"));
+            summary.add(sum);
+        }
+
+        rs.close();
+        st.close();
+        conn.close();
+    }
+
+    catch (SQLException e) {
+        e.printStackTrace();
+        System.out.println("Di ka men nakonek sa server eh");
+    }
+
+    return summary;
 }
+}
+

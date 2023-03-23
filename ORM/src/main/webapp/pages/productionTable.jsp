@@ -45,7 +45,7 @@ String usern = seshinfo.getUsername();
 		<div class="navigation">
 			<ul>
 				<li>
-					<a href="#"> <span class="icon"> <img src="/ORM/resources/images/Logo-01.svg">
+					<a href="#"> <span class="icon"> <img class = "logo-image" src="/ORM/resources/images/Logo-01.png">
 					</span> <span class="title">CPI Bakery</span>
 					</a>
 				</li>
@@ -74,6 +74,11 @@ String usern = seshinfo.getUsername();
 					</span> <span class="title">Reporting</span>
 					</a>
 				</li>
+				<li>
+					<a href="auditTable.jsp"> <span class="icon"> <ion-icon name="newspaper-outline"></ion-icon>
+					</span> <span class="title">Auditing</span>
+					</a>
+				</li>
 			</ul>
 		</div>
 		<!-- ========================= Main ==================== -->
@@ -89,7 +94,7 @@ String usern = seshinfo.getUsername();
 						<div id="myDropdown" class="dropdown-content">
 							<a href="#" onclick="openEmailForm()"><ion-icon name="mail-outline"></ion-icon>Change Email Address</a> 
 							<a href="#" onclick="openPasswordForm()"><ion-icon name="lock-open-outline"></ion-icon>Change Password</a> 
-							<a href="#"><ion-icon name="log-out-outline"></ion-icon>Logout</a>
+							<a href="Logout"><ion-icon name="log-out-outline"></ion-icon>Logout</a>
 						</div>
 					</div>
 					<div class="modal-overlay"></div>
@@ -126,13 +131,7 @@ String usern = seshinfo.getUsername();
 				<br><br>
 			</div>
 			<center>
-				<table id="dg" class="easyui-datagrid" url="ordersToday" toolbar="#toolbar" pagination="true" fitColumns="true" singleSelect="true" style="width: 95%; height: 422px;
-				data-options="
-								onLoad: function(){
-									$('#dg').datagrid('getPager').data("pagination").options;
-									console.log("test");
-								}
-								">
+				<table id="dg" class="easyui-datagrid" url="ordersToday" toolbar="#toolbar" pagination="true" fitColumns="true" singleSelect="true" style="width: 95%; height: 422px;">
 					<thead>
 						<tr>
 							<th field="order_id" width="25%">Order ID</th>
@@ -145,10 +144,9 @@ String usern = seshinfo.getUsername();
 				</table>
 				<div id="toolbar" style="text-align: right;">
 					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editProduction()">Edit Production</a> 
-					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeProduction()">Remove Production</a>
 					<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" id = "filterSched" onclick = "filterReset()">Reset Filter</a>
-					<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" id = "filterSched" onclick = "filterAM()">Filter AM</a>
-					<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" id = "filterSched" onclick = "filterPM()">Filter PM</a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" id = "filterSched" onclick = "javascript:filterAM( $('#dg').datagrid('getPager').pagination('options').total, $('#dg').datagrid('options').pageSize); javascript:$('#dg').datagrid('reload'); ">Filter AM</a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" id = "filterSched" onclick = "javascript:filterPM( $('#dg').datagrid('getPager').pagination('options').total, $('#dg').datagrid('options').pageSize); javascript:$('#dg').datagrid('reload');">Filter PM</a>
 					<input type="hidden" value = "AM" id = "filterAM"/>
 					<input type="hidden" value = "PM" id = "filterPM"/>
 					<input type="hidden" value = "all" id = "filterReset"/>
@@ -159,17 +157,30 @@ String usern = seshinfo.getUsername();
 				<div id="dlg" class="easyui-dialog" style="width: 450px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
 					<form id="fm" method="post" novalidate style="margin: 0; padding: 20px 50px">
 						<h3>Edit Order</h3>
+						<input type="hidden" name ="order_id" value="orderId">
 						<div style="margin-bottom: 10px">
-							<select class="easyui-combobox" name="status" required="true" label="Status:" labelPosition="top" style="width: 100%;">
-								<option value="available">Available</option>
-								<option value="disabled">Disabled</option>
-								<option value="removed">Removed</option>
+							<select class="easyui-combobox" name="status" label="Order Status:" labelPosition="top" style="width: 100%;">
+								<option value="1">Pending</option>
+								<option value="2">Ready for Pick Up</option>
+								<option value="3">Completed</option>
+								<option value="50">Cancelled</option>
+								<option value="90">Rejected</option>
 							</select>
 						</div>
+						<div style="margin-bottom: 10px">
+						<select class="easyui-combobox" name="paymentStatus" label="Payment Status:" labelPosition="top" style="width: 100%;">
+								<option value="0">Not Paid</option>
+								<option value="1">Paid</option>
+							</select>
+						</div>
+						<div style="margin-bottom: 10px">
+							<input class="easyui-textbox" name="remarks" required="true" label="Remarks:" labelPosition="top" multiline="true" style="width: 100%; height: 120px">
+						</div>
+							
 					</form>
 					
 					<div id="dlg-buttons">
-						<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveProduction()" style="width: 90px">Save</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveProduction(); javascript:$('#dlg').dialog('close'); javascript$('#dg').datagrid('reload');" style="width: 90px">Save</a>
 						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width: 90px">Cancel</a>
 					</div>
 					

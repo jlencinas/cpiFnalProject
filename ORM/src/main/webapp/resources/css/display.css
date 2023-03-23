@@ -4,29 +4,6 @@
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
-
-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    background: rgb(255, 222, 212);
-    background: linear-gradient(318deg, rgba(255, 222, 212, 1) 0%, rgba(235, 162, 123, 1) 52%, rgba(204, 109, 77, 1) 100%);
-    overflow-x: hidden;
-    height: 100vh;
-    width: 100vw;
-}
-
-main {
-    background-color: #f7f7f7;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    height: 100vh;
-    width: 100vw;
-}
-
 .container {
     padding-block: 2rem;
 }
@@ -65,6 +42,7 @@ main {
     background-color: #fff;
     border: 1px solid #fff;
     transition: ease-out .125s;
+    box-shadow: 0px 1px 3px #848484;
 }
 
 .product-card .card-container:hover {

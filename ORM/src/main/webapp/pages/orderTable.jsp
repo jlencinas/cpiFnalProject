@@ -3,11 +3,6 @@
 	pageEncoding="ISO-8859-1" isELIgnored="false"%>
 <%@ page import="javax.servlet.http.HttpSession"%>
 <%@ page import="com.cpi.model.Users"%>
-<%
-HttpSession sesh2 = request.getSession();
-Users seshinfo = (Users) sesh2.getAttribute("userAccount");
-String usern = seshinfo.getUsername();
-%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,6 +12,12 @@ String usern = seshinfo.getUsername();
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CPI Bakery</title>
 <!-- ======= Styles ====== -->
+<c:set var="seshinfo" value="${sessionScope.userAccount}" />
+	<c:if test="${not empty seshinfo}">
+		<c:set var="uid" value="${seshinfo.userId}" />
+	</c:if>
+<c:set var = "usern" value = "${seshinfo.username}"/>
+<c:set var = "roleID" value = "${seshinfo.roleId}"/>
 <link rel="stylesheet" href="/ORM/resources/css/style.css">
 <link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/default/easyui.css">
 <link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/icon.css">
@@ -24,63 +25,10 @@ String usern = seshinfo.getUsername();
 <script type="text/javascript" src="https://www.jeasyui.com/easyui/jquery.min.js"></script>
 <script type="text/javascript" src="https://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/tablecontent.js"/>"></script>
-<script type="text/javascript">
-function updateEmail() {
-	var username = '<%=usern%>';
-		var newemail = $('input[name="newemail"]').val();
-
-		$.ajax({
-			type : "POST",
-			url : "UpdateEmail",
-			data : {
-				username : username,
-				newemail : newemail
-			},
-			success : function(data) {
-				// Handle the server response if necessary
-				$('#dg').edatagrid('reload');
-			},
-			error : function(jqXHR, textStatus, errorThrown) {
-				console.log("Error: " + errorThrown);
-			}
-		});
-	}
-
-	$('#emailUpdateForm').submit(function(event) {
-		event.preventDefault(); // Prevent form submission
-		updateEmail(); // Call the updateEmail function
-	});
-
-	function updatePassword() {
-		var username = '<%=usern%>';
-			var password = $('input[name="password"]').val();
-			var newpass = $('input[name="newpass"]').val();
-			var conpass = $('input[name="conpass"]').val();
-
-			$.ajax({
-				type : "POST",
-				url : "UpdatePassword",
-				data : {
-					username : username,
-					password : password,
-					newpass : newpass,
-					conpass : conpass
-				},
-				success : function(data) {
-					// Handle the server response if necessary
-					$('#dg').edatagrid('reload');
-				},
-				error : function(jqXHR, textStatus, errorThrown) {
-					console.log("Error: " + errorThrown);
-				}
-			});
-		}
-
-		$('#passwordUpdateForm').submit(function(event) {
-			event.preventDefault(); // Prevent form submission
-			updatePassword(); // Call the updateEmail function
-		});	
+<script>
+	var contextPath = '${pageContext.request.contextPath}' + '/';
 </script>
+
 </head>
 <body>
 	<!-- =============== Navigation ================ -->
@@ -88,7 +36,7 @@ function updateEmail() {
 		<div class="navigation">
 			<ul>
 				<li>
-					<a href="#"> <span class="icon"> <img src="/ORM/resources/images/Logo-01.svg">
+					<a href="#"> <span class="icon"> <img class = "logo-image" src="/ORM/resources/images/Logo-01.png">
 					</span> <span class="title">CPI Bakery</span>
 					</a>
 				</li>
@@ -117,6 +65,11 @@ function updateEmail() {
 					</span> <span class="title">Reporting</span>
 					</a>
 				</li>
+				<li>
+					<a href="auditTable.jsp"> <span class="icon"> <ion-icon name="newspaper-outline"></ion-icon>
+					</span> <span class="title">Auditing</span>
+					</a>
+				</li>
 			</ul>
 		</div>
 		<!-- ========================= Main ==================== -->
@@ -128,17 +81,17 @@ function updateEmail() {
 				<div class="titles"></div>
 				<div class="user">
 					<div class="dropdown">
-						<button onclick="myFunction()" class="dropbtn"><%=usern%></button>
+						<button onclick="myFunction()" class="dropbtn">${usern}</button>
 						<div id="myDropdown" class="dropdown-content">
 							<a href="#" onclick="openEmailForm()"><ion-icon name="mail-outline"></ion-icon>Change Email Address</a> 
 							<a href="#" onclick="openPasswordForm()"><ion-icon name="lock-open-outline"></ion-icon>Change Password</a> 
-							<a href="#"><ion-icon name="log-out-outline"></ion-icon>Logout</a>
+							<a href="Logout"><ion-icon name="log-out-outline"></ion-icon>Logout</a>
 						</div>
 					</div>
 					<div class="modal-overlay"></div>
 					<div id="emailForm" class="form-popup">
 						<form class="form-container" id="emailUpdateForm">
-							<input type="hidden" value="<%=usern%>" name="username">
+							<input type="hidden" value="${usern}" name="username">
 							<h2>Change Email Address</h2>
 							<label for="email"><b>New Email Address</b></label> 
 							<input type="text" placeholder="Enter New Email Address" name="newemail" required>
@@ -149,7 +102,7 @@ function updateEmail() {
 					</div>
 					<div id="passwordForm" class="form-popup">
 						<form class="form-container" id="passwordUpdateForm">
-							<input type="hidden" value="<%=usern%>" name="username">
+							<input type="hidden" value="${usern}" name="username">
 							<h2>Change Password</h2>
 							<label for="current_password"><b>Current Password</b></label> 
 							<input type="password" placeholder="Enter Current Password" name="password" required> <label for="new_password"><b>New Password</b></label> <input type="password" placeholder="Enter New Password" name="newpass" required>
@@ -173,7 +126,7 @@ function updateEmail() {
 				<table id="dg" class="easyui-datagrid" url="listOfOrders" toolbar="#toolbar" pagination="true" fitColumns="true" singleSelect="true" style="width: 95%; height: 425px;">
 					<thead>
 						<tr>
-							<th field="order_id" width="25%">Order Number</th>
+							<th field="order_id" width="25%">Order ID</th>
 							<th field="order_status" width="25%">Order Status</th>
 							<th field="delivery_date" width="25%">Expected Delivery Date</th>
 							<th field="payment_status" width="26%">Payment Status</th>
@@ -190,7 +143,7 @@ function updateEmail() {
 						<input name="order_id" class="easyui-textbox" readonly label="Order Id:" style="width: 100%">
 						</div>
 						<div style="margin-bottom: 10px">
-							<select class="easyui-combobox" name="orderStatus" required="true" label="Order Status:" labelPosition="top" style="width: 100%;">
+							<select class="easyui-combobox" name="status" required="true" label="Order Status:" labelPosition="top" style="width: 100%;">
 								<option value="1" selected>Pending</option>
 								<option value="2">Ready for Pick Up</option>
 								<option value="3">Completed</option>
@@ -198,6 +151,8 @@ function updateEmail() {
 								<option value="90">Rejected</option>
 							</select>
 						</div>
+						<input type ="hidden" name = "order_status" value = "order_status"/>
+						<input type ="hidden" name = "payment_status" value = "payment_status"/>
 						<div style="margin-bottom: 10px">
 							<select class="easyui-combobox" name="paymentStatus" required="true" label="Payment Status:" labelPosition="top" style="width: 100%;">
 								<option value="1" selected>Not Paid</option>
@@ -209,7 +164,7 @@ function updateEmail() {
 						</div>
 					</form>
 					<div id="dlg-buttons">
-						<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveEditOrder()" style="width: 90px">Save</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveEditOrder(); javascript:$('#dlg').dialog('close'); javascript$('#dg').datagrid('reload');" style="width: 90px">Save</a>
 						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width: 90px">Cancel</a>
 					</div>
 				</div>
@@ -221,7 +176,7 @@ function updateEmail() {
 				<br><br>
 			</div>
 			<center>
-				<table class="easyui-datagrid" url="ShowSummary" pagination="true" fitColumns="true" singleSelect="true" style="width: 95%; height: 400px;">
+				<table class="easyui-datagrid" url="ShowSummary"  toolbar="#toolbar1" pagination="true" fitColumns="true" singleSelect="true" style="width: 95%; height: 400px;">
 					<thead>
 						<tr>
 							<th field="prod_id" width="22%">Product ID</th>
@@ -232,6 +187,10 @@ function updateEmail() {
 						</tr>
 					</thead>
 				</table>
+				<div id="toolbar1" style="text-align: right;">
+                    <button type="submit" class="easyui-linkbutton" plain="true" onclick ="downloadCSV()">CSV</button>
+                    <button type="submit" class="easyui-linkbutton" plain="true" onclick ="downloadPDF()">PDF</button>
+                </div>
 			<br><br>
 			<script src="/ORM/resources/js/admin.js"></script>
 			<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>

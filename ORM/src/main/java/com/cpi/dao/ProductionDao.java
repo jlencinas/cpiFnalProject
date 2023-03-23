@@ -28,9 +28,7 @@ public class ProductionDao {
 	private static final String server = "training-db.cosujmachgm3.ap-southeast-1.rds.amazonaws.com";
 	private static DBConnect db;
 
-	LocalDate today = getDateToday();
-	LocalDateTime startOfDay = LocalDateTime.of (today, LocalTime.MIN);
-	LocalDateTime endOfDay = LocalDateTime.of (today, LocalTime.MAX);
+	
 	
 	public ProductionDao() {
 		db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
@@ -45,7 +43,9 @@ public class ProductionDao {
 		int offset = (page-1) * rows;
 	
 		try {
-
+			LocalDate today = getDateToday();
+			LocalDateTime startOfDay = LocalDateTime.of (today, LocalTime.MIN);
+			LocalDateTime endOfDay = LocalDateTime.of (today, LocalTime.MAX);
 			conn = db.getConnection();
 			String query = "SELECT * FROM orders WHERE delivery_date > ? AND delivery_date < ? OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 			ps = conn.prepareStatement(query);
@@ -203,6 +203,9 @@ public class ProductionDao {
 
 		int total = 0;
 		try {
+			LocalDate today = getDateToday();
+			LocalDateTime startOfDay = LocalDateTime.of (today, LocalTime.MIN);
+			LocalDateTime endOfDay = LocalDateTime.of (today, LocalTime.MAX);
 			DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
 			Connection conn = db.getConnection();
 			PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) FROM orders WHERE delivery_date > ? AND delivery_date < ?");
