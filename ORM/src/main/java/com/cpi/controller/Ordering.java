@@ -116,7 +116,6 @@ class Ordering {
 		}
 		System.out.println(allParams);
 
-        int indexes = 0;
         int oldQuantity = 0;
         int itemId = 0;
         int newQuantity =0;
@@ -124,22 +123,17 @@ class Ordering {
             String k = entry.getKey();
             String v = entry.getValue();
             if (k.startsWith("allParams")) {
-                System.out.println("Index: " + indexes + " Key: " + k + ", Value: " + v);
                 if (k.contains("itemId")) {
                 	itemId = Integer.parseInt(v);
-                	System.out.println("Item Id : " + itemId);
                 }
                 if(k.contains("oldQuantity")) {
                 	oldQuantity = Integer.parseInt(v);
-                	System.out.println("Item Id : " + oldQuantity);
                 }
                 if (k.contains("quantity")) {
                 	newQuantity = Integer.parseInt(v);
                 	if (newQuantity == 0) {
-    					System.out.println("The Item is Deleted");
     					cart.remove(itemId);
     				} else if (oldQuantity != newQuantity) {
-    					System.out.println("The Item is Updated");
     					cart.put(itemId, newQuantity);
         				auditOrderDetailsChanges(itemId, newQuantity, oldQuantity, fname, lname);
     				}

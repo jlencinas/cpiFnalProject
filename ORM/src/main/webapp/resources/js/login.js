@@ -17,9 +17,6 @@ function initButtons() {
 }
 
 function login(username, password) {
-	console.log(username);
-	console.log(password);
-	console.log(contextPath + "pages/Login");
 	$.ajax({
 		url: contextPath + "Login",
 		method: "POST",
@@ -27,32 +24,51 @@ function login(username, password) {
 			username: username,
 			password: password
 		},
-		success: function(output, status, xhr) {
-			console.log(output);
-			console.log(status);
-			console.log(xhr.getResponseHeader('REQUIRES_AUTH'));
-			if (xhr.getResponseHeader('REQUIRES_AUTH') == 2){
-				console.log("Wrong Username or Password");
+		success: function(output, status, xhr){
+			if (xhr.getResponseHeader('REQUIRES_AUTH') == 2) {
 				window.location.href = contextPath + "WrongUsernameOrPass";
 			}
-			else if (xhr.getResponseHeader('REQUIRES_AUTH') == 3){
-				console.log("Account Disabled");
+			else if (xhr.getResponseHeader('REQUIRES_AUTH') == 3) {
 				window.location.href = contextPath + "DisabledAccount";
 			}
-			else if (xhr.getResponseHeader('REQUIRES_AUTH') == 4){
-				console.log("Account Does Not Exist");
+			else if (xhr.getResponseHeader('REQUIRES_AUTH') == 4) {
 				window.location.href = contextPath + "AccountDoesNotExist";
 			}
-			else if (xhr.getResponseHeader('REQUIRES_AUTH') == null){
-				console.log("Access Granted");
-				window.location.href = contextPath + "pages/adminTable.jsp";
+			else if (xhr.getResponseHeader('REQUIRES_AUTH') == 1) {
+				window.location.href = contextPath + "roleSelect";
+				$.ajax({
+					url: contextPath + "roleSelect",
+					method: "POST",
+					success: function(output, status, xhr) {
+						console.log(xhr.getResponseHeader('USER_ACCOUNT'));
+						if (xhr.getResponseHeader('USER_ACCOUNT') == 1) {
+							window.location.href = contextPath + "adminAccount";
+							conssole.log("Admin here");
+						}
+						else if (xhr.getResponseHeader('USER_ACCOUNT') == 2) {
+							window.location.href = contextPath + "producerAccount";
+							conssole.log("Producer here");
+						}
+						else if (xhr.getResponseHeader('USER_ACCOUNT') == 3) {
+							window.location.href = contextPath + "orderTakerAccount";
+							conssole.log("Order here");
+						}
+						else if (xhr.getResponseHeader('USER_ACCOUNT') == 4) {
+							window.location.href = contextPath + "auditorAccount";
+							conssole.log("Auditor here");
+						}
+					}
+				});
 			}
+		},
+		error: function(xhr, status, error) {
+			// handle error response
+			console.log("First AJAX request failed: " + error);
 		}
 	});
 }
 
 function forgotPass() {
-	console.log("proceeding to forgot pass");
 	$.ajax({
 		url: contextPath + "goToForgot",
 		method: "POST",

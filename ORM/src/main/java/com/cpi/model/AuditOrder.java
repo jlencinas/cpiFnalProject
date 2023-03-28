@@ -9,7 +9,7 @@ public class AuditOrder {
 	private String fieldChanged;
 	private int oldValue;
 	private int newValue;
-	private Date changeDate;
+	private String changeDate;
 	
 	public int getItemChangeID() {
 		return itemChangeID;
@@ -47,10 +47,10 @@ public class AuditOrder {
 	public void setNewValue(int newValue) {
 		this.newValue = newValue;
 	}
-	public Date getChangeDate() {
+	public String getChangeDate() {
 		return changeDate;
 	}
-	public void setChangeDate(Date changeDate) {
+	public void setChangeDate(String changeDate) {
 		this.changeDate = changeDate;
 	}
 	@Override

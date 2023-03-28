@@ -38,41 +38,29 @@
 		<div class="loginTitle">
 			<h1>Login</h1>
 		</div>
-		<!-- <form action = "Login" method = "POST"> -->
-		<div class="inputFieldLogin">
-			<div class="inputField">
-				<h3>User Name:</h3>
-				<div class="inputFieldLogo">
-					<ion-icon name="person" class="user-logo"></ion-icon>
-					<input name = "username" type="text" id="username" maxlength = "20" pattern="[a-zA-Z0-9\s]+" required>
+			<div class="inputFieldLogin">
+				<div class="inputField">
+					<h3>User Name:</h3>
+					<div class="inputFieldLogo">
+						<ion-icon name="person" class="user-logo"></ion-icon>
+						<input name = "username" type="text" id="username" maxlength = "20" pattern="[a-zA-Z0-9\s]+" required>
+					</div>
+				</div>
+				<div class="inputField">
+					<h3>Password:</h3>
+					<div class="inputFieldLogo">
+						<ion-icon name="lock-closed" class="lock-logo"></ion-icon>
+						<input name = "password" type="password" id="password" maxlength = "12"  required>
+					</div>
 				</div>
 			</div>
-			<div class="inputField">
-				<h3>Password:</h3>
-				<div class="inputFieldLogo">
-					<ion-icon name="lock-closed" class="lock-logo"></ion-icon>
-					<input name = "password" type="password" id="password" maxlength = "12"  required>
-				</div>
+			<div class="forgotPasswordField">
+				<a href="#" id = "forgot-pass-button">Forgot password?</a>
 			</div>
-		</div>
-		<div class="forgotPasswordField">
-			<a href="#" id = "forgot-pass-button">Forgot password?</a>
-		</div>
-		<div class="buttonDiv">
-			<!-- <input class="submitButton" id="loginButton" type="submit" value="Log In"> -->
-			<!-- <input type = "submit" value ="LOGIN"/> -->
-			<button id = "loginButton">LOGIN</button>
-		</div>
-		<!-- </form> -->
+			<div class="buttonDiv">
+				<button id = "loginButton" >LOGIN</button>
+			</div>
 	</div>
-	
-	<!-- <form action="Login">
-		<label>Login Account</label> <label>Username: </label><input
-			type="text" name="username"><br /> <label>Password: </label><input
-			type="password" name="password"><br /> <input type="submit"
-			value="Login"><input type="reset" value="Clear">
-	</form>
-	<button onClick="window.location.href='/ORM/pages/forgotpassword.jsp'">Forgot Password?</button> -->
 	
 </body>
 	<script type="text/javascript">

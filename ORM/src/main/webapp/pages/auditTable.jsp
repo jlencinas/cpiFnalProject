@@ -25,7 +25,8 @@
 <script type="text/javascript" src="https://www.jeasyui.com/easyui/jquery.min.js"></script>
 <script type="text/javascript" src="https://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/tablecontent.js"/>"></script>
-
+<script> var contextPath = '${pageContext.request.contextPath}' + '/';</script>
+<script type="text/javascript">redirectProperSessionAuditor(${roleID})</script>
 </head>
 <body>
 	<!-- =============== Navigation ================ -->
@@ -37,6 +38,7 @@
 					</span> <span class="title">CPI Bakery</span>
 					</a>
 				</li>
+				<c:if test="${seshinfo.roleId eq 1}">
 				<li>
 					<a href="adminTable.jsp"> <span class="icon"> <ion-icon name="person-circle-outline"></ion-icon>
 					</span> <span class="title">Admin</span>
@@ -47,26 +49,35 @@
 					</span> <span class="title">Products</span>
 					</a>
 				</li>
+				</c:if>
+				<c:if test="${seshinfo.roleId eq 3}">
 				<li>
 					<a href="orderTable.jsp"> <span class="icon"> <ion-icon name="cart-outline"></ion-icon>
 					</span> <span class="title">Orders</span>
 					</a>
 				</li>
+				</c:if>
+				<c:if test="${seshinfo.roleId eq 2}">
 				<li>
 					<a href="productionTable.jsp"> <span class="icon"><ion-icon name="cash-outline"></ion-icon>
 					</span> <span class="title">Production</span>
 					</a>
 				</li>
+				</c:if>
+				<c:if test="${seshinfo.roleId eq 1}">
 				<li>
 					<a href="reportTable.jsp"> <span class="icon"> <ion-icon name="newspaper-outline"></ion-icon>
 					</span> <span class="title">Reporting</span>
 					</a>
 				</li>
+				</c:if>
+				<c:if test="${seshinfo.roleId eq 4}">
 				<li>
 					<a href="auditTable.jsp"> <span class="icon"> <ion-icon name="newspaper-outline"></ion-icon>
 					</span> <span class="title">Auditing</span>
 					</a>
 				</li>
+				</c:if>
 			</ul>
 		</div>
 		<!-- ========================= Main ==================== -->
@@ -113,42 +124,43 @@
 				</div>
 			</div>
 			<!-- ================ Table ================= -->
-			<div style="text-align: center;">
-				<br><br>
-				<h1>AUDIT ORDER LIST</h1>
-				<br><br>
-			</div>
+            <div style="text-align: center;">
+                <br><br>
+                <h1>AUDIT ORDER REPORT</h1>
+                <br><br>
+            </div>
 
-			<center>
-				<table id="dg" class="easyui-datagrid" url="listOfOrders" toolbar="#toolbar" pagination="true" fitColumns="true" singleSelect="true" style="width: 95%; height: 425px;">
-					<thead>
-						<tr>
-							<th field="order_id" width="25%">Order ID</th>
-							<th field="order_status" width="25%">Order Status</th>
-							<th field="delivery_date" width="25%">Expected Delivery Date</th>
-							<th field="payment_status" width="26%">Payment Status</th>
-						</tr>
-					</thead>
-				</table>
-			<br><br>
-			<!-- ================ Table2 ================= -->
-			<div style="text-align: center;">
-				<br><br>
-				<h1>AUDIT ORDER SUMMARY</h1>
-				<br><br>
-			</div>
-			<center>
-				<table class="easyui-datagrid" url="ShowSummary" pagination="true" fitColumns="true" singleSelect="true" style="width: 95%; height: 400px;">
-					<thead>
-						<tr>
-							<th field="prod_id" width="21%">Product ID</th>
-							<th field="delivery_date" width="20%">Delivery Date</th>
-							<th field="payment_status" width="20%">Payment Status</th>
-							<th field="quantity" width="20%">Quantity</th>
-							<th field="price" width="20%">Total Price</th>
-						</tr>
-					</thead>
-				</table>
+            <center>
+                <table id="dg" class="easyui-datagrid" url="listOfAuditOrder" toolbar="#toolbar" pagination="true" fitColumns="true" singleSelect="true" style="width: 95%; height: 425px;">
+                    <thead>
+                        <tr>
+                            <th field="order_id" width="20%">Order ID</th>
+                            <th field="fieldchanged" width="20%">Field Changed</th>
+                            <th field="oldval" width="20%">Old Value</th>
+                            <th field="newval" width="20%">New Value</th>
+                            <th field="username" width="22%">Changed By</th>
+                        </tr>
+                    </thead>
+                </table>
+            <br><br>
+            <!-- ================ Table2 ================= -->
+            <div style="text-align: center;">
+                <br><br>
+                <h1>AUDIT ORDER DETAILS REPORT</h1>
+                <br><br>
+            </div>
+            <center>
+                <table class="easyui-datagrid" url="listOfAuditOrderDetails" pagination="true" fitColumns="true" singleSelect="true" style="width: 95%; height: 400px;">
+                    <thead>
+                        <tr>
+                            <th field="order_id" width="21%">Order ID</th>
+                            <th field="item_id" width="20%">Item Changed</th>
+                            <th field="oldval" width="20%">Old Quantity</th>
+                            <th field="newval" width="20%">New Quantity</th>
+                            <th field="username" width="20%">Changed By</th>
+                        </tr>
+                    </thead>
+                </table>
 			<br><br>
 			<script src="/ORM/resources/js/admin.js"></script>
 			<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>

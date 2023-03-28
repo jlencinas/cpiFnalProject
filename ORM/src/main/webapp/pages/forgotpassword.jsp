@@ -28,6 +28,7 @@
         <div class="title">
             <h1>Forgot Password</h1>
         </div>
+		<h2 class = "message-text">${msg}</h2>
         <div class="inputFieldContainer">
             <div class="inputField">
                 <div class="inputFieldLabel">
@@ -54,11 +55,3 @@
 </body>
 </html>    
     
-    
-<%-- <form action="Forgot" method="post">
-	<h2>${message}</h2>
-	<h5>Forgot Password</h5>
-	<label>Username: </label><input type="text" name = "username"><br/>
-	<label>Email: </label><input type="email" name = "email"><br/>
-	<input type="submit" value = "Submit"><input type="reset" value ="Clear">
-</form><br/> --%>

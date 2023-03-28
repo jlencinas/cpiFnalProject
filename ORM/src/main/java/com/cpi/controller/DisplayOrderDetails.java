@@ -20,21 +20,6 @@ import com.cpi.model.OrderSummary;
 
 @Controller
 public class DisplayOrderDetails {
-	@RequestMapping("pages/DisplayUpdateOrder")
-	public ModelAndView displayUpdateOrder() {
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("updateorderdetails", UpdateOrderDetailsDao.displayUpdateOrderDetails());
-		mv.setViewName("updateOrderDetails.jsp");
-		return mv;
-	}
-
-	@RequestMapping(value = {"pages/DisplayProduct", "DisplayProduct"})
-	public ModelAndView displayPorudct() throws ClassNotFoundException {
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("products", AddProduct.getProducts());
-		mv.setViewName("display.jsp");
-		return mv;
-	}
 
 	@RequestMapping("pages/UpdateOrderDetails")
 	public ModelAndView updateOrderDetails(@RequestParam Map<String, String> allParams) {
@@ -122,5 +107,4 @@ public class DisplayOrderDetails {
 		mv.setViewName("orderDetails.jsp");
 		return mv;
 	}
-	
 }

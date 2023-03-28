@@ -21,14 +21,18 @@ import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 
+import com.cpi.dao.AddProduct;
 import com.cpi.dao.AuditOrderDao;
+import com.cpi.dao.AuditOrderDetailsDao;
 import com.cpi.dao.GetSummaryDetails;
 import com.cpi.dao.GetUserDetails;
 import com.cpi.dao.OrderDao;
 import com.cpi.dao.ProductDao;
 import com.cpi.dao.ProductionDao;
+import com.cpi.dao.UpdateOrderDetailsDao;
 import com.cpi.dao.UsersDao;
 import com.cpi.model.AuditOrder;
+import com.cpi.model.AuditOrderDetails;
 import com.cpi.model.Order;
 import com.cpi.model.Product;
 import com.cpi.model.Summary;
@@ -53,11 +57,21 @@ class Controllers {
 		this.productDao = productDao;
 		this.productionDao = productionDao;
 	}
+	
+	@RequestMapping(value = {"pages/checkSession", "checkSession"})
+	public ModelAndView checkSession(HttpServletRequest request, HttpSession session) {
+		ModelAndView mv = new ModelAndView();
+		Users user = (Users) session.getAttribute("userAccount");
+		if (user!=null) {
+			System.out.println("There's Session");
+		}
+		return mv;
+	}
+	
 
 	@RequestMapping(value = { "goToLogin", "pages/goToLogin" })
 	public ModelAndView loginController(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("Redirected to Login");
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("pages/login.jsp");
 		return mv;
@@ -65,14 +79,8 @@ class Controllers {
 
 	@RequestMapping("goToForgot")
 	public String forgotController(Model model) {
-		model.addAttribute("products", "product123");
 		System.out.println("Redirected to Forgot");
 		return "pages/forgotpassword.jsp";
-	}
-
-	@RequestMapping("Test")
-	public void test(Model model) {
-		System.out.println("Test");
 	}
 
 	@RequestMapping("shopcontroller")
@@ -86,22 +94,19 @@ class Controllers {
 	@RequestMapping(value = { "pages/Login", "Login" })
 	public ModelAndView login(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(name = "username") String username, @RequestParam(name = "password") String password) {
-		System.out.println(username);
-		System.out.println(password);
 		ModelAndView mv = new ModelAndView();
 		UsersDao dao = new UsersDao();
 		Users user = dao.getUser(username);
 		if (user.getUserId() != 0) {
 			if (user.getStatus().equals("DISABLED")) {
-				System.out.println("test");
 				response.addHeader("REQUIRES_AUTH", "3");
 				mv.setViewName("DisabledAccount");
 			} else {
 				if (user.getPassword().equals(password)) {
 					HttpSession sesh = request.getSession();
-					response.addHeader("REQUIRES_AUTH", "1");
 					sesh.setAttribute("userAccount", user);
-					mv.setViewName("redirect:pages/adminTable.jsp");
+					response.addHeader("REQUIRES_AUTH", "1");
+					mv.setViewName("roleSelect");
 				} else {
 					response.addHeader("REQUIRES_AUTH", "2");
 					mv.setViewName("WrongUsernameOrPass");
@@ -111,10 +116,55 @@ class Controllers {
 			response.addHeader("REQUIRES_AUTH", "4");
 			mv.setViewName("AccountDoesNotExist");
 		}
-		/*
-		 * else { response.addHeader("REQUIRES_AUTH","2"); mv.addObject("msg",
-		 * "Account Does Not Exist"); mv.setViewName("pages/login.jsp"); }
-		 */
+		return mv;
+	}
+
+	@RequestMapping(value = { "pages/roleSelect", "roleSelect" })
+	public ModelAndView roleSelect(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mv = new ModelAndView();
+		HttpSession sesh = request.getSession();
+		Users user = (Users) sesh.getAttribute("userAccount");
+		if (user.getRoleId() == 1) {
+			response.addHeader("USER_ACCOUNT", "1");
+			System.out.println("Admin Here");
+			mv.setViewName("adminAccount");
+		} else if (user.getRoleId() == 2) {
+			response.addHeader("USER_ACCOUNT", "2");
+			System.out.println("Producer Here");
+			mv.setViewName("producerAccount");
+		} else if (user.getRoleId() == 3) {
+			response.addHeader("USER_ACCOUNT", "3");
+			System.out.println("Order Taker Here");
+			mv.setViewName("orderTakerAccount");
+		} else if (user.getRoleId() == 4) {
+			response.addHeader("USER_ACCOUNT", "4");
+			System.out.println("Auditor Here");
+			mv.setViewName("auditorAccount");
+		}
+		return mv;
+	}
+	
+	@RequestMapping(value = { "pages/roleSelectSession", "roleSelectSession" })
+	public ModelAndView roleSelectSession(@RequestParam("roleID") int roleid, HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mv = new ModelAndView();
+		System.out.println(roleid);
+		if (roleid == 1) {
+			response.addHeader("USER_ACCOUNT", "1");
+			System.out.println("Admin Here");
+			mv.setViewName("adminAccount");
+		} else if (roleid == 2) {
+			response.addHeader("USER_ACCOUNT", "2");
+			System.out.println("Producer Here");
+			mv.setViewName("producerAccount");
+		} else if (roleid == 3) {
+			response.addHeader("USER_ACCOUNT", "3");
+			System.out.println("Order Taker Here");
+			mv.setViewName("orderTakerAccount");
+		} else if (roleid == 4) {
+			response.addHeader("USER_ACCOUNT", "4");
+			System.out.println("Auditor Here");
+			mv.setViewName("auditorAccount");
+		}
 		return mv;
 	}
 
@@ -129,7 +179,6 @@ class Controllers {
 
 	@RequestMapping(value = { "pages/DisabledAccount", "DisabledAccount" })
 	public ModelAndView disabledAccount(HttpServletRequest request, HttpServletResponse reponse) {
-		System.out.println("Redirected to Login");
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("msg", "Account Disabled");
 		mv.setViewName("pages/login.jsp");
@@ -138,10 +187,41 @@ class Controllers {
 
 	@RequestMapping(value = { "pages/AccountDoesNotExist", "AccountDoesNotExist" })
 	public ModelAndView accountNotExist(HttpServletRequest request, HttpServletResponse reponse) {
-		System.out.println("Redirected to Login");
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("msg", "Account Not Exist");
 		mv.setViewName("pages/login.jsp");
+		return mv;
+	}
+
+	@RequestMapping(value = { "pages/adminAccount", "adminAccount" })
+	public ModelAndView adminAccount(HttpServletRequest request, HttpServletResponse reponse) {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("msg", "Welcome! Admin");
+		mv.setViewName("pages/adminTable.jsp");
+		return mv;
+	}
+
+	@RequestMapping(value = { "pages/orderTakerAccount", "orderTakerAccount" })
+	public ModelAndView orderTakerAccount(HttpServletRequest request, HttpServletResponse reponse) {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("msg", "Welcome! Order Taker!");
+		mv.setViewName("pages/auditTable.jsp");
+		return mv;
+	}
+
+	@RequestMapping(value = { "pages/producerAccount", "producerAccount" })
+	public ModelAndView producerAccount(HttpServletRequest request, HttpServletResponse reponse) {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("msg", "Welcome! Producer!");
+		mv.setViewName("pages/productionTable.jsp");
+		return mv;
+	}
+
+	@RequestMapping(value = { "pages/auditorAccount", "auditorAccount" })
+	public ModelAndView auditorAccount(HttpServletRequest request, HttpServletResponse reponse) {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("msg", "Welcome! Auditor!");
+		mv.setViewName("pages/productionTable.jsp");
 		return mv;
 	}
 
@@ -383,44 +463,44 @@ class Controllers {
 	}
 
 	@RequestMapping(value = { "pages/updateOrders", "updateOrders" })
-	public ModelAndView updateOrderStatusAndPayment(@RequestParam("order_status") String currStatus, 
-			@RequestParam("payment_status") String currPayment, @RequestParam("status") int orderStatus, @RequestParam("paymentStatus") Integer paymentStatus, 
-			@RequestParam("order_id") int orderId, @RequestParam("remarks") String remarks,
-			HttpSession session) {
-		
+	public ModelAndView updateOrderStatusAndPayment(@RequestParam("order_status") String currStatus,
+			@RequestParam("payment_status") String currPayment, @RequestParam("status") int orderStatus,
+			@RequestParam("paymentStatus") Integer paymentStatus, @RequestParam("order_id") int orderId,
+			@RequestParam("remarks") String remarks, HttpSession session) {
+
 		Order order = new Order();
 		int intCurrPay = 0;
 		int intCurrStatus = 0;
 		order.setOrderId(orderId);
-		
-		//Audit OrderStatus
+
+		// Audit OrderStatus
 		order.setOrderStatus(orderStatus);
 		if (currStatus.equals("Not Paid")) {
 			intCurrStatus = 1;
 		} else if (currStatus.equals("Paid")) {
 			intCurrStatus = 2;
 		}
-		
+
 		if (intCurrStatus != orderStatus) {
-            auditOrderChanges(orderId, "Order Status", orderStatus, intCurrStatus, session);
-        }
-		
-		//Audit PaymentStatus
+			auditOrderChanges(orderId, "Order Status", orderStatus, intCurrStatus, session);
+		}
+
+		// Audit PaymentStatus
 		order.setPaymentStatus(paymentStatus);
-		if (currPayment.equals("Pending")){
-			intCurrPay =  1;
+		if (currPayment.equals("Pending")) {
+			intCurrPay = 1;
 		} else if (currPayment.equals("Ready for Pick up")) {
-			intCurrPay =  2;
+			intCurrPay = 2;
 		} else if (currPayment.equals("Completed")) {
-			intCurrPay =  3;
+			intCurrPay = 3;
 		} else if (currPayment.equals("Cancelled")) {
-			intCurrPay =  50;
+			intCurrPay = 50;
 		} else if (currPayment.equals("Rejected")) {
-			intCurrPay =  90;
+			intCurrPay = 90;
 		}
 		if (intCurrPay != paymentStatus) {
-            auditOrderChanges(orderId, "Payment Status", paymentStatus, intCurrPay, session);
-        }
+			auditOrderChanges(orderId, "Payment Status", paymentStatus, intCurrPay, session);
+		}
 		order.setRemarks(remarks);
 		orderDao.updateOrder(order);
 
@@ -428,24 +508,24 @@ class Controllers {
 		mv.addObject(order);
 		return mv;
 	}
-	
+
 	private void auditOrderChanges(int orderid, String field, int newvalue, int oldvalue, HttpSession session) {
-        AuditOrder auditorder = new AuditOrder();
-        Users user = (Users) session.getAttribute("userAccount");
-        auditorder.setUsername(user.getUsername());
-        auditorder.setItemID(orderid);
-        auditorder.setFieldChanged(field);
-        auditorder.setNewValue(newvalue);
-        auditorder.setOldValue(oldvalue);
-        
-        AuditOrderDao.setAuditOrder(auditorder);
-   }
-	
+		AuditOrder auditorder = new AuditOrder();
+		Users user = (Users) session.getAttribute("userAccount");
+		auditorder.setUsername(user.getUsername());
+		auditorder.setItemID(orderid);
+		auditorder.setFieldChanged(field);
+		auditorder.setNewValue(newvalue);
+		auditorder.setOldValue(oldvalue);
+
+		AuditOrderDao.setAuditOrder(auditorder);
+	}
+
 	@RequestMapping(value = { "pages/updateProductionsOrder", "updateProductionsOrder" })
 	public ModelAndView updateOrderProductStatusAndPayment(@RequestParam("status") String orderStatus,
-			@RequestParam("paymentStatus") Integer paymentStatus, @RequestParam("order_id") int orderId, 
+			@RequestParam("paymentStatus") Integer paymentStatus, @RequestParam("order_id") int orderId,
 			@RequestParam("remarks") String remarks) {
-		
+
 		Order order = new Order();
 		order.setOrderId(orderId);
 		order.setOrderStatus(Integer.parseInt(orderStatus));
@@ -501,9 +581,9 @@ class Controllers {
 				orderJson.addProperty("order_status", "Rejected");
 			}
 			orderJson.addProperty("delivery_date", o.getDeliveryDate());
-			if (o.getPaymentStatus() == 0) {
+			if (o.getPaymentStatus() == 1) {
 				orderJson.addProperty("payment_status", "Not Paid");
-			} else if (o.getPaymentStatus() == 1) {
+			} else if (o.getPaymentStatus() == 2) {
 				orderJson.addProperty("payment_status", "Paid");
 			}
 			rowsJson.add(orderJson);
@@ -610,7 +690,7 @@ class Controllers {
 		json.add("rows", rowsJson);
 		return json.toString();
 	}
-	
+
 	@RequestMapping(value = { "pages/CSV", "CSV" })
 	@ResponseBody
 	public void downloadSummaryCSV(HttpServletResponse response) throws ClassNotFoundException, IOException {
@@ -654,6 +734,73 @@ class Controllers {
 		} catch (Exception e) {
 			System.out.println("Exception Occured PDF");
 		}
+		return mv;
+	}
+
+	@RequestMapping("pages/listOfAuditOrder")
+	@ResponseBody
+	public String displayAuditOrders(@RequestParam("page") int page, @RequestParam("rows") int rows) {
+		List<AuditOrder> auditOrders = AuditOrderDao.getAuditOrders(page, rows);
+		int total = AuditOrderDao.getTotalAuditOrdersCount();
+
+		JsonObject json = new JsonObject();
+		json.addProperty("total", total);
+		JsonArray rowsJson = new JsonArray();
+
+		for (AuditOrder au : auditOrders) {
+			JsonObject orderJson = new JsonObject();
+
+			orderJson.addProperty("order_id", au.getItemID());
+			orderJson.addProperty("fieldchanged", au.getFieldChanged());
+			orderJson.addProperty("oldval", au.getOldValue());
+			orderJson.addProperty("newval", au.getNewValue());
+			orderJson.addProperty("username", au.getUsername());
+
+			rowsJson.add(orderJson);
+		}
+		json.add("rows", rowsJson);
+		return json.toString();
+	}
+
+	@RequestMapping("pages/listOfAuditOrderDetails")
+	@ResponseBody
+	public String displayAuditOrderDetails(@RequestParam("page") int page, @RequestParam("rows") int rows) {
+		List<AuditOrderDetails> auditOrderDetails = AuditOrderDetailsDao.getAuditOrderDetails(page, rows);
+		int total = AuditOrderDetailsDao.getTotalAuditOrdersCount();
+
+		JsonObject json = new JsonObject();
+		json.addProperty("total", total);
+		JsonArray rowsJson = new JsonArray();
+
+		for (AuditOrderDetails au : auditOrderDetails) {
+			JsonObject orderJson = new JsonObject();
+
+			orderJson.addProperty("order_id", au.getItemChangeID());
+			orderJson.addProperty("item_id", au.getItemID());
+			orderJson.addProperty("oldval", au.getOldQuantity());
+			orderJson.addProperty("newval", au.getNewQuantity());
+			orderJson.addProperty("username", au.getUsername());
+
+			rowsJson.add(orderJson);
+		}
+		json.add("rows", rowsJson);
+		return json.toString();
+	}
+	
+
+	@RequestMapping("pages/DisplayUpdateOrder")
+	public ModelAndView displayUpdateOrder() {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("updateorderdetails", UpdateOrderDetailsDao.displayUpdateOrderDetails());
+		mv.setViewName("updateOrderDetails.jsp");
+		return mv;
+	}
+
+	@RequestMapping(value = {"pages/DisplayProduct", "DisplayProduct"})
+	public ModelAndView displayPorudct() throws ClassNotFoundException {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("products", AddProduct.getProducts());
+		mv.setViewName("display.jsp");
 		return mv;
 	}
 

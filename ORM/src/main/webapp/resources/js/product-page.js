@@ -41,7 +41,6 @@ function getNumber(_str) {
 }
 
 function decreaseQuan(productID) {
-	console.log("Decreased");
 	let idValue = "#product-quantity-" + productID.toString();
 	var productQuantity = $(idValue).val().toString();
 	var convertedProductQuan = parseInt(productQuantity.replaceAll(',', ''));
@@ -129,8 +128,5 @@ function checkQuan(quantity, totalPrice){
         priceDiv.addClass("disabled-logo-totalprice");
         quanText.text(0);
         priceText.text("₱" + 0.00);
-        console.log("no item");
-        console.log("Quantity: " + quantity);
-        console.log("Total Price: " + totalPrice);
     }
 }

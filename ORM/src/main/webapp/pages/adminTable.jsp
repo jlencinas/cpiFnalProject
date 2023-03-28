@@ -25,12 +25,12 @@
 <script type="text/javascript" src="https://www.jeasyui.com/easyui/jquery.min.js"></script>
 <script type="text/javascript" src="https://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/tablecontent.js"/>"></script>
-<script type="text/javascript">
-</script>
+<script> var contextPath = '${pageContext.request.contextPath}' + '/';</script>
+<script type="text/javascript">redirectProperSessionAdmin(${roleID})</script>
 </head>
 <body>
 	<!-- =============== Navigation ================ -->
-	<div class="container">
+<div class="container">
 		<div class="navigation">
 			<ul>
 				<li>
@@ -38,6 +38,7 @@
 					</span> <span class="title">CPI Bakery</span>
 					</a>
 				</li>
+				<c:if test="${seshinfo.roleId eq 1}">
 				<li>
 					<a href="adminTable.jsp"> <span class="icon"> <ion-icon name="person-circle-outline"></ion-icon>
 					</span> <span class="title">Admin</span>
@@ -48,26 +49,35 @@
 					</span> <span class="title">Products</span>
 					</a>
 				</li>
+				</c:if>
+				<c:if test="${seshinfo.roleId eq 3 || seshinfo.roleId eq 1}">
 				<li>
 					<a href="orderTable.jsp"> <span class="icon"> <ion-icon name="cart-outline"></ion-icon>
 					</span> <span class="title">Orders</span>
 					</a>
 				</li>
+				</c:if>
+				<c:if test="${seshinfo.roleId eq 2 || seshinfo.roleId eq 1}">
 				<li>
 					<a href="productionTable.jsp"> <span class="icon"><ion-icon name="cash-outline"></ion-icon>
 					</span> <span class="title">Production</span>
 					</a>
 				</li>
+				</c:if>
+				<c:if test="${seshinfo.roleId eq 1}">
 				<li>
 					<a href="reportTable.jsp"> <span class="icon"> <ion-icon name="newspaper-outline"></ion-icon>
 					</span> <span class="title">Reporting</span>
 					</a>
 				</li>
+				</c:if>
+				<c:if test="${seshinfo.roleId eq 4 || seshinfo.roleId eq 1}">
 				<li>
 					<a href="auditTable.jsp"> <span class="icon"> <ion-icon name="newspaper-outline"></ion-icon>
 					</span> <span class="title">Auditing</span>
 					</a>
 				</li>
+				</c:if>
 			</ul>
 		</div>
 		<!-- ========================= Main ==================== -->
@@ -120,18 +130,20 @@
 				<br> <br>
 			</div>
 			<center>
-				<table id="dg" class="easyui-datagrid" url="ShowUsers"
-					toolbar="#toolbar" pagination="true" fitColumns="true"
-					singleSelect="true" style="width: 96%; height: 425px;">
-					<thead>
-						<tr>
-							<th field="role_id" width="25%">Role Id</th>
-							<th field="username" width="25%">Username</th>
-							<th field="email" width="25%">Email</th>
-							<th field="status" width="27%">Status</th>
-						</tr>
-					</thead>
-				</table>
+			
+				<c:if test="${seshinfo.roleId eq 1}">
+					<table id="dg" class="easyui-datagrid" url="ShowUsers"
+						toolbar="#toolbar" pagination="true" fitColumns="true"
+						singleSelect="true" style="width: 96%; height: 425px;">
+						<thead>
+							<tr>
+								<th field="role_id" width="25%">Role Id</th>
+								<th field="username" width="25%">Username</th>
+								<th field="email" width="25%">Email</th>
+								<th field="status" width="27%">Status</th>
+							</tr>
+						</thead>
+					</table>
 				<div id="toolbar" style="text-align: right;">
 					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">Register User</a> 
 					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()">Change Role</a> 
@@ -201,6 +213,7 @@
 						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg1').dialog('close')" style="width: 90px">Cancel</a>
 					</div>
 				</div>
+				</c:if>
 				<script src="/ORM/resources/js/admin.js"></script>
 				<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 				<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>

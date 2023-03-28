@@ -3,11 +3,28 @@
 .container-product{
 	display: flex;
 	flex-wrap: wrap;
+	flex-direction: column;
 	padding: 2rem;
 	justify-content: center;
 	align-items: center;
 	row-gap: 1rem;
 	column-gap: 1rem;
+	margin-inline: auto;
+}
+
+.container-card-container{
+	display: flex;
+	flex-wrap: wrap;
+	margin-inline: auto;
+	flex-direction: column;
+}
+
+.container-card-container-products{
+	display: flex;
+	row-gap: 1rem;
+	flex-wrap: wrap;
+	column-gap: 1rem;
+	margin: auto;
 }
 
 .card-container1 {

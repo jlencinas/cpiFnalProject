@@ -119,7 +119,6 @@ function updateTotalPrice() {
 
 
 function checkDeliveryDate() {
-	console.log("I'm clicked");
 	//Date Constraintns
 	var dtToday = new Date();
 	var hour = dtToday.getHours();
@@ -183,7 +182,6 @@ function checkDeliveryDate() {
 		sourceTime.addEventListener("input", inputHandler);
 		sourceTime.addEventListener("propertychange", inputHandler);
 	} else {
-		console.log("Please select a delivery date first!");
 	}
 	// for IE8
 }
@@ -205,7 +203,6 @@ function checkTelInput() {
 
 
 function checkTimeInput() {
-	console.log("I'm clicked");
 	const source = document.getElementById("inputTime");
 	const result = document.getElementById("timeValidity");
 	const inputHandler = function(e) {

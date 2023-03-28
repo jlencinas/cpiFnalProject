@@ -78,7 +78,6 @@ function formatNumber(number) {
 function updateTotalPrice(){
 	var total = 0;
         $('.label-price').each(function(){
-        	console.log($(this).text());
             total += parseFloat($(this).text().replace(/[₱, ]/g,''))
         })
         $('#total-order-price').text("₱ " + total);
@@ -86,7 +85,6 @@ function updateTotalPrice(){
 
 
 function checkDeliveryDate() {
-	console.log("I'm clicked");
 	//Date Constraintns
 	var dtToday = new Date();
 	var hour = dtToday.getHours();
@@ -117,17 +115,10 @@ function checkDeliveryDate() {
 	//Time Contraints
 	const sourceDate = document.getElementById("inputDate");
 	const sourceTime = document.getElementById("inputTime");
-	console.log(sourceDate.value);
 	if (sourceDate.value != "") {
-		console.log("removed");
 		const inputHandler = function(e) {
-			console.log("changing");
 			var dtInput = new Date(sourceDate.value);
 			var dtNow = new Date();
-			// if (dtInput.getDay() == dtRevised.getDay()){
-			//   $("#inputTime").attr("min", "09:00");
-			//   $("#inputTime").attr("max", "18:55");
-			// }
 			if (dtInput > dtRevised) {
 				$("#inputTime").attr("min", "09:00");
 				$("#inputTime").attr("max", "18:55");
@@ -153,7 +144,6 @@ function checkDeliveryDate() {
 		sourceTime.addEventListener("input", inputHandler);
 		sourceTime.addEventListener("propertychange", inputHandler);
 	} else {
-		console.log("Please select a delivery date first!");
 	}
 	// for IE8
 }
@@ -175,7 +165,6 @@ function checkTelInput() {
 
 
 function checkTimeInput() {
-	console.log("I'm clicked");
 	const source = document.getElementById("inputTime");
 	const result = document.getElementById("timeValidity");
 	const inputHandler = function(e) {
@@ -193,11 +182,9 @@ function boolDate() {
 	var sourceDate = document.getElementById("inputDate");
 	var sourceTime = document.getElementById("inputTime");
 	var timeval = document.getElementById("timeValidity");
-	console.log(sourceDate.value);
 	if (sourceDate.value == null || sourceDate.value == "") {
 		sourceTime.value = "";
 		sourceTime.setAttribute('disabled', '');
-		console.log("add attr");
 		document.getElementById("delivery-date-warning").innerHTML = `Please select a delivery date first! Before selecting delivery time.`;
 	} else {
 		document.getElementById("delivery-date-warning").innerHTML = ` `;

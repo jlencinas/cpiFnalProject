@@ -1,12 +1,9 @@
 function checkCartSession(boolCart) {
-	console.log(boolCart);
 	var cartLogo = document.getElementById("basket-logo");
 	if (boolCart.toString() === "false") {
-		console.log("There's no session!");
 		cartLogo.classList.add("disabled-cart");
 	}
 	else {
-		console.log("There's a session!");
 		cartLogo.classList.remove("disabled-cart");
 	}
 }

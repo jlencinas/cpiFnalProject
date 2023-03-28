@@ -24,7 +24,6 @@ function initLoginButton(contextPath) {
 
 
 function loginButton(contextPath) {
-	console.log("Proceeding to Login Page");
 	$.ajax({
 		url: contextPath + "goToLogin",
 		method: "POST",
@@ -36,7 +35,6 @@ function loginButton(contextPath) {
 
 
 function redirectHome(contextPath) {
-	console.log("Proceeding to Home");
 	$.ajax({
 		url: contextPath + "logincontroller",
 		method: "POST",
@@ -47,19 +45,16 @@ function redirectHome(contextPath) {
 }
 
 function redirectShop(contextPath) {
-	console.log("Proceeding to Shop");
 	$.ajax({
 		url: contextPath + "pages/DisplayProduct",
 		method: "POST",
 		success: function(result) {
-			history.pushState(null, "", "/ORM/pages/DisplayProduct");
 			$("#myMain").html(result);
 		}
 	});
 }
 
 function openOrderDesc(contextPath) {
-	console.log("Proceeding to Order Details");
 	$.ajax({
 		url: contextPath + "pages/DisplayOrderSummary",
 		method: "POST",
@@ -69,27 +64,10 @@ function openOrderDesc(contextPath) {
 	});
 }
 
-
-function redirectAbout(contextPath) {
-	console.log("Proceeding to About");
-	console.log(contextPath + "/About");
-}
-
-function redirectContact(contextPath) {
-	console.log("Proceeding to Contact");
-	console.log(contextPath + "/Contact");
-}
-
-
 function addCart(contextPath, productID, productPrice, productDesc, boolCart) {
 	let idValue = "#product-quantity-" + productID.toString();
-	var productQuantity = $(idValue).val();
+	var productQuantity = formatNumberEdit($(idValue).val());
 	var productTotalPrice = 0;
-	console.log(contextPath);
-	console.log(productID);
-	console.log(productPrice);
-	console.log(productDesc);
-	console.log(productQuantity);
 	productTotalPrice = parseFloat(productQuantity) * parseFloat(productPrice);
 	addProduct(productQuantity, productTotalPrice);
 	$.ajax({
@@ -120,9 +98,6 @@ function removeCart(productID) {
 			openPopup();
 		}
 	});
-	console.log("Total Price: " + totalPrice);
-	console.log("Quantity: " + quantity);
-	console.log("Bool Cart: " + boolCart);
 }
 
 function editCart(contextPath, productID){
@@ -160,12 +135,6 @@ function checkOut() {
 	var checkValidityContactNum = document.getElementById("telField");
 	var productinfo_array = [];
 
-	console.log(checkValidityTime.value);
-	console.log(checkValidityContactNum.value);
-	console.log(checkValidityTime.checkValidity());
-	console.log(checkValidityContactNum.checkValidity());
-	
-	
 	
 	if ((fName == "") || (lName == "") || (deliveryDate == "") || 
 	(deliveryTime == "") || (contactNum == "")){
@@ -177,7 +146,7 @@ function checkOut() {
 				productinfo_array.push({
 					"itemId": $(this).find("#itemId").val().toString(),
 					"oldQuantity": $(this).find("#old-quantity").val().toString(),
-					"quantity": $(this).find(".order-quantity").val().toString()
+					"quantity": formatNumberEdit($(this).find(".order-quantity").val()).toString()
 				});
 			});
 			
@@ -197,8 +166,6 @@ function checkOut() {
 					closePopup();
 					totalPrice = 0;
 					quantity = 0;
-					console.log(totalPrice);
-					console.log(quantity);
 					checkQuan(quantity, totalPrice);
 					openConfirmationPopup()
 				}
@@ -219,7 +186,6 @@ function checkOut() {
 
 
 function openOrderConfirmationNum(contextPath) {
-	console.log("Showing Confirmation Number");
 	$.ajax({
 		url: contextPath + "ConfOrder",
 		method: "POST",
@@ -230,7 +196,6 @@ function openOrderConfirmationNum(contextPath) {
 }
 
 function openTrackOrderInput(contextPath){
-	console.log("Showing Input Track Order");
 	$.ajax({
 		url: contextPath + "PopTrackOrder",
 		method: "POST",
@@ -259,7 +224,6 @@ function enterTrackingOrder(){
 function forgotPassword(){
 	var uName = $("#username-input").val();
 	var emailAdd = $("#email-input").val();
-	console.log("Proceeding forgot password")
 	$.ajax({
 		url: contextPath + "Forgot",
 		method: "POST",
@@ -278,29 +242,4 @@ function forgotPassword(){
 }
 
 
-
-
-/*$('#button-increase-order-quantity').click(function() {
-	var orderDetails = [];
-	var fName = $("#firstName").val();
-	var lName = $("#firstName").val();
-	var totalPrice = $("#total-order-price").val();
-    
-	$('input[type=number]').each(function() {
-		var quantity = $(this).val();
-		var oldQuantity = $(this).siblings('input[name^=oldQuantity]').val();
-		var itemId = $(this).siblings('input[name^=itemId]').val();
-		var orderDetail = { quantity: quantity, oldQuantity: oldQuantity, itemId: itemId };
-		orderDetails.push(orderDetail);
-	});
-
-	$.ajax({
-		type: "POST",
-		url: "pages/NewOrder",
-		data: { orderDetails: orderDetails },
-		success: function(response) {
-			console.log(response);
-		}
-	});
-}*/
 

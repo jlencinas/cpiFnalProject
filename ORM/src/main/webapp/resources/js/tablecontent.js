@@ -287,7 +287,7 @@ function checkInput() {
 function filterAM(items, rows) {
 	console.log(items.toString());
 	console.log(rows.toString());
-	var pages = Math.ceil(parseInt(items)/parseInt(rows));
+	var pages = Math.ceil(parseInt(items) / parseInt(rows));
 	console.log(pages);
 	var data = $("#filterAM").val()
 	console.log(data);
@@ -300,8 +300,8 @@ function filterAM(items, rows) {
 			page: pages,
 			rows: rows
 		},
-			success: function() {
-				console.log("refresh the table")
+		success: function() {
+			console.log("refresh the table")
 		}
 	});
 }
@@ -309,23 +309,23 @@ function filterAM(items, rows) {
 function filterPM(items, rows) {
 	console.log(items.toString());
 	console.log(rows.toString());
-	var pages = Math.ceil(parseInt(items)/parseInt(rows));
+	var pages = Math.ceil(parseInt(items) / parseInt(rows));
 	console.log(pages);
 	var data = $("#filterPM").val()
 	console.log(data);
 	console.log("Proceed to filter to only PM Schedules");
-		$.ajax({
-			url: contextPath + "ordersToday",
-			method: "POST",
-			data: {
-				filter: data,
-				page: pages,
-				rows: rows
-			},
-			success: function() {
-				console.log("refresh the table")
-			}
-		});
+	$.ajax({
+		url: contextPath + "ordersToday",
+		method: "POST",
+		data: {
+			filter: data,
+			page: pages,
+			rows: rows
+		},
+		success: function() {
+			console.log("refresh the table")
+		}
+	});
 }
 
 function filterReset() {
@@ -347,9 +347,8 @@ function filterReset() {
 
 function updateEmail() {
 	var username = $("#usernameAcc").val();
-	console.log(username);
 	var newemail = $('input[name="newemail"]').val();
-	
+
 	$.ajax({
 		type: "POST",
 		url: "UpdateEmail",
@@ -400,10 +399,10 @@ function updatePassword() {
 }
 
 function extractPageAndRows() {
-   var pagerOptions = $('#dg').datagrid('getPager').data("pagination").options;
-   var page = pagerOptions.pageNumber;
-   var rows = pagerOptions.pageSize;
-   return { page: page, rows: rows };
+	var pagerOptions = $('#dg').datagrid('getPager').data("pagination").options;
+	var page = pagerOptions.pageNumber;
+	var rows = pagerOptions.pageSize;
+	return { page: page, rows: rows };
 }
 
 $('#passwordUpdateForm').submit(function(event) {
@@ -411,23 +410,143 @@ $('#passwordUpdateForm').submit(function(event) {
 	updatePassword(); // Call the updateEmail function
 });
 
- function downloadCSV() {
-    $.ajax({
-        url: contextPath + "pages/CSV",
-        method: "POST",
-        success: function() {
-            console.log("Downloaded CSV")
-        }
-    });
+function downloadCSV() {
+	$.ajax({
+		url: contextPath + "pages/CSV",
+		method: "POST",
+		success: function() {
+			console.log("Downloaded CSV")
+		}
+	});
 }
 
 function downloadPDF() {
-    $.ajax({
-        url: contextPath + "pages/PDF",
-        method: "POST",
-        success: function() {
-            console.log("Downloaded PDF")
-        }
-    });
+	$.ajax({
+		url: contextPath + "pages/PDF",
+		method: "POST",
+		success: function() {
+			console.log("Downloaded PDF")
+		}
+	});
 }
 
+function redirectProperSessionAdmin(roleID) {
+	console.log("Role ID: " + roleID);
+	if (roleID != 1) {
+		$.ajax({
+			url: contextPath + "roleSelectSession",
+			data: {
+				roleID: roleID
+			},
+			method: "POST",
+			success: function(output, status, xhr) {
+				console.log(xhr.getResponseHeader('USER_ACCOUNT'));
+				if (xhr.getResponseHeader('USER_ACCOUNT') == 2) {
+					window.location.href = contextPath + "producerAccount";
+					console.log("Producer here");
+				}
+				else if (xhr.getResponseHeader('USER_ACCOUNT') == 3) {
+					window.location.href = contextPath + "orderTakerAccount";
+					console.log("Order here");
+				}
+				else if (xhr.getResponseHeader('USER_ACCOUNT') == 4) {
+					window.location.href = contextPath + "auditorAccount";
+					console.log("Auditor here");
+				}
+			}
+		});
+	}
+	else {
+		console.log("Welcome Admin!");
+	}
+}
+
+function redirectProperSessionProduction(roleID) {
+	if (roleID != 2) {
+		$.ajax({
+			url: contextPath + "roleSelectSession",
+			data: {
+				roleID: roleID
+			},
+			method: "POST",
+			success: function(output, status, xhr) {
+				console.log(xhr.getResponseHeader('USER_ACCOUNT'));
+				if (xhr.getResponseHeader('USER_ACCOUNT') == 1) {
+					window.location.href = contextPath + "adminAccount";
+					console.log("Admin here");
+				}
+				else if (xhr.getResponseHeader('USER_ACCOUNT') == 3) {
+					window.location.href = contextPath + "orderTakerAccount";
+					console.log("Order here");
+				}
+				else if (xhr.getResponseHeader('USER_ACCOUNT') == 4) {
+					window.location.href = contextPath + "auditorAccount";
+					console.log("Auditor here");
+				}
+			}
+		});
+	}
+	else {
+		console.log("Welcome Production!");
+	}
+}
+
+function redirectProperSessionOrderTaker(roleID) {
+	if (roleID != 3) {
+		$.ajax({
+			url: contextPath + "roleSelectSession",
+			data: {
+				roleID: roleID
+			},
+			method: "POST",
+			success: function(output, status, xhr) {
+				console.log(xhr.getResponseHeader('USER_ACCOUNT'));
+				if (xhr.getResponseHeader('USER_ACCOUNT') == 1) {
+					window.location.href = contextPath + "adminAccount";
+					console.log("Admin here");
+				}
+				else if (xhr.getResponseHeader('USER_ACCOUNT') == 2) {
+					window.location.href = contextPath + "producerAccount";
+					console.log("Producer here");
+				}
+				else if (xhr.getResponseHeader('USER_ACCOUNT') == 4) {
+					window.location.href = contextPath + "auditorAccount";
+					console.log("Auditor here");
+				}
+			}
+		});
+	}
+	else {
+		console.log("Welcome Order Taker!");
+	}
+}
+
+function redirectProperSessionAuditor(roleID) {
+	if (roleID != 4) {
+		$.ajax({
+			url: contextPath + "roleSelectSession",
+			data: {
+				roleID: roleID
+			},
+			method: "POST",
+			success: function(output, status, xhr) {
+				console.log(xhr.getResponseHeader('USER_ACCOUNT'));
+				if (xhr.getResponseHeader('USER_ACCOUNT') == 1) {
+					window.location.href = contextPath + "adminAccount";
+					console.log("Admin here");
+				}
+				else if (xhr.getResponseHeader('USER_ACCOUNT') == 2) {
+					window.location.href = contextPath + "producerAccount";
+					console.log("Producer here");
+				}
+				else if (xhr.getResponseHeader('USER_ACCOUNT') == 3) {
+					window.location.href = contextPath + "orderTakerAccount";
+					console.log("Order here");
+				}
+			}
+		});
+	}
+	else {
+		console.log("Welcome Audit!");
+	}
+}

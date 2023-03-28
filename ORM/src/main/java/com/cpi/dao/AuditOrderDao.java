@@ -6,6 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.cpi.model.AuditOrder;
 import com.cpi.model.DBConnect;
@@ -75,4 +78,67 @@ public class AuditOrderDao {
 			}
 		}
 	}
+	
+	
+	public static List<AuditOrder> getAuditOrders(int page, int rows) {
+
+        List<AuditOrder> auditOrders = new ArrayList<>();
+        DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int offset = (page-1) * rows;
+
+        String query = "SELECT * FROM AUDITORDER OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try {
+
+            conn = db.getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, offset);
+            ps.setInt(2, rows);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                AuditOrder auOrder = new AuditOrder();
+                auOrder.setItemID(rs.getInt("ITEM_ID"));
+                auOrder.setFieldChanged(rs.getString("FIELDCHANGED"));
+                auOrder.setOldValue(rs.getInt("OLD_VALUE"));
+                auOrder.setNewValue(rs.getInt("NEW_VALUE"));
+                auOrder.setUsername(rs.getString("USERNAME"));
+                auditOrders.add(auOrder);
+            }
+
+        } catch (SQLException se) {
+            System.out.println(se);
+        }
+
+        return auditOrders;
+    }
+
+    public static int getTotalAuditOrdersCount() {
+
+        int total = 0;
+        try {
+            DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
+            Connection conn = db.getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) FROM AUDITORDER");
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt(1);
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return total;
+    }
+
+    private static String formatDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, yyyy");
+        return sdf.format(date);
+    }
 }

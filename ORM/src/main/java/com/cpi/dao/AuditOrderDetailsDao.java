@@ -6,7 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.cpi.model.AuditOrder;
 import com.cpi.model.AuditOrderDetails;
 import com.cpi.model.DBConnect;
 
@@ -39,14 +43,13 @@ public class AuditOrderDetailsDao {
 			}
 			 
 			
-			String sql = "INSERT INTO AUDITORDER VALUES(?, ?, ?, ?, ?, SYSDATE";
+			String sql = "INSERT INTO auditOrderDetails VALUES(?, ?, ?, ?, ?, SYSDATE)";
 			st = conn.prepareStatement(sql);
 			st.setInt(1, aid);
 			st.setString(2, auditorderdetails.getUsername());
 			st.setInt(3, auditorderdetails.getItemID());
 			st.setInt(4, auditorderdetails.getOldQuantity());
 			st.setInt(5, auditorderdetails.getNewQuantity());
-			
 			st.executeUpdate();
 			 
 		}  catch (SQLException se) {
@@ -74,4 +77,66 @@ public class AuditOrderDetailsDao {
 			}
 		}
 	}
+	public static List<AuditOrderDetails> getAuditOrderDetails(int page, int rows) {
+
+		List<AuditOrderDetails> auditOrders = new ArrayList<>();
+		DBConnect db = new DBConnect (server, "ORCL", dbUsername, dbPassword);
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int offset = (page-1) * rows;
+
+		String query = "SELECT * FROM AUDITORDERDETAILS OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+		try {
+
+			conn = db.getConnection();
+			ps = conn.prepareStatement(query);
+			ps.setInt(1, offset);
+			ps.setInt(2, rows);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+
+				AuditOrderDetails auOrder = new AuditOrderDetails();
+				auOrder.setItemChangeID(rs.getInt("ITEMCHANGE_ID"));
+				auOrder.setUsername(rs.getString("USERNAME"));
+				auOrder.setItemID(rs.getInt("ITEM_ID"));
+				auOrder.setOldQuantity(rs.getInt("OLD_QUANTITY"));
+				auOrder.setNewQuantity(rs.getInt("NEW_QUANTITY"));
+				auditOrders.add(auOrder);
+			}
+
+		} catch (SQLException se) {
+			System.out.println(se);
+		}
+
+		return auditOrders;
+	}
+
+	public static int getTotalAuditOrdersCount() {
+
+		int total = 0;
+		try {
+			DBConnect db = new DBConnect(server, "ORCL", dbUsername, dbPassword);
+			Connection conn = db.getConnection();
+			PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) FROM AUDITORDERDETAILS");
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				total = rs.getInt(1);
+			}
+			rs.close();
+			ps.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return total;
+	}
+	
+	private static String formatDate(Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, yyyy");
+		return sdf.format(date);
+	}
+
 }

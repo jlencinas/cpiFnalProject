@@ -25,11 +25,12 @@
 <script type="text/javascript" src="https://www.jeasyui.com/easyui/jquery.min.js"></script>
 <script type="text/javascript" src="https://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/tablecontent.js"/>"></script>
-
+<script> var contextPath = '${pageContext.request.contextPath}' + '/';</script>
+<script type="text/javascript">redirectProperSessionAdmin(${roleID})</script>
 </head>
 <body>
 	<!-- =============== Navigation ================ -->
-	<div class="container">
+<div class="container">
 		<div class="navigation">
 			<ul>
 				<li>
@@ -37,6 +38,7 @@
 					</span> <span class="title">CPI Bakery</span>
 					</a>
 				</li>
+				<c:if test="${seshinfo.roleId eq 1}">
 				<li>
 					<a href="adminTable.jsp"> <span class="icon"> <ion-icon name="person-circle-outline"></ion-icon>
 					</span> <span class="title">Admin</span>
@@ -47,26 +49,35 @@
 					</span> <span class="title">Products</span>
 					</a>
 				</li>
+				</c:if>
+				<c:if test="${seshinfo.roleId eq 3}">
 				<li>
 					<a href="orderTable.jsp"> <span class="icon"> <ion-icon name="cart-outline"></ion-icon>
 					</span> <span class="title">Orders</span>
 					</a>
 				</li>
+				</c:if>
+				<c:if test="${seshinfo.roleId eq 2}">
 				<li>
 					<a href="productionTable.jsp"> <span class="icon"><ion-icon name="cash-outline"></ion-icon>
 					</span> <span class="title">Production</span>
 					</a>
 				</li>
+				</c:if>
+				<c:if test="${seshinfo.roleId eq 1}">
 				<li>
 					<a href="reportTable.jsp"> <span class="icon"> <ion-icon name="newspaper-outline"></ion-icon>
 					</span> <span class="title">Reporting</span>
 					</a>
 				</li>
+				</c:if>
+				<c:if test="${seshinfo.roleId eq 4}">
 				<li>
 					<a href="auditTable.jsp"> <span class="icon"> <ion-icon name="newspaper-outline"></ion-icon>
 					</span> <span class="title">Auditing</span>
 					</a>
 				</li>
+				</c:if>
 			</ul>
 		</div>
 		<!-- ========================= Main ==================== -->
